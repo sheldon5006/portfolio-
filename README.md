@@ -1,7 +1,6 @@
 # Sheldon D Souza — Portfolio
 
-A premium, single-page portfolio built with **Flask + Tailwind CSS**, featuring
-live interactive demos of two personal Python tools (`asciibar` and `emojify`).
+A premium, single-page portfolio built with **Flask + Tailwind CSS**.
 
 ## Run it locally
 
