@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
-import smtplib
+import requests
 import os
-from email.mime.text import MIMEText
 
 app = Flask(__name__)
 
@@ -47,7 +46,7 @@ def api_emojify():
 
 @app.route("/api/contact", methods=["POST"])
 def api_contact():
-    """Sends the contact form submission to your Gmail via SMTP."""
+    """Sends the contact form submission via the Resend API (HTTPS, not SMTP)."""
     data = request.json or {}
     name = data.get("name", "").strip()
     sender_email = data.get("email", "").strip()
@@ -56,24 +55,29 @@ def api_contact():
     if not name or not sender_email or not message_body:
         return jsonify({"ok": False, "error": "All fields are required."}), 400
 
-    gmail_user = os.environ.get("GMAIL_USER")
-    gmail_app_password = os.environ.get("GMAIL_APP_PASSWORD")
+    resend_api_key = os.environ.get("RESEND_API_KEY")
+    your_email = os.environ.get("CONTACT_RECEIVER_EMAIL")  # where YOU want to receive messages
 
-    if not gmail_user or not gmail_app_password:
-        print("[contact] Missing GMAIL_USER / GMAIL_APP_PASSWORD env vars.")
+    if not resend_api_key or not your_email:
+        print("[contact] Missing RESEND_API_KEY / CONTACT_RECEIVER_EMAIL env vars.")
         return jsonify({"ok": False, "error": "Email is not configured yet."}), 500
 
-    msg = MIMEText(f"From: {name} <{sender_email}>\n\n{message_body}")
-    msg["Subject"] = f"Portfolio contact form: {name}"
-    msg["From"] = gmail_user
-    msg["To"] = gmail_user
-    msg["Reply-To"] = sender_email
-
     try:
-        with smtplib.SMTP("smtp.gmail.com", 587, timeout=10) as server:
-            server.starttls()
-            server.login(gmail_user, gmail_app_password)
-            server.sendmail(gmail_user, gmail_user, msg.as_string())
+        response = requests.post(
+            "https://api.resend.com/emails",
+            headers={"Authorization": f"Bearer {resend_api_key}"},
+            json={
+                "from": "Portfolio Contact Form <onboarding@resend.dev>",
+                "to": [your_email],
+                "reply_to": sender_email,
+                "subject": f"Portfolio contact form: {name}",
+                "text": f"From: {name} <{sender_email}>\n\n{message_body}",
+            },
+            timeout=10,
+        )
+        if response.status_code >= 400:
+            print(f"[contact] Resend API error: {response.status_code} {response.text}")
+            return jsonify({"ok": False, "error": "Couldn't send the message right now."}), 500
         return jsonify({"ok": True})
     except Exception as e:
         print(f"[contact] Failed to send email: {e}")
