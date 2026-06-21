@@ -70,7 +70,8 @@ def api_contact():
     msg["Reply-To"] = sender_email
 
     try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        with smtplib.SMTP("smtp.gmail.com", 587, timeout=10) as server:
+            server.starttls()
             server.login(gmail_user, gmail_app_password)
             server.sendmail(gmail_user, gmail_user, msg.as_string())
         return jsonify({"ok": True})
