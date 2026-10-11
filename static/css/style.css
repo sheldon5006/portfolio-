@@ -419,3 +419,57 @@ html[lang="de"] .profile-copy h1{letter-spacing:-2.6px}
  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
  #cosmos-canvas{opacity:.8}
 }
+
+
+/* ---------------------------------------------------------
+   Whoami: a compact, system-like identity screen.
+   No portrait in this view — the information is the focus.
+--------------------------------------------------------- */
+.whoami-screen{max-width:1060px;margin:0 auto}
+.whoami-prompt{display:flex;align-items:center;gap:10px;color:#d7dfef;font:13px "DM Mono",monospace;letter-spacing:.15px;margin:0 0 23px}
+.whoami-prompt>span:first-child{color:#a8c5fb;font-size:15px}
+.prompt-cursor{width:6px;height:14px;margin-left:1px;background:#9dbdff;opacity:.78;animation:prompt-blink 1.2s steps(2,start) infinite}
+@keyframes prompt-blink{to{visibility:hidden}}
+.identity-header{display:flex;align-items:center;gap:15px;margin-bottom:20px}
+.identity-monogram{position:relative;display:grid;place-items:center;flex:0 0 54px;height:54px;overflow:hidden;border:1px solid rgba(180,204,255,.24);border-radius:15px;background:linear-gradient(145deg,rgba(137,171,244,.18),rgba(160,135,255,.1));color:#d9e6ff;font:600 16px "DM Mono",monospace;letter-spacing:-1px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.identity-monogram:after{content:"";position:absolute;inset:-20px;border:1px solid rgba(186,175,255,.16);border-radius:50%;transform:rotate(-28deg) scaleX(1.5)}
+.identity-header h1{margin:0;color:#eff3fc;font-size:clamp(27px,3.2vw,36px);line-height:1.14;letter-spacing:-1.4px;font-weight:650}
+.identity-role{margin:5px 0 0;color:#aebbd3;font-size:12px;letter-spacing:.05px}
+.identity-table{display:flex;flex-direction:column;gap:0}
+.identity-row{display:grid;grid-template-columns:126px minmax(0,1fr);align-items:start;gap:12px;padding:7px 0;font:11px/1.75 "DM Mono",monospace}
+.identity-key{color:#88aee8;white-space:nowrap}
+.identity-value{min-width:0;color:#e0e6f3;overflow-wrap:anywhere}
+.identity-value a{color:#b9c5ff;text-decoration:none;text-decoration-color:rgba(185,197,255,.35);text-underline-offset:3px}
+.identity-value a:hover{color:#fff;text-decoration:underline}
+.identity-note{color:#8b98b2;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:10px}
+.identity-divider{height:1px;margin:20px 0 17px;background:linear-gradient(90deg,rgba(193,210,250,.18),rgba(193,210,250,.07) 72%,transparent)}
+.whoami-intro{display:flex;flex-direction:column;gap:11px;max-width:990px;color:#939fb7;font:11px/1.8 "DM Mono",monospace}
+.whoami-intro p{margin:0}
+.identity-section-heading{margin-top:35px}
+.identity-bottom-grid{margin-top:6px}
+.identity-bottom-grid .overview-card{min-height:180px}
+.identity-bottom-grid .overview-card h2{font-size:19px;max-width:380px}
+.identity-bottom-grid .overview-card p{font-size:11px}
+#view-about .bottom-callout{margin-top:16px}
+@media(max-width:760px){
+  .whoami-prompt{margin-bottom:19px;font-size:12px}
+  .identity-header{gap:12px;margin-bottom:17px}
+  .identity-monogram{flex-basis:46px;height:46px;border-radius:13px;font-size:14px}
+  .identity-header h1{font-size:29px;letter-spacing:-1.1px}
+  .identity-role{font-size:11px}
+  .identity-row{grid-template-columns:96px minmax(0,1fr);gap:8px;padding:7px 0;font-size:10px;line-height:1.7}
+  .identity-note{font-size:9px}
+  .identity-divider{margin:17px 0 14px}
+  .whoami-intro{font-size:10px;line-height:1.85;gap:10px}
+  .identity-section-heading{margin-top:29px}
+  .identity-bottom-grid .overview-card{min-height:0}
+}
+@media(max-width:390px){
+  .identity-row{grid-template-columns:82px minmax(0,1fr);gap:7px;font-size:9px}
+  .identity-header h1{font-size:26px}
+  .identity-monogram{flex-basis:42px;height:42px}
+  .whoami-intro{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .prompt-cursor{animation:none;opacity:.45}
+}
