@@ -509,3 +509,72 @@ body{height:100vh;height:100dvh;min-height:0;overflow:hidden}
   .view{padding:21px 17px 22px}
   .desktop-footer{width:100%;align-self:auto}
 }
+
+
+/* ---------------------------------------------------------
+   Refined viewport proportions based on the reference:
+   a smaller, centered app window with a true mobile dock.
+--------------------------------------------------------- */
+@media(min-width:761px){
+  .desktop-shell{grid-template-columns:108px minmax(0,1fr);gap:20px}
+  .app-window{
+    width:min(82%,1180px);
+    height:min(77dvh,600px);
+    max-height:600px;
+  }
+  .desktop-footer{width:min(82%,1180px)}
+  .view{padding:22px 23px 23px}
+  #view-about .whoami-prompt{margin-bottom:15px}
+  #view-about .identity-header{gap:13px;margin-bottom:13px}
+  #view-about .identity-monogram{flex-basis:46px;height:46px;border-radius:13px}
+  #view-about .identity-header h1{font-size:30px;letter-spacing:-1.15px}
+  #view-about .identity-row{padding:5px 0;font-size:11px;line-height:1.62}
+  #view-about .identity-note{font-size:10px}
+  #view-about .identity-divider{margin:14px 0 12px}
+  #view-about .whoami-intro{gap:7px;font-size:10.5px;line-height:1.65}
+}
+@media(min-width:761px) and (max-width:1180px){
+  .app-window{width:min(96%,1040px);height:min(80dvh,650px);max-height:650px}
+  .desktop-footer{width:min(96%,1040px)}
+  .desktop-shell{grid-template-columns:78px minmax(0,1fr);gap:12px;padding-left:12px;padding-right:12px}
+  .app-rail{padding-left:5px;padding-right:5px}
+  .view{padding:20px 19px}
+  #view-about .identity-row{grid-template-columns:105px minmax(0,1fr);font-size:10.5px}
+}
+@media(max-width:760px){
+  .system-bar{position:sticky;top:0;z-index:50}
+  .desktop-shell{
+    padding-bottom:calc(96px + env(safe-area-inset-bottom));
+  }
+  .app-rail{
+    position:fixed;
+    left:10px;
+    right:10px;
+    bottom:calc(8px + env(safe-area-inset-bottom));
+    top:auto;
+    width:auto;
+    height:auto;
+    min-height:0;
+    max-height:none;
+    z-index:60;
+    order:0;
+  }
+  .workspace{order:1}
+  .desktop-footer{margin-bottom:2px}
+  .app-window{width:100%;max-width:none}
+  .window-body{overflow:visible}
+  .view{padding:19px 15px 21px}
+  #view-about .whoami-prompt{margin-bottom:15px}
+  #view-about .identity-header{margin-bottom:13px}
+  #view-about .identity-row{grid-template-columns:88px minmax(0,1fr);gap:8px;padding:7px 0;font-size:10px}
+  #view-about .identity-divider{margin:15px 0 12px}
+  #view-about .whoami-intro{font-size:10px;line-height:1.75;gap:9px}
+}
+@media(max-width:390px){
+  .system-bar{padding-inline:10px}
+  .desktop-shell{padding-inline:7px;padding-top:8px}
+  .app-rail{left:7px;right:7px;padding:5px}
+  .rail-item{min-width:0}
+  .rail-label{font-size:8px}
+  #view-about .identity-row{grid-template-columns:76px minmax(0,1fr);gap:6px;font-size:9px}
+}
