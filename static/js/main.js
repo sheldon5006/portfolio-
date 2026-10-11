@@ -897,15 +897,18 @@
     const railRect = rail ? rail.getBoundingClientRect() : null;
     const footerRect = footer ? footer.getBoundingClientRect() : null;
     const mobile = window.matchMedia("(max-width: 760px)").matches;
-    const edgeGap = mobile ? 7 : 8;
+    // The navigation also becomes a bottom dock on compact landscape screens.
+    const compactLandscape = window.innerWidth <= 900 && window.innerHeight <= 520;
+    const compactDock = mobile || compactLandscape;
+    const edgeGap = compactDock ? 7 : 8;
 
     const top = Math.max(edgeGap, headerRect.bottom + edgeGap);
     let left;
     let right;
     let bottom;
 
-    if (mobile) {
-      // The mobile dock stays visible; the expanded app fits above it.
+    if (compactDock) {
+      // The compact dock stays visible; the expanded app fits above it.
       left = 7;
       right = window.innerWidth - 7;
       bottom = railRect && railRect.top > top
