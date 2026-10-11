@@ -470,7 +470,9 @@
     childWindow.parentNode.insertBefore(childHomeMarker, childWindow);
   }
   const childClose = document.getElementById("lab-child-close");
+  const childMaximize = document.getElementById("lab-child-maximize");
   const childTitle = document.getElementById("lab-child-title");
+  let childIsMaximized = false;
   const childIcon = document.getElementById("lab-child-icon");
   const shooterFrame = document.getElementById("space-shooter-frame");
   let selectedLabApp = "space-shooter";
@@ -555,6 +557,7 @@
 
   function closeLabChild(restoreFocus = true) {
     if (!childWindow || childWindow.hidden) return;
+    if (childIsMaximized) setChildMaximized(false);
     childWindow.hidden = true;
     childWindow.classList.remove("is-game-child", "is-utility-child");
     childWindow.removeAttribute("data-active-app");
@@ -574,7 +577,76 @@
     }
   }
 
-  function renderLabApp(appId) {
+  function setChildMaximized(expanded) {
+    if (!appWindow || !childWindow || childWindow.hidden) return;
+    childIsMaximized = Boolean(expanded);
+
+    if (!childIsMaximized) {
+      appWindow.classList.remove("is-child-maximized");
+      appWindow.style.removeProperty("top");
+      appWindow.style.removeProperty("left");
+      appWindow.style.removeProperty("width");
+      appWindow.style.removeProperty("height");
+      if (childMaximize) {
+        childMaximize.setAttribute("aria-pressed", "false");
+        childMaximize.setAttribute("aria-label", "Expand app window");
+        childMaximize.title = "Expand to workspace";
+      }
+      return;
+    }
+
+    // Measure the central workspace, preserving the website's system header
+    // and the left navigation. The window grows only into its own workspace.
+    const workspace = appWindow.parentElement;
+    const topBar = document.querySelector(".system-bar");
+    const rail = document.querySelector(".app-rail");
+    const footer = document.querySelector(".desktop-footer");
+    const workspaceRect = workspace ? workspace.getBoundingClientRect() : appWindow.getBoundingClientRect();
+    const headerRect = topBar ? topBar.getBoundingClientRect() : { bottom: 0 };
+    const railRect = rail ? rail.getBoundingClientRect() : null;
+    const footerRect = footer ? footer.getBoundingClientRect() : null;
+    const mobile = window.matchMedia("(max-width: 760px)").matches;
+    const edgeGap = mobile ? 7 : 8;
+
+    const top = Math.max(edgeGap, headerRect.bottom + edgeGap);
+    let left;
+    let right;
+    let bottom;
+
+    if (mobile) {
+      // The mobile dock stays visible; the expanded app fits above it.
+      left = 7;
+      right = window.innerWidth - 7;
+      bottom = railRect && railRect.top > top
+        ? railRect.top - 8
+        : window.innerHeight - 8;
+    } else {
+      left = Math.max(workspaceRect.left, railRect ? railRect.right + 10 : workspaceRect.left);
+      right = Math.max(left + 280, workspaceRect.right);
+      bottom = window.innerHeight - 8;
+      if (footerRect && footerRect.top > top + 150 && footerRect.top < window.innerHeight) {
+        bottom = Math.min(bottom, footerRect.top - 7);
+      }
+    }
+
+    // In short viewports, retain all the available space rather than forcing
+    // the app window's normal desktop min-height on top of the header.
+    const width = Math.max(260, Math.min(window.innerWidth - left - 7, right - left));
+    const height = Math.max(230, bottom - top);
+    appWindow.style.left = left + "px";
+    appWindow.style.top = top + "px";
+    appWindow.style.width = width + "px";
+    appWindow.style.height = height + "px";
+    appWindow.classList.add("is-child-maximized");
+
+    if (childMaximize) {
+      childMaximize.setAttribute("aria-pressed", "true");
+      childMaximize.setAttribute("aria-label", "Restore app window size");
+      childMaximize.title = "Restore window";
+    }
+  }
+
+    function renderLabApp(appId) {
     const app = appCatalog[appId];
     if (!app) return;
     selectedLabApp = appId;
@@ -667,6 +739,12 @@
     });
   });
   if (childClose) childClose.addEventListener("click", () => closeLabChild(true));
+  if (childMaximize) {
+    childMaximize.addEventListener("click", () => setChildMaximized(!childIsMaximized));
+  }
+  window.addEventListener("resize", () => {
+    if (childIsMaximized && childWindow && !childWindow.hidden) setChildMaximized(true);
+  }, { passive: true });
 
   function showView(name, shouldFocus) {
     if (!labels.en[name]) return;
