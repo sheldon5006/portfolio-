@@ -1660,3 +1660,74 @@ body.child-app-maximized .desktop-shell{
 @media(prefers-reduced-motion:reduce){
   .game-library-item,.game-library-play{transition:none}
 }
+
+
+/* Distinct library artwork for every launchable app/tool. */
+.game-library-icon.game-icon-maps{
+  color:#8cddd4;
+  background:linear-gradient(145deg,#1d454c,#10252f 80%);
+  border-color:rgba(128,223,215,.22);
+}
+.game-library-icon.game-icon-maps svg{fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.game-library-icon.game-icon-terminal{
+  color:#a9e5c2;
+  background:linear-gradient(145deg,#263e3d,#111e25 80%);
+  border-color:rgba(143,226,183,.2);
+}
+.game-library-icon.game-icon-terminal svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.game-library-icon.game-icon-emoji{
+  color:#d4b7ff;
+  background:linear-gradient(145deg,#3b2f5d,#1c1833 80%);
+  border-color:rgba(203,175,255,.22);
+}
+.game-library-icon.game-icon-emoji svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.game-library-icon.game-icon-emoji svg path:first-child{fill:rgba(196,160,255,.13)}
+
+/* The right-side artwork switches with the highlighted library item. */
+.game-detail-art[data-game-art="space"] svg{display:block}
+.game-detail-art[data-game-art="maps"] svg,
+.game-detail-art[data-game-art="terminal"] svg,
+.game-detail-art[data-game-art="emoji"] svg{display:none}
+.game-detail-art[data-game-art="maps"]::after,
+.game-detail-art[data-game-art="terminal"]::after,
+.game-detail-art[data-game-art="emoji"]::after{
+  display:grid;
+  place-items:center;
+  width:100%;
+  height:100%;
+  font-weight:400;
+  line-height:1;
+  animation:game-art-arrive .2s ease-out both;
+}
+.game-detail-art[data-game-art="maps"]{
+  background:radial-gradient(circle at 50% 45%,rgba(46,131,136,.22),transparent 67%),#0a1120;
+}
+.game-detail-art[data-game-art="maps"]::after{
+  content:"⌖";
+  color:#8cddd4;
+  font-size:clamp(56px,7vw,82px);
+  text-shadow:0 0 22px rgba(85,204,193,.22);
+}
+.game-detail-art[data-game-art="terminal"]{
+  background:radial-gradient(circle at 50% 45%,rgba(53,135,97,.2),transparent 68%),#0a1120;
+}
+.game-detail-art[data-game-art="terminal"]::after{
+  content:">_";
+  color:#a9e5c2;
+  font-family:"DM Mono",monospace;
+  font-size:clamp(38px,5vw,54px);
+  text-shadow:0 0 20px rgba(94,214,145,.2);
+}
+.game-detail-art[data-game-art="emoji"]{
+  background:radial-gradient(circle at 50% 45%,rgba(128,82,176,.22),transparent 68%),#0a1120;
+}
+.game-detail-art[data-game-art="emoji"]::after{
+  content:"✳";
+  color:#d4b7ff;
+  font-size:clamp(54px,7vw,76px);
+  text-shadow:0 0 22px rgba(184,135,255,.24);
+}
+@keyframes game-art-arrive{from{opacity:.45;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){
+  .game-detail-art[data-game-art]::after{animation:none}
+}
