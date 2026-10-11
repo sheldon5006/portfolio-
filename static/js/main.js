@@ -475,6 +475,7 @@
   let childIsMaximized = false;
   const childIcon = document.getElementById("lab-child-icon");
   const shooterFrame = document.getElementById("space-shooter-frame");
+  const spatialMapsFrame = document.getElementById("spatialmaps-frame");
   let selectedLabApp = "space-shooter";
 
   const appCatalog = {
@@ -506,12 +507,12 @@
       tags:["Angular","TypeScript","Game"],action:{en:"Play game",de:"Spiel starten"}
     },
     spatialmaps: {
-      title:"SpatialMaps",icon:"app-icon-maps",glyph:"⌖",playable:false,url:"https://github.com/sheldon5006/SpatialMaps",
+      title:"SpatialMaps",icon:"app-icon-maps",glyph:"⌖",child:"spatialmaps",playable:true,url:"https://github.com/sheldon5006/SpatialMaps",
       subtitle:{en:"Interactive mapping UI",de:"Interaktive Kartenoberfläche"},
-      type:{en:"PERSONAL PROJECT",de:"PERSÖNLICHES PROJEKT"},status:{en:"Prototype / source available",de:"Prototyp / Quellcode verfügbar"},
-      description:{en:"A developer-friendly mapping UI concept exploring dynamic map data, location editing, smooth camera movement and API-oriented workflows.",de:"Ein entwicklerfreundliches Karten-UI-Konzept für dynamische Kartendaten, Standortbearbeitung, flüssige Kamerabewegungen und API-Abläufe."},
-      facts:{en:[["TYPE","Interactive map UI"],["STACK","Angular · TypeScript"],["STATUS","Prototype in development"]],de:[["TYP","Interaktive Kartenoberfläche"],["STACK","Angular · TypeScript"],["STATUS","Prototyp in Entwicklung"]]},
-      tags:["Angular","TypeScript","Maps UI"],action:{en:"View repository",de:"Repository ansehen"}
+      type:{en:"LIVE WEB DEMO",de:"LIVE-WEB-DEMO"},status:{en:"Hosted demo available",de:"Gehostete Demo verfügbar"},
+      description:{en:"Explore SpatialMaps in a live embedded demo. The project experiments with developer-friendly interactive maps, dynamic map data, location editing and smooth camera movement.",de:"Erkunde SpatialMaps in einer live eingebetteten Demo. Das Projekt untersucht entwicklerfreundliche interaktive Karten, dynamische Kartendaten, Standortbearbeitung und flüssige Kamerabewegungen."},
+      facts:{en:[["TYPE","Interactive web app"],["STACK","Angular · TypeScript · PixiJS"],["DEMO","spatialmaps.onrender.com"]],de:[["TYP","Interaktive Web-App"],["STACK","Angular · TypeScript · PixiJS"],["DEMO","spatialmaps.onrender.com"]]},
+      tags:["Angular","TypeScript","PixiJS","Maps UI"],action:{en:"Launch SpatialMaps",de:"SpatialMaps starten"}
     },
     "flowdesk-ai": {
       title:"FlowDesk AI",icon:"app-icon-ai",glyph:"✳",playable:false,url:"https://github.com/sheldon5006/FlowDeskAi",
@@ -570,6 +571,10 @@
     if (shooterFrame) {
       shooterFrame.src = "about:blank";
       shooterFrame.removeAttribute("src");
+    }
+    if (spatialMapsFrame) {
+      spatialMapsFrame.src = "about:blank";
+      spatialMapsFrame.removeAttribute("src");
     }
     if (restoreFocus) {
       const opener = document.querySelector('[data-launch-app="' + selectedLabApp + '"]');
@@ -719,12 +724,17 @@
     if (appWindow && childWindow.parentNode !== appWindow) appWindow.appendChild(childWindow);
     if (appWindow) appWindow.classList.add("is-child-app-open");
     childWindow.classList.toggle("is-game-child", app.child === "space-shooter");
-    childWindow.classList.toggle("is-utility-child", app.child !== "space-shooter");
+    childWindow.classList.toggle("is-map-child", app.child === "spatialmaps");
+    childWindow.classList.toggle("is-utility-child", app.child !== "space-shooter" && app.child !== "spatialmaps");
     childWindow.dataset.activeApp = appId;
     childWindow.hidden = false;
     if (app.child === "space-shooter" && shooterFrame) {
       const src = shooterFrame.dataset.src;
       if (src && shooterFrame.getAttribute("src") !== src) shooterFrame.src = src;
+    }
+    if (app.child === "spatialmaps" && spatialMapsFrame) {
+      const src = spatialMapsFrame.dataset.src;
+      if (src && spatialMapsFrame.getAttribute("src") !== src) spatialMapsFrame.src = src;
     }
     const body = childWindow.querySelector(".lab-child-body");
     if (body) body.scrollTop = 0;
