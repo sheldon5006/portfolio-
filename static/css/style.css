@@ -677,3 +677,61 @@ body{height:100vh;height:100dvh;min-height:0;overflow:hidden}
 /* Let fine stellar highlights read clearly against the deep-space backdrop. */
 .space-vignette{opacity:.52}
 #cosmos-canvas{opacity:1}
+
+
+/* ---------------------------------------------------------
+   macOS-inspired app icons for the portfolio navigation rail.
+   Rich app gradients, crisp glyphs, and restrained glass highlights.
+--------------------------------------------------------- */
+.rail-icon{
+  position:relative;
+  overflow:hidden;
+  width:36px;
+  height:36px;
+  border-radius:11px;
+  border-color:rgba(233,240,255,.17);
+  box-shadow:0 5px 12px rgba(0,0,0,.19),inset 0 1px 0 rgba(255,255,255,.22);
+  transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;
+}
+.rail-icon:before{
+  content:"";
+  position:absolute;
+  inset:0 0 52%;
+  border-radius:inherit;
+  background:linear-gradient(180deg,rgba(255,255,255,.19),rgba(255,255,255,0));
+  pointer-events:none;
+}
+.rail-icon svg{position:relative;z-index:1;width:23px;height:23px;stroke-width:1.55}
+.rail-item:hover .rail-icon{transform:translateY(-1px);filter:saturate(1.12);box-shadow:0 7px 16px rgba(0,0,0,.23),inset 0 1px 0 rgba(255,255,255,.25)}
+.rail-item.is-active .rail-icon{box-shadow:0 0 0 1px rgba(204,220,255,.13),0 5px 17px rgba(64,102,180,.18),inset 0 1px 0 rgba(255,255,255,.24)}
+.document-icon{color:#fff;background:linear-gradient(145deg,#ff8293 0%,#e84562 55%,#a72b58 100%);border-color:rgba(255,196,208,.35)}
+.document-icon .paper-shape{fill:#f6f7fc;stroke:none}
+.document-icon .paper-fold{fill:#d9e2f5;stroke:#c8d4ea;stroke-width:.65}
+.document-icon .paper-line{fill:none;stroke:#8f9cb6;stroke-width:1.05}
+.document-icon .pdf-badge{fill:#d82045;stroke:none}
+.document-icon .pdf-text{fill:#fff;stroke:none;font:700 4.1px Inter,Arial,sans-serif;letter-spacing:.2px}
+.terminal-icon{color:#d8e6ff;background:linear-gradient(145deg,#343e57 0%,#171f31 60%,#0c111c 100%);border-color:rgba(178,204,255,.27)}
+.terminal-icon .terminal-screen{fill:#101725;stroke:rgba(217,232,255,.56);stroke-width:.8}
+.terminal-icon .terminal-prompt{fill:none;stroke:#e1edff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.terminal-icon .terminal-light{fill:#8de9c0;stroke:none}
+.folder-icon{color:#fff;background:linear-gradient(145deg,#7bc0ff 0%,#3689f6 57%,#245bd8 100%);border-color:rgba(177,217,255,.4)}
+.folder-icon .folder-back{fill:#8bc8ff;stroke:none}
+.folder-icon .folder-front{fill:#4a96f8;stroke:rgba(222,239,255,.47);stroke-width:.55}
+.social-icon{color:#f2edff;background:linear-gradient(145deg,#b6a3ff 0%,#7863e9 53%,#5042ba 100%);border-color:rgba(217,207,255,.39)}
+.social-icon .social-orbit{fill:none;stroke:rgba(255,255,255,.88);stroke-width:1.05}
+.social-icon .social-core{fill:#fff;stroke:rgba(255,255,255,.6);stroke-width:.5}
+.tools-icon{color:#e0fff3;background:linear-gradient(145deg,#65d9bf 0%,#24a997 55%,#137b8c 100%);border-color:rgba(160,255,230,.35)}
+.tools-icon .flask-outline{fill:rgba(9,69,78,.25);stroke:#effff9;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round}
+.tools-icon .flask-liquid{fill:rgba(212,255,235,.6);stroke:rgba(239,255,249,.5);stroke-width:.45}
+.tools-icon .flask-bubble{fill:#fff;stroke:none}
+.game-icon{color:#fff;background:linear-gradient(145deg,#9a9cff 0%,#635be9 53%,#3a3fba 100%);border-color:rgba(204,205,255,.38)}
+.game-icon .gamepad-body{fill:rgba(17,22,62,.3);stroke:#f3f3ff;stroke-width:1.25;stroke-linejoin:round}
+.game-icon .gamepad-controls{fill:none;stroke:#fff;stroke-width:1.45;stroke-linecap:round}
+.game-icon .gamepad-button{fill:#ffe2a6;stroke:none}
+@media(max-width:760px){
+  .rail-icon{width:29px;height:29px;border-radius:9px}
+  .rail-icon svg{width:19px;height:19px}
+}
+@media(prefers-reduced-motion:reduce){
+  .rail-icon{transition:none}
+}
