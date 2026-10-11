@@ -479,18 +479,227 @@
   let selectedLabApp = "space-shooter";
 
   const gameCatalog = {
-    "space-shooter": {
-      title: "Space Shooter",
-      subtitle: { en: "Arcade · browser game", de: "Arcade · Browserspiel" },
-      description: {
-        en: "Pilot through waves of incoming objects, avoid collisions and try to beat your high score. Use the on-screen controls to move, so it works on desktop and mobile.",
-        de: "Steuere dein Schiff durch Wellen ankommender Objekte, weiche Kollisionen aus und versuche, deinen Highscore zu schlagen. Nutze die Bildschirmsteuerung – auf Desktop und Mobilgeräten."
-      },
-      genre: { en: "Arcade / survival", de: "Arcade / Überleben" },
-      status: { en: "Ready to play", de: "Spielbereit" },
-      action: { en: "Play now", de: "Jetzt spielen" }
-    }
-  };
+  "space-shooter": {
+    "title": "Space Shooter",
+    "subtitle": {
+      "en": "Arcade · browser game",
+      "de": "Arcade · Browserspiel"
+    },
+    "description": {
+      "en": "Pilot through waves of incoming objects, avoid collisions and try to beat your high score. Use the on-screen controls on desktop and mobile.",
+      "de": "Steuere dein Schiff durch Wellen ankommender Objekte, weiche Kollisionen aus und versuche, deinen Highscore zu schlagen. Nutze die Bildschirmsteuerung auf Desktop und Mobilgeräten."
+    },
+    "type": {
+      "en": "ARCADE / WEB APP",
+      "de": "ARCADE / WEB-APP"
+    },
+    "status": {
+      "en": "Ready to play",
+      "de": "Spielbereit"
+    },
+    "factLabel1": {
+      "en": "GENRE",
+      "de": "GENRE"
+    },
+    "genre": {
+      "en": "Arcade / survival",
+      "de": "Arcade / Überleben"
+    },
+    "factLabel2": {
+      "en": "BUILT WITH",
+      "de": "TECHNOLOGIE"
+    },
+    "stack": "Angular · TypeScript",
+    "factLabel3": {
+      "en": "RUNS IN",
+      "de": "LÄUFT IN"
+    },
+    "runsIn": {
+      "en": "This portfolio window",
+      "de": "Dieses Portfolio-Fenster"
+    },
+    "tags": [
+      "Angular",
+      "TypeScript",
+      "Arcade"
+    ],
+    "action": {
+      "en": "Play now",
+      "de": "Jetzt spielen"
+    },
+    "source": "https://github.com/sheldon5006/Space_shooter_ng",
+    "sourceLabel": {
+      "en": "View source",
+      "de": "Quellcode ansehen"
+    },
+    "art": "space"
+  },
+  "spatialmaps": {
+    "title": "SpatialMaps",
+    "subtitle": {
+      "en": "Interactive map workspace",
+      "de": "Interaktive Kartenumgebung"
+    },
+    "description": {
+      "en": "Explore a live mapping app with location editing, dynamic map data and smooth camera movement. Launch the hosted demo inside this portfolio window.",
+      "de": "Erkunde eine Karten-App mit Standortbearbeitung, dynamischen Kartendaten und flüssiger Kamerabewegung. Starte die gehostete Demo direkt in diesem Portfolio-Fenster."
+    },
+    "type": {
+      "en": "LIVE WEB APP",
+      "de": "LIVE-WEB-APP"
+    },
+    "status": {
+      "en": "Hosted demo available",
+      "de": "Gehostete Demo verfügbar"
+    },
+    "factLabel1": {
+      "en": "CATEGORY",
+      "de": "KATEGORIE"
+    },
+    "genre": {
+      "en": "Interactive maps",
+      "de": "Interaktive Karten"
+    },
+    "factLabel2": {
+      "en": "BUILT WITH",
+      "de": "TECHNOLOGIE"
+    },
+    "stack": "Angular · TypeScript · PixiJS",
+    "factLabel3": {
+      "en": "RUNS IN",
+      "de": "LÄUFT IN"
+    },
+    "runsIn": {
+      "en": "Hosted web app",
+      "de": "Gehostete Web-App"
+    },
+    "tags": [
+      "Angular",
+      "PixiJS",
+      "Maps UI"
+    ],
+    "action": {
+      "en": "Open SpatialMaps",
+      "de": "SpatialMaps öffnen"
+    },
+    "source": "https://github.com/sheldon5006/SpatialMaps",
+    "sourceLabel": {
+      "en": "View source",
+      "de": "Quellcode ansehen"
+    },
+    "art": "maps"
+  },
+  "asciibar": {
+    "title": "asciibar",
+    "subtitle": {
+      "en": "Terminal chart utility",
+      "de": "Terminal-Diagramm-Tool"
+    },
+    "description": {
+      "en": "Turn numbers into a readable terminal bar chart. This utility runs through the portfolio Flask API in its own app window.",
+      "de": "Wandle Zahlen in ein lesbares Terminal-Balkendiagramm um. Das Tool läuft über die Flask-API dieses Portfolios in einem eigenen App-Fenster."
+    },
+    "type": {
+      "en": "LOCAL UTILITY",
+      "de": "LOKALES TOOL"
+    },
+    "status": {
+      "en": "Ready to launch",
+      "de": "Startbereit"
+    },
+    "factLabel1": {
+      "en": "CATEGORY",
+      "de": "KATEGORIE"
+    },
+    "genre": {
+      "en": "Terminal visualization",
+      "de": "Terminal-Visualisierung"
+    },
+    "factLabel2": {
+      "en": "BUILT WITH",
+      "de": "TECHNOLOGIE"
+    },
+    "stack": "Python · Flask",
+    "factLabel3": {
+      "en": "RUNS IN",
+      "de": "LÄUFT IN"
+    },
+    "runsIn": {
+      "en": "Portfolio API",
+      "de": "Portfolio-API"
+    },
+    "tags": [
+      "Python",
+      "CLI",
+      "Flask API"
+    ],
+    "action": {
+      "en": "Launch utility",
+      "de": "Tool starten"
+    },
+    "source": "https://github.com/sheldon5006/asciibar",
+    "sourceLabel": {
+      "en": "View source",
+      "de": "Quellcode ansehen"
+    },
+    "art": "terminal"
+  },
+  "emojify": {
+    "title": "emojify",
+    "subtitle": {
+      "en": "Emoji shortcode utility",
+      "de": "Emoji-Shortcode-Tool"
+    },
+    "description": {
+      "en": "Convert familiar :shortcodes: into emoji without external API calls. Try a sample message in the terminal-style app window.",
+      "de": "Wandle bekannte :Shortcodes: ohne externe API-Aufrufe in Emoji um. Probiere eine Beispielnachricht im Terminalfenster."
+    },
+    "type": {
+      "en": "LOCAL UTILITY",
+      "de": "LOKALES TOOL"
+    },
+    "status": {
+      "en": "Ready to launch",
+      "de": "Startbereit"
+    },
+    "factLabel1": {
+      "en": "CATEGORY",
+      "de": "KATEGORIE"
+    },
+    "genre": {
+      "en": "Text transformation",
+      "de": "Textumwandlung"
+    },
+    "factLabel2": {
+      "en": "BUILT WITH",
+      "de": "TECHNOLOGIE"
+    },
+    "stack": "Python · Text parsing",
+    "factLabel3": {
+      "en": "RUNS IN",
+      "de": "LÄUFT IN"
+    },
+    "runsIn": {
+      "en": "Portfolio API",
+      "de": "Portfolio-API"
+    },
+    "tags": [
+      "Python",
+      "Shortcodes",
+      "Emoji"
+    ],
+    "action": {
+      "en": "Launch utility",
+      "de": "Tool starten"
+    },
+    "source": "https://github.com/sheldon5006/emojify",
+    "sourceLabel": {
+      "en": "View source",
+      "de": "Quellcode ansehen"
+    },
+    "art": "emoji"
+  }
+};
 
   const appCatalog = {
     asciibar: {
@@ -578,18 +787,38 @@
       button.classList.toggle("is-selected", selected);
       button.setAttribute("aria-pressed", selected ? "true" : "false");
     });
-    const title = document.getElementById("game-detail-title");
-    const subtitle = document.getElementById("game-detail-subtitle");
-    const description = document.getElementById("game-detail-description");
-    const genre = document.getElementById("game-detail-genre");
-    const status = document.getElementById("game-detail-status");
-    const launchLabel = document.getElementById("game-detail-launch-label");
-    if (title) title.textContent = game.title;
-    if (subtitle) subtitle.textContent = game.subtitle[currentLanguage];
-    if (description) description.textContent = game.description[currentLanguage];
-    if (genre) genre.textContent = game.genre[currentLanguage];
-    if (status) status.textContent = game.status[currentLanguage];
-    if (launchLabel) launchLabel.textContent = game.action[currentLanguage];
+    const fields = {
+      "game-detail-title": game.title,
+      "game-detail-subtitle": game.subtitle[currentLanguage],
+      "game-detail-description": game.description[currentLanguage],
+      "game-detail-type": game.type[currentLanguage],
+      "game-detail-status": game.status[currentLanguage],
+      "game-detail-fact-label-1": game.factLabel1[currentLanguage],
+      "game-detail-genre": game.genre[currentLanguage],
+      "game-detail-fact-label-2": game.factLabel2[currentLanguage],
+      "game-detail-stack": game.stack,
+      "game-detail-fact-label-3": game.factLabel3[currentLanguage],
+      "game-detail-runs-in": game.runsIn[currentLanguage],
+      "game-detail-launch-label": game.action[currentLanguage],
+      "game-detail-source-label": game.sourceLabel[currentLanguage]
+    };
+    Object.entries(fields).forEach(([id, value]) => {
+      const node = document.getElementById(id);
+      if (node) node.textContent = value;
+    });
+    const art = document.querySelector(".game-detail-art");
+    if (art) art.setAttribute("data-game-art", game.art);
+    const tags = document.getElementById("game-detail-tags");
+    if (tags) {
+      tags.replaceChildren();
+      game.tags.forEach((tag) => {
+        const chip = document.createElement("span");
+        chip.textContent = tag;
+        tags.appendChild(chip);
+      });
+    }
+    const source = document.getElementById("game-detail-source");
+    if (source) source.href = game.source;
   }
 
   document.querySelectorAll("[data-game-select]").forEach((button) => {
