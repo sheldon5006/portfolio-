@@ -451,9 +451,205 @@
   const appWindow = document.getElementById("app-window");
   const desktopShell = document.querySelector(".desktop-shell");
   const windowClose = document.getElementById("window-close");
+  const appBrowser = document.getElementById("app-browser");
+  const detailIcon = document.getElementById("app-detail-icon");
+  const detailType = document.getElementById("app-detail-type");
+  const detailStatus = document.querySelector(".app-detail-status span");
+  const detailTitle = document.getElementById("app-detail-title");
+  const detailSubtitle = document.getElementById("app-detail-subtitle");
+  const detailDescription = document.getElementById("app-detail-description");
+  const detailFacts = document.getElementById("app-detail-facts");
+  const detailTags = document.getElementById("app-detail-tags");
+  const detailLaunch = document.getElementById("app-detail-launch");
+  const detailRepo = document.getElementById("app-detail-repo");
+  const childWindow = document.getElementById("lab-child-window");
+  const childClose = document.getElementById("lab-child-close");
+  const childTitle = document.getElementById("lab-child-title");
+  const childIcon = document.getElementById("lab-child-icon");
+  const shooterFrame = document.getElementById("space-shooter-frame");
+  let selectedLabApp = "asciibar";
+
+  const appCatalog = {
+    asciibar: {
+      title:"asciibar", icon:"app-icon-terminal", glyph:"▥", child:"asciibar", playable:true,
+      url:"https://github.com/sheldon5006/asciibar",
+      subtitle:{en:"Numbers to terminal bars",de:"Zahlen als Terminal-Balken"},
+      type:{en:"LOCAL UTILITY",de:"LOKALES TOOL"}, status:{en:"Available locally",de:"Lokal verfügbar"},
+      description:{en:"Turn numbers into a readable terminal bar chart. This demo runs through the portfolio's Flask API and needs no plotting library.",de:"Wandle Zahlen in ein lesbares Terminal-Balkendiagramm um. Die Demo läuft über die Flask-API dieses Portfolios und benötigt keine Plot-Bibliothek."},
+      facts:{en:[["TYPE","Python utility"],["RUNS IN","This portfolio"],["DEPENDENCIES","No plotting library"]],de:[["TYP","Python-Tool"],["LÄUFT IN","Dieses Portfolio"],["ABHÄNGIGKEITEN","Keine Plot-Bibliothek"]]},
+      tags:["Python","CLI","Flask API"], action:{en:"Launch utility",de:"Tool starten"}
+    },
+    emojify: {
+      title:"emojify",icon:"app-icon-emoji",glyph:"✳",child:"emojify",playable:true,
+      url:"https://github.com/sheldon5006/emojify",
+      subtitle:{en:"Turn shortcodes into emoji",de:"Shortcodes in Emoji umwandeln"},
+      type:{en:"LOCAL UTILITY",de:"LOKALES TOOL"},status:{en:"Available locally",de:"Lokal verfügbar"},
+      description:{en:"Convert familiar :shortcodes: into emoji without external API calls. Try a message and inspect the output in a terminal-style app window.",de:"Wandle bekannte :Shortcodes: ohne externe API-Aufrufe in Emoji um. Probiere eine Nachricht und prüfe die Ausgabe im Terminalfenster."},
+      facts:{en:[["TYPE","Python text utility"],["RUNS IN","This portfolio"],["NETWORK","No external API needed"]],de:[["TYP","Python-Text-Tool"],["LÄUFT IN","Dieses Portfolio"],["NETZWERK","Keine externe API nötig"]]},
+      tags:["Python","Text parsing","CLI"],action:{en:"Launch utility",de:"Tool starten"}
+    },
+    "space-shooter": {
+      title:"Space Shooter",icon:"app-icon-game",glyph:"🎮",child:"space-shooter",playable:true,
+      url:"https://github.com/sheldon5006/Space_shooter_ng",
+      subtitle:{en:"Arcade game",de:"Arcade-Spiel"},
+      type:{en:"BROWSER GAME",de:"BROWSER-SPIEL"},status:{en:"Hosted demo",de:"Gehostete Demo"},
+      description:{en:"A browser-based space shooter from my Angular project. Launch it here, or open the hosted game separately if its server blocks embedding.",de:"Ein browserbasiertes Space-Shooter-Spiel aus meinem Angular-Projekt. Starte es hier oder öffne das gehostete Spiel separat, falls der Server das Einbetten blockiert."},
+      facts:{en:[["TYPE","Web game"],["STACK","Angular · TypeScript"],["ACCESS","Hosted demo + source"]],de:[["TYP","Web-Spiel"],["STACK","Angular · TypeScript"],["ZUGRIFF","Demo + Quellcode"]]},
+      tags:["Angular","TypeScript","Game"],action:{en:"Play game",de:"Spiel starten"}
+    },
+    spatialmaps: {
+      title:"SpatialMaps",icon:"app-icon-maps",glyph:"⌖",playable:false,url:"https://github.com/sheldon5006/SpatialMaps",
+      subtitle:{en:"Interactive mapping UI",de:"Interaktive Kartenoberfläche"},
+      type:{en:"PERSONAL PROJECT",de:"PERSÖNLICHES PROJEKT"},status:{en:"Prototype / source available",de:"Prototyp / Quellcode verfügbar"},
+      description:{en:"A developer-friendly mapping UI concept exploring dynamic map data, location editing, smooth camera movement and API-oriented workflows.",de:"Ein entwicklerfreundliches Karten-UI-Konzept für dynamische Kartendaten, Standortbearbeitung, flüssige Kamerabewegungen und API-Abläufe."},
+      facts:{en:[["TYPE","Interactive map UI"],["STACK","Angular · TypeScript"],["STATUS","Prototype in development"]],de:[["TYP","Interaktive Kartenoberfläche"],["STACK","Angular · TypeScript"],["STATUS","Prototyp in Entwicklung"]]},
+      tags:["Angular","TypeScript","Maps UI"],action:{en:"View repository",de:"Repository ansehen"}
+    },
+    "flowdesk-ai": {
+      title:"FlowDesk AI",icon:"app-icon-ai",glyph:"✳",playable:false,url:"https://github.com/sheldon5006/FlowDeskAi",
+      subtitle:{en:"RAG and knowledge APIs",de:"RAG- und Wissens-APIs"},
+      type:{en:"AI PROJECT",de:"KI-PROJEKT"},status:{en:"Active development",de:"In aktiver Entwicklung"},
+      description:{en:"A reusable AI capability layer for business applications. The current foundation focuses on document ingestion, embeddings, PostgreSQL with pgvector, retrieval and API-based integration.",de:"Eine wiederverwendbare KI-Schicht für Business-Anwendungen mit Dokumentaufnahme, Embeddings, PostgreSQL/pgvector, Retrieval und API-Integration."},
+      facts:{en:[["TYPE","RAG platform foundation"],["STACK",".NET · PostgreSQL · pgvector"],["DESIGN","Layered API architecture"]],de:[["TYP","RAG-Plattform-Grundlage"],["STACK",".NET · PostgreSQL · pgvector"],["DESIGN","Geschichtete API-Architektur"]]},
+      tags:[".NET","RAG","PostgreSQL","pgvector"],action:{en:"View repository",de:"Repository ansehen"}
+    },
+    jobpilot: {
+      title:"JobPilot AI",icon:"app-icon-jobs",glyph:"▤",playable:false,url:"https://github.com/sheldon5006/jobpilot-ai",
+      subtitle:{en:"AI-assisted job search",de:"KI-gestützte Jobsuche"},
+      type:{en:"AI PROJECT",de:"KI-PROJEKT"},status:{en:"Prototype in progress",de:"Prototyp in Entwicklung"},
+      description:{en:"A personal job-search assistant for job description analysis, candidate-fit recommendations, tailored application materials and application tracking.",de:"Ein persönlicher Bewerbungsassistent für Stellenanzeigenanalyse, Profilabgleich, angepasste Bewerbungsunterlagen und Bewerbungsnachverfolgung."},
+      facts:{en:[["TYPE","Job-search workflow"],["STACK","ASP.NET Core · TypeScript"],["AI","Configurable model integration"]],de:[["TYP","Bewerbungsablauf"],["STACK","ASP.NET Core · TypeScript"],["KI","Konfigurierbare Modellintegration"]]},
+      tags:["ASP.NET Core","TypeScript","Gemini","PostgreSQL"],action:{en:"View repository",de:"Repository ansehen"}
+    },
+    flowdesk: {
+      title:"FlowDesk",icon:"app-icon-flow",glyph:"⌘",playable:false,url:"https://github.com/sheldon5006/FlowDesk",
+      subtitle:{en:"Modular workforce operations",de:"Modulare Personalabläufe"},
+      type:{en:"ENGINEERING PROJECT",de:"ENGINEERING-PROJEKT"},status:{en:"In development",de:"In Entwicklung"},
+      description:{en:"A modular workforce operations concept for exploring clean architecture, clear module boundaries, scheduling workflows and future warehouse capabilities.",de:"Ein modulares Konzept für Personalabläufe mit Clean Architecture, klaren Modulgrenzen, Planungsabläufen und künftigen Lagerfunktionen."},
+      facts:{en:[["TYPE","Modular business application"],["FOCUS","Workforce + scheduling"],["DESIGN","Clean architecture boundaries"]],de:[["TYP","Modulare Business-Anwendung"],["FOKUS","Personal + Planung"],["DESIGN","Clean-Architecture-Modulgrenzen"]]},
+      tags:[".NET","Angular","Clean Architecture"],action:{en:"View repository",de:"Repository ansehen"}
+    },
+    nifty50: {
+      title:"NIFTY50 Sentinel",icon:"app-icon-market",glyph:"⌁",playable:false,url:"https://github.com/sheldon5006/nifty50-sentinel",
+      subtitle:{en:"Market data & forecast research",de:"Marktdaten und Prognoseforschung"},
+      type:{en:"RESEARCH PROJECT",de:"FORSCHUNGSPROJEKT"},status:{en:"Experimental research",de:"Experimentelle Forschung"},
+      description:{en:"Research into one-minute NIFTY 50 data and short-horizon forecasts, with emphasis on data quality, baseline comparisons, walk-forward evaluation and uncertainty.",de:"Forschung zu NIFTY-50-Minutedaten und kurzfristigen Prognosen mit Fokus auf Datenqualität, Baseline-Vergleiche, Walk-forward-Evaluation und Unsicherheit."},
+      facts:{en:[["TYPE","Market-data research"],["FOCUS","1-minute candles · 1–5 min forecast"],["SAFETY","No automated order placement"]],de:[["TYP","Marktdatenforschung"],["FOKUS","1-Minuten-Kerzen · 1–5-Minuten-Prognose"],["SICHERHEIT","Keine automatischen Orders"]]},
+      tags:["Python","Market data","Forecast evaluation"],action:{en:"View repository",de:"Repository ansehen"}
+    },
+    "credit-prediction": {
+      title:"Credit Default Prediction",icon:"app-icon-data",glyph:"▤",playable:false,url:"https://github.com/sheldon5006/Credit_Card_Default_Prediction",
+      subtitle:{en:"Credit risk classification",de:"Kreditrisiko-Klassifizierung"},
+      type:{en:"MACHINE LEARNING",de:"MACHINE LEARNING"},status:{en:"Source repository",de:"Quellcode-Repository"},
+      description:{en:"A machine-learning project focused on predicting credit-card default risk. Open the repository for the implementation and project artefacts.",de:"Ein Machine-Learning-Projekt zur Vorhersage von Kreditkartenausfällen. Die Implementierung und Projektdateien findest du im Repository."},
+      facts:{en:[["TYPE","Classification project"],["DOMAIN","Credit risk"],["SOURCE","GitHub repository"]],de:[["TYP","Klassifizierungsprojekt"],["BEREICH","Kreditrisiko"],["QUELLE","GitHub-Repository"]]},
+      tags:["Machine learning","Classification","Credit risk"],action:{en:"View repository",de:"Repository ansehen"}
+    }
+  };
+
+  function closeLabChild(restoreFocus = true) {
+    if (!childWindow || childWindow.hidden) return;
+    childWindow.hidden = true;
+    document.querySelectorAll("[data-child-app]").forEach((panel) => { panel.hidden = true; });
+    if (shooterFrame) {
+      shooterFrame.src = "about:blank";
+      shooterFrame.removeAttribute("src");
+    }
+    if (restoreFocus) {
+      const opener = document.querySelector('[data-launch-app="' + selectedLabApp + '"]');
+      if (opener && typeof opener.focus === "function") opener.focus({ preventScroll: true });
+    }
+  }
+
+  function renderLabApp(appId) {
+    const app = appCatalog[appId];
+    if (!app) return;
+    selectedLabApp = appId;
+    document.querySelectorAll(".app-entry[data-app-id]").forEach((row) => {
+      const selected = row.dataset.appId === appId;
+      row.classList.toggle("is-selected", selected);
+      row.setAttribute("aria-selected", selected ? "true" : "false");
+    });
+    const rowIcon = document.querySelector('[data-app-id="' + appId + '"] .app-entry-icon');
+    if (detailIcon && rowIcon) {
+      detailIcon.className = "app-detail-icon " + app.icon;
+      detailIcon.innerHTML = rowIcon.innerHTML;
+    }
+    const language = currentLanguage;
+    if (detailType) detailType.textContent = app.type[language];
+    if (detailStatus) detailStatus.textContent = app.status[language];
+    if (detailTitle) detailTitle.textContent = app.title;
+    if (detailSubtitle) detailSubtitle.textContent = app.subtitle[language];
+    if (detailDescription) detailDescription.textContent = app.description[language];
+    if (detailFacts) {
+      detailFacts.replaceChildren();
+      app.facts[language].forEach(([label, value]) => {
+        const row = document.createElement("div");
+        const key = document.createElement("span");
+        const valueNode = document.createElement("strong");
+        key.textContent = label;
+        valueNode.textContent = value;
+        row.append(key, valueNode);
+        detailFacts.appendChild(row);
+      });
+    }
+    if (detailTags) {
+      detailTags.replaceChildren();
+      app.tags.forEach((tag) => {
+        const node = document.createElement("span");
+        node.textContent = tag;
+        detailTags.appendChild(node);
+      });
+    }
+    if (detailLaunch) {
+      detailLaunch.hidden = !app.playable;
+      detailLaunch.dataset.launchApp = appId;
+      const label = detailLaunch.querySelector("[data-copy]");
+      if (label) label.textContent = app.action[language];
+      detailLaunch.setAttribute("aria-label", app.action[language] + ": " + app.title);
+    }
+    if (detailRepo) {
+      detailRepo.href = app.url;
+      const label = detailRepo.querySelector("[data-copy]");
+      if (label) label.textContent = app.playable
+        ? (language === "de" ? "Quellcode ansehen" : "View source")
+        : app.action[language];
+    }
+    if (childTitle) childTitle.textContent = app.title;
+    if (childIcon) childIcon.textContent = app.glyph || "⌘";
+  }
+
+  function launchLabApp(appId) {
+    const app = appCatalog[appId];
+    if (!app || !app.playable || !childWindow) return;
+    renderLabApp(appId);
+    document.querySelectorAll("[data-child-app]").forEach((panel) => {
+      panel.hidden = panel.dataset.childApp !== app.child;
+    });
+    childWindow.hidden = false;
+    if (app.child === "space-shooter" && shooterFrame) {
+      const src = shooterFrame.dataset.src;
+      if (src && shooterFrame.getAttribute("src") !== src) shooterFrame.src = src;
+    }
+    const body = childWindow.querySelector(".lab-child-body");
+    if (body) body.scrollTop = 0;
+    if (childClose) childClose.focus({ preventScroll: true });
+  }
+
+  document.querySelectorAll("[data-select-app]").forEach((button) => {
+    button.addEventListener("click", () => renderLabApp(button.dataset.selectApp));
+  });
+  document.querySelectorAll("[data-launch-app]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      launchLabApp(button.dataset.launchApp);
+    });
+  });
+  if (childClose) childClose.addEventListener("click", () => closeLabChild(true));
 
   function showView(name, shouldFocus) {
     if (!labels.en[name]) return;
+    if (currentView === "lab" && name !== "lab") closeLabChild(false);
     currentView = name;
     // Launching any app from the dock or a CTA restores the window.
     if (appWindow) {
@@ -488,6 +684,7 @@
   // Clicking a dock item (or using Quick Open) launches a view again.
   if (windowClose && appWindow && desktopShell) {
     windowClose.addEventListener("click", () => {
+      closeLabChild(false);
       appWindow.classList.add("window-is-closed");
       appWindow.setAttribute("aria-hidden", "true");
       desktopShell.classList.add("window-closed");
@@ -523,6 +720,7 @@
     if (windowTitle) windowTitle.textContent = labels[currentLanguage][currentView];
     if (windowTitleIcon) windowTitleIcon.textContent = icons[currentView];
     updateCommandFilter();
+    renderLabApp(selectedLabApp);
   }
 
   document.querySelectorAll("[data-language]").forEach((button) => {
@@ -637,6 +835,10 @@
       if (palette && !palette.hidden) closePalette(true);
       else openPalette();
     }
+    if (event.key === "Escape" && childWindow && !childWindow.hidden) {
+      closeLabChild(true);
+      return;
+    }
     if (event.key === "Escape" && palette && !palette.hidden) closePalette(true);
     if (palette && !palette.hidden && (event.key === "ArrowUp" || event.key === "ArrowDown") &&
         (document.activeElement === commandList || document.activeElement === palette)) {
@@ -746,5 +948,6 @@
   }
 
   if (currentLanguage === "de") applyLanguage("de");
+  renderLabApp(selectedLabApp);
 
 })();
