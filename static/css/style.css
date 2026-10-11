@@ -1931,13 +1931,15 @@ body.child-app-maximized .desktop-shell{
 }
 @media(max-height:620px) and (max-width:760px){
   .desktop-shell{gap:7px;padding-top:7px;padding-bottom:calc(6px + env(safe-area-inset-bottom))}
-  .app-rail{min-height:54px;padding:4px}
-  .rail-item{min-height:44px}
-  .rail-icon{height:23px}
-  .rail-icon svg{height:21px}
-  .view{padding-top:14px;padding-bottom:18px}
-  #view-lab .app-browser{grid-template-rows:minmax(105px,.85fr) minmax(125px,1.15fr)}
-  #view-games .game-explorer{grid-template-rows:minmax(105px,.72fr) minmax(130px,1.28fr)}
+  .app-rail{min-height:50px;padding:4px}
+  .rail-item{min-height:40px}
+  .rail-icon{height:22px}
+  .rail-icon svg{height:20px}
+  .view{padding-top:12px;padding-bottom:16px}
+  /* Landscape phones have little vertical space: retain scrollable panes,
+     but let both stacked panes fit into the app viewport. */
+  #view-lab .app-browser{grid-template-rows:minmax(60px,.85fr) minmax(80px,1.15fr)}
+  #view-games .game-explorer{grid-template-rows:minmax(58px,.72fr) minmax(78px,1.28fr)}
 }
 @media(prefers-reduced-motion:reduce){
   .app-window{scroll-behavior:auto}
