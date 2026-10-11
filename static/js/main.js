@@ -280,9 +280,9 @@
 
         const angle = Math.atan2(dy, dx);
         const edgeNoise =
-          0.008 * Math.sin(angle * 4.0 + 0.6) +
-          0.005 * Math.sin(angle * 9.0 - 1.1) +
-          0.003 * Math.sin(angle * 17.0 + radius * 22.0);
+          0.004 * Math.sin(angle * 4.0 + 0.6) +
+          0.002 * Math.sin(angle * 9.0 - 1.1) +
+          0.001 * Math.sin(angle * 17.0 + radius * 22.0);
         const horizonEdge = 0.478 + edgeNoise * 0.55;
 
         const index = (py * size + px) * 4;
@@ -298,22 +298,22 @@
 
         const ringCentre =
           0.615 +
-          0.022 * Math.sin(angle * 2.0 + 0.7) +
-          0.015 * Math.sin(angle * 5.0 - 1.6) +
-          0.007 * Math.sin(angle * 11.0 + radius * 20.0);
-        const ringWidth = 0.043 + 0.012 * (0.5 + 0.5 * Math.sin(angle * 4.0 + 0.9));
+          0.009 * Math.sin(angle * 2.0 + 0.7) +
+          0.005 * Math.sin(angle * 5.0 - 1.6) +
+          0.002 * Math.sin(angle * 11.0 + radius * 20.0);
+        const ringWidth = 0.043 + 0.006 * (0.5 + 0.5 * Math.sin(angle * 4.0 + 0.9));
         const distanceFromRing = (radius - ringCentre) / ringWidth;
         const ringProfile = Math.exp(-0.5 * distanceFromRing * distanceFromRing);
 
         // Fine turbulence breaks up the ring so it does not look mechanically circular.
         const turbulence =
-          0.84 +
-          0.09 * Math.sin(angle * 23.0 + radius * 97.0) +
-          0.06 * Math.sin(angle * 37.0 - radius * 61.0) +
-          0.035 * Math.sin(angle * 71.0 + radius * 131.0);
+          0.88 +
+          0.04 * Math.sin(angle * 23.0 + radius * 97.0) +
+          0.025 * Math.sin(angle * 37.0 - radius * 61.0) +
+          0.015 * Math.sin(angle * 71.0 + radius * 131.0);
         const angularBrightness = Math.max(
-          0.08,
-          Math.min(0.95, 0.42 + 0.22 * Math.sin(angle * 1.7 - 0.8) + 0.19 * Math.cos(angle * 3.0 + 0.5))
+          0.28,
+          Math.min(0.82, 0.56 + 0.12 * Math.sin(angle * 1.7 - 0.8) + 0.08 * Math.cos(angle * 3.0 + 0.5))
         );
         const outerHaze = Math.exp(-Math.pow((radius - (ringCentre + 0.055)) / 0.16, 2));
         const alpha = Math.max(
