@@ -1082,3 +1082,101 @@ body{height:100vh;height:100dvh;min-height:0;overflow:hidden}
   .lab-child-window{animation:none}
   .app-entry,.app-entry-launch{transition:none}
 }
+
+
+/* ---------------------------------------------------------
+   Fixed Tools workspace:
+   - no promotional heading above the app browser
+   - equal-width list and detail panes
+   - the OS window stays fixed; each pane scrolls independently
+--------------------------------------------------------- */
+.app-window.is-tools-view .window-body{
+  overflow:hidden;
+  scrollbar-width:none;
+}
+.app-window.is-tools-view .window-body::-webkit-scrollbar{display:none}
+#view-lab:not([hidden]){
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  min-height:0;
+  overflow:hidden;
+  padding:14px 18px 16px;
+}
+#view-lab .app-browser{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  flex:1 1 auto;
+  width:100%;
+  height:100%;
+  min-height:0;
+  max-height:none;
+  overflow:hidden;
+  align-items:stretch;
+}
+#view-lab .app-list-pane{
+  height:100%;
+  min-height:0;
+  max-height:none;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(160,184,235,.28) transparent;
+  border-right:1px solid rgba(198,215,255,.11);
+  border-bottom:0;
+}
+#view-lab .app-details-pane{
+  height:100%;
+  min-height:0;
+  max-height:none;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(160,184,235,.28) transparent;
+}
+#view-lab .app-list-pane::-webkit-scrollbar,
+#view-lab .app-details-pane::-webkit-scrollbar{width:6px}
+#view-lab .app-list-pane::-webkit-scrollbar-thumb,
+#view-lab .app-details-pane::-webkit-scrollbar-thumb{background:rgba(160,184,235,.24);border-radius:8px}
+#view-lab .app-browser::-webkit-scrollbar{display:none}
+#view-lab .app-entry{flex-shrink:0}
+#view-lab .app-detail-actions{padding-bottom:3px}
+
+/* On phones keep the window fixed as well, with two independently
+   scrollable stacked panes rather than squeezing a 50/50 split. */
+@media(max-width:760px){
+  .app-window.is-tools-view .window-body{overflow:hidden}
+  #view-lab:not([hidden]){padding:9px 9px 10px}
+  #view-lab .app-browser{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:minmax(155px,0.88fr) minmax(170px,1.12fr);
+    flex:1 1 auto;
+    height:100%;
+    min-height:0;
+    overflow:hidden;
+  }
+  #view-lab .app-list-pane{
+    width:100%;
+    height:100%;
+    max-height:none;
+    min-height:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    border-right:0;
+    border-bottom:1px solid rgba(198,215,255,.11);
+  }
+  #view-lab .app-details-pane{
+    width:100%;
+    height:100%;
+    max-height:none;
+    min-height:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    padding:16px 14px;
+  }
+  #view-lab .app-detail-hero{margin:15px 0 12px}
+  #view-lab .app-detail-facts{margin-top:13px}
+}
