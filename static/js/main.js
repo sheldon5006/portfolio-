@@ -1104,7 +1104,7 @@
 
     const keyframes = direction === "out"
       ? [
-          { ...collapsed, offset: 0, easing: "cubic-bezier(.2,.8,.24,1)" },
+          { ...collapsed, offset: 0, easing: "cubic-bezier(.16,.92,.22,1)" },
           { ...overshoot, easing: "cubic-bezier(.2,1.3,.42,1)" },
           { ...expanded, offset: 1 }
         ]
@@ -1112,12 +1112,12 @@
           {
             ...expanded,
             offset: 0,
-            easing: compactViewport ? "cubic-bezier(.72,0,.98,.22)" : "cubic-bezier(.76,0,.98,.2)"
+            easing: compactViewport ? "cubic-bezier(.42,.2,.8,.05)" : "cubic-bezier(.46,.18,.82,.04)"
           },
           collapsed
         ];
     const animation = appWindow.animate(keyframes, {
-      duration: direction === "out" ? (compactViewport ? 185 : 205) : (compactViewport ? 135 : 150),
+      duration: direction === "out" ? (compactViewport ? 150 : 175) : (compactViewport ? 110 : 125),
       fill: "both"
     });
     appWindow.classList.add("panel-is-animating");
