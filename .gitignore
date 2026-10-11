@@ -28,3 +28,24 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Node / frontend tooling
+node_modules/
+dist/
+build/
+coverage/
+playwright-report/
+test-results/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Python test and coverage output
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local runtime databases (created automatically by the app)
+score.db
+*.sqlite
+*.sqlite3
