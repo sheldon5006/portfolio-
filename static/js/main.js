@@ -568,7 +568,8 @@
     document.querySelectorAll(".app-entry[data-app-id]").forEach((row) => {
       const selected = row.dataset.appId === appId;
       row.classList.toggle("is-selected", selected);
-      row.setAttribute("aria-selected", selected ? "true" : "false");
+      const selectButton = row.querySelector(".app-entry-select");
+      if (selectButton) selectButton.setAttribute("aria-pressed", selected ? "true" : "false");
     });
     const rowIcon = document.querySelector('[data-app-id="' + appId + '"] .app-entry-icon');
     if (detailIcon && rowIcon) {
