@@ -463,6 +463,12 @@
   const detailLaunch = document.getElementById("app-detail-launch");
   const detailRepo = document.getElementById("app-detail-repo");
   const childWindow = document.getElementById("lab-child-window");
+  // Keep a marker at the child's original DOM position so closing the child
+  // restores the exact Tools list and its selected item.
+  const childHomeMarker = childWindow ? document.createComment("lab-child-window-home") : null;
+  if (childWindow && childWindow.parentNode && childHomeMarker) {
+    childWindow.parentNode.insertBefore(childHomeMarker, childWindow);
+  }
   const childClose = document.getElementById("lab-child-close");
   const childTitle = document.getElementById("lab-child-title");
   const childIcon = document.getElementById("lab-child-icon");
@@ -550,6 +556,13 @@
   function closeLabChild(restoreFocus = true) {
     if (!childWindow || childWindow.hidden) return;
     childWindow.hidden = true;
+    childWindow.classList.remove("is-game-child", "is-utility-child");
+    childWindow.removeAttribute("data-active-app");
+    if (appWindow) appWindow.classList.remove("is-child-app-open");
+    // Return the child panel to the Tools view before making that view visible again.
+    if (childHomeMarker && childHomeMarker.parentNode && childWindow.parentNode !== childHomeMarker.parentNode) {
+      childHomeMarker.parentNode.insertBefore(childWindow, childHomeMarker);
+    }
     document.querySelectorAll("[data-child-app]").forEach((panel) => { panel.hidden = true; });
     if (shooterFrame) {
       shooterFrame.src = "about:blank";
@@ -627,6 +640,13 @@
     document.querySelectorAll("[data-child-app]").forEach((panel) => {
       panel.hidden = panel.dataset.childApp !== app.child;
     });
+    // Move the child out of the split-pane DOM and overlay the entire parent OS window.
+    // The outer title bar, list, details and status bar are fully covered while it runs.
+    if (appWindow && childWindow.parentNode !== appWindow) appWindow.appendChild(childWindow);
+    if (appWindow) appWindow.classList.add("is-child-app-open");
+    childWindow.classList.toggle("is-game-child", app.child === "space-shooter");
+    childWindow.classList.toggle("is-utility-child", app.child !== "space-shooter");
+    childWindow.dataset.activeApp = appId;
     childWindow.hidden = false;
     if (app.child === "space-shooter" && shooterFrame) {
       const src = shooterFrame.dataset.src;
