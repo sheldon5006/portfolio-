@@ -1133,10 +1133,59 @@
   // Apply the saved language after the command palette elements are initialized.
 
   // ---------------------------------------------------------
-  // Local clock and footer year.
+  // Local clock, current Berlin weather and footer year.
+  // Weather is served by Open-Meteo (CC BY 4.0; linked in the top bar).
   // ---------------------------------------------------------
   const clock = document.getElementById("system-clock");
+  const weather = document.getElementById("system-weather");
+  const weatherIcon = document.getElementById("system-weather-icon");
+  const weatherTemp = document.getElementById("system-weather-temp");
   const year = document.getElementById("year-now");
+
+  function weatherPresentation(code, isDay) {
+    if (code === 0) return { icon: isDay ? "☀" : "☾", label: isDay ? "Clear sky" : "Clear night", className: "is-clear" };
+    if (code === 1) return { icon: isDay ? "☀" : "☾", label: "Mainly clear", className: "is-clear" };
+    if (code === 2) return { icon: isDay ? "◐" : "☾", label: "Partly cloudy", className: "is-cloudy" };
+    if (code === 3) return { icon: "☁", label: "Overcast", className: "is-cloudy" };
+    if (code === 45 || code === 48) return { icon: "≋", label: "Fog", className: "is-foggy" };
+    if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return { icon: "☂", label: "Rain or drizzle", className: "is-rainy" };
+    if ((code >= 71 && code <= 77) || code === 85 || code === 86) return { icon: "❄", label: "Snow", className: "is-snowy" };
+    if (code === 95 || code === 96 || code === 99) return { icon: "ϟ", label: "Thunderstorm", className: "is-stormy" };
+    return { icon: "☁", label: "Current conditions", className: "is-cloudy" };
+  }
+
+  async function updateWeather() {
+    if (!weather || !weatherIcon || !weatherTemp) return;
+    try {
+      const response = await fetch(
+        "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.405&current=temperature_2m,weather_code,is_day&timezone=Europe%2FBerlin",
+        { cache: "no-store", signal: AbortSignal.timeout(8000) }
+      );
+      if (!response.ok) throw new Error("Weather request failed");
+      const data = await response.json();
+      const current = data.current || {};
+      const temperature = Number(current.temperature_2m);
+      const code = Number(current.weather_code ?? current.weathercode);
+      const isDay = Number(current.is_day) !== 0;
+      if (!Number.isFinite(temperature) || !Number.isFinite(code)) throw new Error("Weather response was incomplete");
+
+      const condition = weatherPresentation(code, isDay);
+      const roundedTemperature = Math.round(temperature);
+      weatherIcon.textContent = condition.icon;
+      weatherIcon.className = "system-weather-icon " + condition.className;
+      weatherTemp.textContent = roundedTemperature + "°";
+      const description = "Current weather in Berlin, Germany: " + condition.label + ", " + roundedTemperature + "°C. Weather data by Open-Meteo.com.";
+      weather.title = description;
+      weather.setAttribute("aria-label", description);
+    } catch (_) {
+      weatherIcon.textContent = "·";
+      weatherIcon.className = "system-weather-icon is-cloudy";
+      weatherTemp.textContent = "--°";
+      weather.title = "Weather is currently unavailable. Weather data by Open-Meteo.com.";
+      weather.setAttribute("aria-label", "Current weather in Berlin is unavailable. Weather data by Open-Meteo.com.");
+    }
+  }
+
   function updateClock() {
     if (clock) {
       const now = new Date();
@@ -1147,6 +1196,8 @@
   }
   updateClock();
   window.setInterval(updateClock, 1000);
+  updateWeather();
+  window.setInterval(updateWeather, 15 * 60 * 1000);
 
   // ---------------------------------------------------------
   // Command palette: Ctrl/Cmd + K, filter, keyboard navigation.
