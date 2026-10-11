@@ -862,3 +862,9 @@ body{height:100vh;height:100dvh;min-height:0;overflow:hidden}
 @media(prefers-reduced-motion:reduce){
   .rail-item{transition:none}
 }
+
+
+/* Nudge the desktop navigation rail slightly upward for better alignment. */
+@media(min-width:761px){
+  .app-rail{transform:translateY(-8px)}
+}
