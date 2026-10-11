@@ -1050,13 +1050,14 @@
     return document.querySelector('.rail-item[data-open-view="' + name + '"]');
   }
 
-  // The whole app window expands from or collapses into the selected dock icon.
-  // A circular reveal plus a fast scale gives the panel a brief "gravity well" effect.
+  // Make the panel snap into the selected dock item, then spring back out of it.
+  // The origin is measured from the actual dock tile, including the bottom dock on phones.
   async function animatePanelSuction(anchor, direction) {
     if (!appWindow || !anchor || reducedMotionQuery.matches || typeof appWindow.animate !== "function") return;
     if (panelAnimation) {
       panelAnimation.cancel();
       panelAnimation = null;
+      appWindow.classList.remove("panel-is-animating");
     }
 
     const panelRect = appWindow.getBoundingClientRect();
@@ -1071,40 +1072,65 @@
       Math.hypot(x, panelRect.height - y),
       Math.hypot(panelRect.width - x, panelRect.height - y)
     ];
-    const radius = Math.ceil(Math.max.apply(Math, corners) + 24);
+    const compactViewport = window.matchMedia("(max-width: 760px)").matches;
+    const radius = Math.ceil(Math.max.apply(Math, corners) + Math.max(24, Math.min(panelRect.width, panelRect.height) * 0.035));
     const origin = x + "px " + y + "px";
     const collapsed = {
+      offset: 1,
       transformOrigin: origin,
-      transform: "scale(.035)",
-      opacity: 0.16,
-      filter: "blur(3px)"
+      transform: compactViewport ? "scale(.022) rotate(-1.2deg)" : "scale(.012) rotate(-2deg)",
+      opacity: 0,
+      filter: compactViewport ? "blur(4px) saturate(1.12)" : "blur(7px) saturate(1.3)"
     };
     const expanded = {
       transformOrigin: origin,
       transform: "scale(1)",
       opacity: 1,
-      filter: "blur(0px)"
+      filter: "blur(0px) saturate(1)"
+    };
+    const overshoot = {
+      ...expanded,
+      offset: 0.8,
+      transform: "scale(1.016) rotate(.15deg)",
+      filter: "blur(0px) saturate(1.04)"
     };
     const supportsClip = window.CSS && window.CSS.supports &&
       window.CSS.supports("clip-path", "circle(0px at 0px 0px)");
     if (supportsClip) {
       collapsed.clipPath = "circle(0px at " + x + "px " + y + "px)";
       expanded.clipPath = "circle(" + radius + "px at " + x + "px " + y + "px)";
+      overshoot.clipPath = "circle(" + Math.ceil(radius * 1.08) + "px at " + x + "px " + y + "px)";
     }
 
-    const keyframes = direction === "out" ? [collapsed, expanded] : [expanded, collapsed];
+    const keyframes = direction === "out"
+      ? [
+          { ...collapsed, offset: 0, easing: "cubic-bezier(.16,.92,.22,1)" },
+          { ...overshoot, easing: "cubic-bezier(.2,1.3,.42,1)" },
+          { ...expanded, offset: 1 }
+        ]
+      : [
+          {
+            ...expanded,
+            offset: 0,
+            easing: compactViewport ? "cubic-bezier(.42,.2,.8,.05)" : "cubic-bezier(.46,.18,.82,.04)"
+          },
+          collapsed
+        ];
     const animation = appWindow.animate(keyframes, {
-      duration: direction === "out" ? 220 : 165,
-      easing: direction === "out" ? "cubic-bezier(.16,1,.3,1)" : "cubic-bezier(.7,0,.84,0.1)",
+      duration: direction === "out" ? (compactViewport ? 150 : 175) : (compactViewport ? 110 : 125),
       fill: "both"
     });
+    appWindow.classList.add("panel-is-animating");
     panelAnimation = animation;
     try {
       await animation.finished;
     } catch (_) {
       // A newer navigation action intentionally cancels the previous animation.
     }
-    if (panelAnimation === animation) panelAnimation = null;
+    if (panelAnimation === animation) {
+      panelAnimation = null;
+      appWindow.classList.remove("panel-is-animating");
+    }
     animation.cancel();
   }
 
@@ -1140,6 +1166,7 @@
       panelAnimation.cancel();
       panelAnimation = null;
     }
+    if (appWindow) appWindow.classList.remove("panel-is-animating");
   }
 
   function showView(name, shouldFocus) {
