@@ -288,12 +288,12 @@
     );
     corona.addColorStop(0, "rgba(0,0,0,0)");
     corona.addColorStop(0.50, "rgba(0,0,0,0)");
-    corona.addColorStop(0.68, "rgba(51,40,34,0.025)");
-    corona.addColorStop(0.77, "rgba(139,104,78," + (0.045 + breathe).toFixed(3) + ")");
-    corona.addColorStop(0.84, "rgba(208,175,137," + (0.072 + breathe).toFixed(3) + ")");
-    corona.addColorStop(0.90, "rgba(248,227,199," + (0.105 + breathe).toFixed(3) + ")");
-    corona.addColorStop(0.945, "rgba(231,231,225,0.10)");
-    corona.addColorStop(0.98, "rgba(149,167,207,0.045)");
+    corona.addColorStop(0.64, "rgba(51,40,34,0.025)");
+    corona.addColorStop(0.75, "rgba(139,104,78," + (0.065 + breathe).toFixed(3) + ")");
+    corona.addColorStop(0.83, "rgba(208,175,137," + (0.09 + breathe).toFixed(3) + ")");
+    corona.addColorStop(0.90, "rgba(248,227,199," + (0.13 + breathe).toFixed(3) + ")");
+    corona.addColorStop(0.95, "rgba(231,231,225,0.12)");
+    corona.addColorStop(0.985, "rgba(149,167,207,0.055)");
     corona.addColorStop(1, "rgba(60,73,101,0)");
     ctx.globalCompositeOperation = "screen";
     ctx.fillStyle = corona;
@@ -326,13 +326,12 @@
       x, y, edgeRadius
     );
     edge.addColorStop(0, "#000");
-    edge.addColorStop(0.77, "#010104");
-    edge.addColorStop(0.87, "rgba(2,2,5,0.997)");
-    edge.addColorStop(0.92, "rgba(17,15,17,0.99)");
-    edge.addColorStop(0.955, "rgba(75,65,61,0.92)");
-    edge.addColorStop(0.978, "rgba(171,149,130,0.48)");
-    edge.addColorStop(0.993, "rgba(215,211,201,0.22)");
-    edge.addColorStop(1, "rgba(87,102,140,0.015)");
+    edge.addColorStop(0.80, "#010104");
+    edge.addColorStop(0.90, "rgba(2,2,5,0.998)");
+    edge.addColorStop(0.95, "rgba(7,7,11,0.99)");
+    edge.addColorStop(0.978, "rgba(13,14,20,0.96)");
+    edge.addColorStop(0.993, "rgba(22,25,35,0.78)");
+    edge.addColorStop(1, "rgba(48,56,77,0.015)");
     ctx.fillStyle = edge;
     ctx.beginPath();
     ctx.arc(x, y, edgeRadius, 0, Math.PI * 2);
