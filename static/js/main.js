@@ -560,7 +560,7 @@
     if (!childWindow || childWindow.hidden) return;
     if (childIsMaximized) setChildMaximized(false);
     childWindow.hidden = true;
-    childWindow.classList.remove("is-game-child", "is-utility-child");
+    childWindow.classList.remove("is-game-child", "is-map-child", "is-utility-child");
     childWindow.removeAttribute("data-active-app");
     if (appWindow) appWindow.classList.remove("is-child-app-open");
     // Return the child panel to the Tools view before making that view visible again.
