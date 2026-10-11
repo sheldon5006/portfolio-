@@ -11,7 +11,7 @@ The redesign lives on the `redesign/stellar-ios-portfolio` branch. It keeps the 
 - **English / German:** switch between English and German content from the system bar.
 - **Quick open:** press `Ctrl+K` or `Cmd+K` to jump to portfolio sections.
 - **OS-style close:** close the active window to reveal the unobstructed starfield wallpaper; use the left dock or Quick Open to launch another view.
-- **Application browser:** GitHub projects and Space Shooter appear first, followed by the local `asciibar` and `emojify` utilities. The Tools window uses a fixed 50/50 split on desktop with independently scrollable app list and details panes; launchable apps open in a nested window that closes back to the list.
+- **Application browser:** GitHub projects and Space Shooter appear first, followed by the local `asciibar` and `emojify` utilities. The Tools window uses a fixed 50/50 split on desktop with independently scrollable app list and details panes; launchable apps open in a nested window that closes back to the list. Child windows include an expand/restore control that fills the central workspace while keeping the site header and navigation visible; the game iframe is sized to the available viewport without parent-panel scrollbars.
 - **Reduced motion:** background movement and UI transitions respect `prefers-reduced-motion`.
 - **Responsive layout:** desktop workspace becomes a compact navigation dock on smaller screens.
 
