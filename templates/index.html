@@ -33,7 +33,15 @@
       <span class="brand-orbit" aria-hidden="true"><i></i></span>
       <span>sheldon<span class="brand-muted">.dsouza</span></span>
     </a>
-    <div class="system-clock" id="system-clock" aria-label="Current local time">--:--:--</div>
+    <div class="system-center" aria-label="Local time and Berlin weather">
+      <div class="system-clock" id="system-clock" aria-label="Current local time">--:--:--</div>
+      <span class="system-center-divider" aria-hidden="true"></span>
+      <div class="system-weather" id="system-weather" role="group" aria-label="Current weather in Berlin, Germany" title="Loading Berlin weather">
+        <span class="system-weather-icon is-cloudy" id="system-weather-icon" aria-hidden="true">◌</span>
+        <span class="system-weather-temp" id="system-weather-temp">--°</span>
+        <a class="weather-source" href="https://open-meteo.com/" target="_blank" rel="noreferrer" aria-label="Weather data by Open-Meteo.com" title="Weather data by Open-Meteo.com">Open-Meteo</a>
+      </div>
+    </div>
     <div class="system-actions">
       <span class="availability"><span class="availability-dot"></span><span data-copy data-en="Open to opportunities" data-de="Offen für Chancen">Open to opportunities</span></span>
       <div class="language-switch" role="group" aria-label="Language">
