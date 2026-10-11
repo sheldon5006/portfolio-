@@ -2100,4 +2100,3 @@ body.child-app-maximized .desktop-shell{
 @media(prefers-reduced-motion:reduce){
   .app-window.panel-is-animating{will-change:auto}
 }
-
