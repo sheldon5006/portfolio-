@@ -1376,3 +1376,13 @@ body{height:100vh;height:100dvh;min-height:0;overflow:hidden}
   .app-window.is-child-maximized{transition:none}
   .lab-child-maximize{transition:none}
 }
+
+
+body.child-app-maximized{
+  height:100vh!important;
+  height:100dvh!important;
+  overflow:hidden!important;
+}
+body.child-app-maximized .desktop-shell{
+  overflow:visible;
+}
