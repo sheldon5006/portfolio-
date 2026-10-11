@@ -8,9 +8,12 @@
 
   // ---------------------------------------------------------
   // ---------------------------------------------------------
-  // CINEMATIC COSMOS
-  // Dense, twinkling stars and a cursor-tracked black hole with
-  // an accretion disk, photon ring, and gentle gravitational lensing.
+  // ---------------------------------------------------------
+  // GRAVITATIONAL COSMOS
+  // Instead of drawing a graphic ring around the cursor, this
+  // projects the actual starfield through a simple gravitational
+  // lens equation. Nearby stars form warped primary/secondary
+  // images around a soft, dark event horizon.
   // ---------------------------------------------------------
   const cosmos = {
     width: 0, height: 0, dpr: 1, stars: [], frame: 0, previousTime: 0,
@@ -19,6 +22,18 @@
   };
 
   const random = (min, max) => min + Math.random() * (max - min);
+
+  function lensScale() {
+    return coarsePointerQuery.matches
+      ? Math.max(23, Math.min(38, cosmos.height * 0.06))
+      : Math.max(38, Math.min(62, cosmos.height * 0.07));
+  }
+
+  function horizonSize() {
+    return coarsePointerQuery.matches
+      ? Math.max(12, Math.min(17, cosmos.height * 0.024))
+      : Math.max(18, Math.min(25, cosmos.height * 0.028));
+  }
 
   function seedStars() {
     const area = cosmos.width * cosmos.height;
@@ -72,7 +87,7 @@
       hole.vy = 0;
       return;
     }
-    // A weighty spring makes the lens feel massive rather than cursor-like.
+    // The delayed position gives the gravitational lens a sense of mass.
     const stiffness = 38;
     const damping = 12.8;
     hole.vx += ((cosmos.target.x - hole.x) * stiffness - hole.vx * damping) * dt;
@@ -83,7 +98,7 @@
 
   function bendStars(dt) {
     const hole = cosmos.hole;
-    const pointerScale = coarsePointerQuery.matches ? 0.68 : 1;
+    const pointerScale = coarsePointerQuery.matches ? 0.52 : 0.78;
     for (const star of cosmos.stars) {
       if (!cosmos.active || reducedMotionQuery.matches) {
         star.x = star.baseX;
@@ -95,29 +110,46 @@
       const dx = hole.x - star.x;
       const dy = hole.y - star.y;
       const distanceSquared = dx * dx + dy * dy;
-      const pull = (65000 * pointerScale) / (distanceSquared + 1750);
+      const pull = (26000 * pointerScale) / (distanceSquared + 2200);
       const inverseDistance = 1 / Math.sqrt(distanceSquared + 1);
-      const orbit = pull * 0.72;
+      const orbit = pull * 0.82;
       const accelerationX = dx * inverseDistance * pull - dy * inverseDistance * orbit;
       const accelerationY = dy * inverseDistance * pull + dx * inverseDistance * orbit;
-      const returnSpring = 1.15;
-      const drag = 2.0;
+      const returnSpring = 1.2;
+      const drag = 2.1;
       star.vx += (accelerationX - (star.x - star.baseX) * returnSpring - star.vx * drag) * dt;
       star.vy += (accelerationY - (star.y - star.baseY) * returnSpring - star.vy * drag) * dt;
       star.x += star.vx * dt;
       star.y += star.vy * dt;
-      // Stars skim around, rather than disappear into, the event horizon.
-      const offsetX = star.x - hole.x;
-      const offsetY = star.y - hole.y;
-      const distance = Math.hypot(offsetX, offsetY);
-      if (distance < 30) {
-        const angle = Math.atan2(offsetY || 0.001, offsetX || 0.001);
-        star.x = hole.x + Math.cos(angle) * 30;
-        star.y = hole.y + Math.sin(angle) * 30;
-        star.vx += -Math.sin(angle) * 5;
-        star.vy += Math.cos(angle) * 5;
-      }
     }
+  }
+
+  // Thin-lens mapping: a background star can appear as a primary image
+  // and a fainter, mirrored secondary image. Nothing is drawn as an ellipse
+  // or stroked ring; the visual "ring" is made only from lensed star points.
+  function projectStar(star, lensRadius) {
+    const hole = cosmos.hole;
+    const dx = star.x - hole.x;
+    const dy = star.y - hole.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const safeDistance = Math.max(distance, 0.001);
+    const root = Math.sqrt(distance * distance + 4 * lensRadius * lensRadius);
+    const primaryRadius = 0.5 * (distance + root);
+    const secondaryRadius = 0.5 * (root - distance);
+    const primaryScale = primaryRadius / safeDistance;
+    const secondaryScale = secondaryRadius / safeDistance;
+    const maxDist = lensRadius * 4.2;
+    const influence = Math.max(0, 1 - distance / maxDist);
+    return {
+      x: cosmos.active ? hole.x + dx * primaryScale : star.x,
+      y: cosmos.active ? hole.y + dy * primaryScale : star.y,
+      secondX: hole.x - dx * secondaryScale,
+      secondY: hole.y - dy * secondaryScale,
+      secondRadius: secondaryRadius,
+      secondAlpha: influence * 0.29,
+      influence,
+      distance
+    };
   }
 
   function drawDeepSpace(time) {
@@ -128,7 +160,7 @@
     ctx.fillStyle = "#020307";
     ctx.fillRect(0, 0, w, h);
 
-    // Very soft interstellar dust: mostly black, with subtle color and depth.
+    // Very restrained interstellar dust gives depth without a tiled/grid look.
     const nebulae = [
       { x: 0.15, y: 0.19, r: 0.42, color: "rgba(52,83,137,0.105)" },
       { x: 0.78, y: 0.24, r: 0.35, color: "rgba(110,89,145,0.065)" },
@@ -155,51 +187,69 @@
     ctx.fillStyle = dustBand;
     ctx.fillRect(0, 0, w, h);
 
+    const lensRadius = lensScale();
+    const horizon = horizonSize();
+
     for (const star of cosmos.stars) {
       const twinkle = reducedMotionQuery.matches
         ? 0.88
         : 0.60 + 0.40 * (0.5 + 0.5 * Math.sin(time * 0.001 * star.twinkleSpeed + star.phase));
       const alpha = Math.max(0.09, Math.min(1, star.alpha * twinkle));
-      const distanceToHole = cosmos.active ? Math.hypot(star.x - cosmos.hole.x, star.y - cosmos.hole.y) : Infinity;
-      if (cosmos.active && distanceToHole < 16) continue;
+      const projection = cosmos.active ? projectStar(star, lensRadius) : null;
+      const drawX = projection ? projection.x : star.x;
+      const drawY = projection ? projection.y : star.y;
+
+      // Hide background light inside the horizon; the central void is drawn last.
+      if (cosmos.active && Math.hypot(drawX - cosmos.hole.x, drawY - cosmos.hole.y) < horizon * 1.03) continue;
 
       let color;
       if (star.tint === "warm") color = "255,205,158";
       else if (star.tint === "blue") color = "174,211,255";
       else color = "231,240,255";
 
+      // The primary image is brightest. This is the lensed star itself, not a graphic ring.
+      const starAlpha = alpha * (projection ? 1 + projection.influence * 0.12 : 1);
       if (star.radius > 1.15) {
         const bloomRadius = star.radius * (4.4 + star.pulse * twinkle * 2.0);
-        const bloom = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, bloomRadius);
-        bloom.addColorStop(0, "rgba(" + color + "," + (alpha * 0.36).toFixed(3) + ")");
-        bloom.addColorStop(0.28, "rgba(" + color + "," + (alpha * 0.12).toFixed(3) + ")");
+        const bloom = ctx.createRadialGradient(drawX, drawY, 0, drawX, drawY, bloomRadius);
+        bloom.addColorStop(0, "rgba(" + color + "," + (starAlpha * 0.36).toFixed(3) + ")");
+        bloom.addColorStop(0.28, "rgba(" + color + "," + (starAlpha * 0.12).toFixed(3) + ")");
         bloom.addColorStop(1, "rgba(" + color + ",0)");
         ctx.fillStyle = bloom;
         ctx.beginPath();
-        ctx.arc(star.x, star.y, bloomRadius, 0, Math.PI * 2);
+        ctx.arc(drawX, drawY, bloomRadius, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      ctx.fillStyle = "rgba(" + color + "," + alpha.toFixed(3) + ")";
+      ctx.fillStyle = "rgba(" + color + "," + Math.min(1, starAlpha).toFixed(3) + ")";
       ctx.beginPath();
-      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      ctx.arc(drawX, drawY, star.radius, 0, Math.PI * 2);
       ctx.fill();
 
-      // Occasional diffraction glints: sparse rays instead of a repeating grid.
+      // Small mirrored images appear only within the lensing region and outside the horizon.
+      if (projection && projection.distance < lensRadius * 4.2 &&
+          projection.secondRadius > horizon * 1.03) {
+        const ghostAlpha = alpha * projection.secondAlpha;
+        if (ghostAlpha > 0.025) {
+          const ghostRadius = Math.max(0.3, star.radius * (0.72 + projection.influence * 0.12));
+          ctx.fillStyle = "rgba(" + color + "," + ghostAlpha.toFixed(3) + ")";
+          ctx.beginPath();
+          ctx.arc(projection.secondX, projection.secondY, ghostRadius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Sparse natural diffraction glints, moved with the star's lensed image.
       if (star.flare && twinkle > 0.76 && alpha > 0.56) {
         const ray = star.radius * (3.8 + twinkle * 3.8);
-        ctx.strokeStyle = "rgba(" + color + "," + (alpha * 0.52).toFixed(3) + ")";
-        ctx.lineWidth = 0.55;
+        ctx.strokeStyle = "rgba(" + color + "," + (alpha * 0.45).toFixed(3) + ")";
+        ctx.lineWidth = 0.5;
         ctx.beginPath();
-        ctx.moveTo(star.x - ray, star.y);
-        ctx.lineTo(star.x + ray, star.y);
-        ctx.moveTo(star.x, star.y - ray * 1.45);
-        ctx.lineTo(star.x, star.y + ray * 1.45);
+        ctx.moveTo(drawX - ray, drawY);
+        ctx.lineTo(drawX + ray, drawY);
+        ctx.moveTo(drawX, drawY - ray * 1.3);
+        ctx.lineTo(drawX, drawY + ray * 1.3);
         ctx.stroke();
-        ctx.fillStyle = "rgba(255,255,255," + (alpha * 0.78).toFixed(3) + ")";
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, Math.max(0.8, star.radius * 0.58), 0, Math.PI * 2);
-        ctx.fill();
       }
     }
   }
@@ -210,145 +260,36 @@
     const x = cosmos.hole.x;
     const y = cosmos.hole.y;
     const speed = Math.min(1, Math.hypot(cosmos.hole.vx, cosmos.hole.vy) / 460);
-    const radius = coarsePointerQuery.matches
-      ? Math.max(18, Math.min(24, cosmos.height * 0.028))
-      : Math.max(30, Math.min(48, cosmos.height * 0.047));
-    const driftAngle = Math.atan2(cosmos.hole.vy, cosmos.hole.vx || 0.001);
-    const rotation = time * 0.00012 + (speed > 0.05 ? driftAngle * 0.12 : 0);
+    const horizon = horizonSize();
 
-    ctx.save();
-
-    const shadow = ctx.createRadialGradient(x, y, radius * 0.2, x, y, radius * 4.9);
-    shadow.addColorStop(0, "rgba(0,0,0,0.95)");
-    shadow.addColorStop(0.19, "rgba(1,2,7,0.72)");
-    shadow.addColorStop(0.42, "rgba(5,8,19,0.25)");
-    shadow.addColorStop(0.68, "rgba(14,19,38,0.08)");
+    // A wide, soft gravitational shadow. No drawn disk outlines, ellipses, or arcs:
+    // the surrounding lensed stars create the optical ring naturally.
+    const shadowRadius = lensScale() * 2.25;
+    const shadow = ctx.createRadialGradient(x, y, horizon * 0.65, x, y, shadowRadius);
+    shadow.addColorStop(0, "rgba(0,0,0,1)");
+    shadow.addColorStop(0.16, "rgba(0,0,0,0.98)");
+    shadow.addColorStop(0.26, "rgba(2,3,8,0.93)");
+    shadow.addColorStop(0.39, "rgba(5,7,15,0.56)");
+    shadow.addColorStop(0.58, "rgba(10,12,23,0.19)");
+    shadow.addColorStop(0.8, "rgba(10,12,23,0.055)");
     shadow.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = shadow;
     ctx.beginPath();
-    ctx.arc(x, y, radius * 4.9, 0, Math.PI * 2);
+    ctx.arc(x, y, shadowRadius, 0, Math.PI * 2);
     ctx.fill();
 
-    // A broad, flattened accretion disk; the near side is brighter and warmer.
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rotation);
-    ctx.scale(1, 0.29);
-    const diskX = radius * 2.55;
-    const diskY = radius * 1.10;
-    const diskGradient = ctx.createLinearGradient(-diskX, 0, diskX, 0);
-    diskGradient.addColorStop(0, "rgba(72,100,153,0.02)");
-    diskGradient.addColorStop(0.16, "rgba(123,161,226,0.32)");
-    diskGradient.addColorStop(0.32, "rgba(221,204,184,0.62)");
-    diskGradient.addColorStop(0.45, "rgba(255,246,225,0.93)");
-    diskGradient.addColorStop(0.54, "rgba(246,210,169,0.84)");
-    diskGradient.addColorStop(0.69, "rgba(143,169,225,0.48)");
-    diskGradient.addColorStop(0.87, "rgba(94,132,204,0.13)");
-    diskGradient.addColorStop(1, "rgba(69,107,185,0.01)");
-
-    ctx.globalCompositeOperation = "screen";
-    ctx.shadowColor = "rgba(185,198,255,0.72)";
-    ctx.shadowBlur = 25 + speed * 19;
-    ctx.strokeStyle = diskGradient;
-    ctx.lineWidth = 8.5 + speed * 2.3;
+    // An unlit event horizon with a faint, speed-sensitive atmospheric edge.
+    const edgeRadius = horizon * (1.07 + speed * 0.06);
+    const edge = ctx.createRadialGradient(x - horizon * 0.18, y - horizon * 0.22, horizon * 0.14, x, y, edgeRadius);
+    edge.addColorStop(0, "#000");
+    edge.addColorStop(0.76, "#010104");
+    edge.addColorStop(0.88, "rgba(1,2,6,0.99)");
+    edge.addColorStop(0.96, "rgba(18,19,30,0.94)");
+    edge.addColorStop(1, "rgba(28,30,43,0.06)");
+    ctx.fillStyle = edge;
     ctx.beginPath();
-    ctx.ellipse(0, 0, diskX, diskY, 0, 0, Math.PI * 2);
-    ctx.stroke();
-
-    ctx.shadowBlur = 13;
-    ctx.strokeStyle = "rgba(224,231,255,0.48)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.ellipse(0, 0, diskX * 0.92, diskY * 0.84, 0, 0, Math.PI * 2);
-    ctx.stroke();
-
-    for (let i = 0; i < 3; i++) {
-      ctx.globalAlpha = 0.34 - i * 0.075;
-      ctx.strokeStyle = i === 1 ? "rgba(255,209,165,0.8)" : "rgba(165,197,255,0.7)";
-      ctx.lineWidth = 1.1;
-      ctx.beginPath();
-      ctx.ellipse(0, (i - 1) * 5.5, diskX * (0.79 + i * 0.075), diskY * (0.72 + i * 0.06), 0, 0.07, Math.PI * 1.93);
-      ctx.stroke();
-    }
-    ctx.restore();
-    ctx.globalAlpha = 1;
-
-    // Lensed light from the far side of the disk arcs above and below the hole.
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rotation * 0.38);
-    ctx.globalCompositeOperation = "screen";
-    const arcGradient = ctx.createLinearGradient(-radius * 1.6, -radius, radius * 1.6, radius);
-    arcGradient.addColorStop(0, "rgba(98,147,226,0.04)");
-    arcGradient.addColorStop(0.24, "rgba(162,197,255,0.72)");
-    arcGradient.addColorStop(0.49, "rgba(255,239,219,0.88)");
-    arcGradient.addColorStop(0.68, "rgba(181,167,239,0.62)");
-    arcGradient.addColorStop(1, "rgba(101,154,226,0.04)");
-    ctx.strokeStyle = arcGradient;
-    ctx.lineWidth = 2.8 + speed * 0.9;
-    ctx.shadowColor = "rgba(148,185,255,0.8)";
-    ctx.shadowBlur = 13;
-    ctx.beginPath();
-    ctx.ellipse(0, 0, radius * 1.22, radius * 0.92, 0, Math.PI * 1.08, Math.PI * 1.92);
-    ctx.stroke();
-
-    ctx.strokeStyle = "rgba(207,220,255,0.42)";
-    ctx.lineWidth = 1.3;
-    ctx.shadowBlur = 8;
-    ctx.beginPath();
-    ctx.ellipse(0, 0, radius * 1.13, radius * 0.84, 0, 0.10, Math.PI * 0.90);
-    ctx.stroke();
-    ctx.restore();
-
-    // Almost-black event horizon edged by a small photon ring.
-    const horizonRadius = radius * 0.53;
-    const photonGlow = ctx.createRadialGradient(x, y, horizonRadius * 0.86, x, y, horizonRadius * 1.32);
-    photonGlow.addColorStop(0, "rgba(0,0,0,1)");
-    photonGlow.addColorStop(0.65, "rgba(0,0,0,1)");
-    photonGlow.addColorStop(0.83, "rgba(11,14,27,0.98)");
-    photonGlow.addColorStop(0.94, "rgba(180,198,255,0.65)");
-    photonGlow.addColorStop(1, "rgba(205,182,255,0.02)");
-    ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = photonGlow;
-    ctx.beginPath();
-    ctx.arc(x, y, horizonRadius * 1.32, 0, Math.PI * 2);
+    ctx.arc(x, y, edgeRadius, 0, Math.PI * 2);
     ctx.fill();
-
-    ctx.fillStyle = "#010205";
-    ctx.beginPath();
-    ctx.arc(x, y, horizonRadius * 0.88, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rotation * 1.7);
-    ctx.strokeStyle = "rgba(227,233,255,0.72)";
-    ctx.lineWidth = 1.1;
-    ctx.shadowBlur = 7;
-    ctx.shadowColor = "rgba(169,193,255,0.9)";
-    ctx.beginPath();
-    ctx.ellipse(0, 0, horizonRadius * 1.04, horizonRadius * 0.97, 0, Math.PI * 1.08, Math.PI * 1.84);
-    ctx.stroke();
-    ctx.restore();
-
-    if (speed > 0.1) {
-      const angle = Math.atan2(cosmos.hole.vy, cosmos.hole.vx || 0.001) + Math.PI;
-      const startX = x + Math.cos(angle) * radius * 0.5;
-      const startY = y + Math.sin(angle) * radius * 0.5;
-      const endX = x + Math.cos(angle) * (radius * 3.0 + speed * 20);
-      const endY = y + Math.sin(angle) * (radius * 3.0 + speed * 20);
-      const wake = ctx.createLinearGradient(startX, startY, endX, endY);
-      wake.addColorStop(0, "rgba(178,200,255,0.26)");
-      wake.addColorStop(1, "rgba(126,154,225,0)");
-      ctx.strokeStyle = wake;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(startX, startY);
-      ctx.lineTo(endX, endY);
-      ctx.stroke();
-    }
-
-    ctx.restore();
   }
 
   function renderCosmos(timestamp) {
