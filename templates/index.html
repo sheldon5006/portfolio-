@@ -217,27 +217,130 @@
             </div>
           </section>
 
-          <section class="view" id="view-lab" data-view="lab" role="tabpanel" aria-label="Engineering lab" hidden>
-            <div class="view-intro">
-              <div class="eyebrow"><span class="eyebrow-mark">04</span><span data-copy data-en="SMALL TOOLS / LIVE DEMOS" data-de="KLEINE TOOLS / LIVE-DEMOS">SMALL TOOLS / LIVE DEMOS</span></div>
-              <h1 data-copy data-en="A little lab time." data-de="Ein bisschen Laborzeit.">A little lab time.</h1>
-              <p data-copy data-en="Small working utilities from the portfolio. Enter something, run it, and inspect the output. These demos call the existing Flask endpoints." data-de="Kleine funktionierende Tools aus dem Portfolio. Gib etwas ein, starte es und prüfe die Ausgabe. Die Demos verwenden die vorhandenen Flask-Endpunkte.">Small working utilities from the portfolio. Enter something, run it, and inspect the output. These demos call the existing Flask endpoints.</p>
+          <section class="view" id="view-lab" data-view="lab" role="tabpanel" aria-label="Utilities and apps" hidden>
+            <div class="app-browser-heading">
+              <div>
+                <div class="eyebrow"><span class="eyebrow-mark">04</span><span data-copy data-en="APPLICATIONS / TOOLBOX" data-de="ANWENDUNGEN / WERKZEUGE">APPLICATIONS / TOOLBOX</span></div>
+                <h1 data-copy data-en="Utilities & apps." data-de="Tools & Apps.">Utilities & apps.</h1>
+                <p data-copy data-en="Choose an item to see what it does. Launch a working utility or game in its own window." data-de="Wähle einen Eintrag, um mehr zu erfahren. Starte ein Tool oder Spiel in einem eigenen Fenster.">Choose an item to see what it does. Launch a working utility or game in its own window.</p>
+              </div>
+              <div class="app-count"><span class="availability-dot"></span><span>9</span><span data-copy data-en="items" data-de="Einträge">items</span></div>
             </div>
-            <div class="lab-grid">
-              <article class="lab-card">
-                <div class="lab-card-head"><span class="lab-icon ascii-glyph">▥</span><div><h2>asciibar</h2><p data-copy data-en="Numbers → terminal bars" data-de="Zahlen → Terminal-Balken">Numbers → terminal bars</p></div><span class="lab-lang">PY</span></div>
-                <p class="lab-description" data-copy data-en="Render a compact terminal bar chart without a plotting library." data-de="Erzeuge ein kompaktes Terminal-Balkendiagramm ohne Plot-Bibliothek.">Render a compact terminal bar chart without a plotting library.</p>
-                <form id="asciibar-form" class="demo-form"><label for="asciibar-input" data-copy data-en="Comma-separated numbers" data-de="Zahlen, durch Kommas getrennt">Comma-separated numbers</label><div class="input-row"><input id="asciibar-input" type="text" value="4, 9, 6, 12" maxlength="100" autocomplete="off"><button class="button-primary compact-button" type="submit" data-copy data-en="Run" data-de="Starten">Run</button></div></form>
-                <pre id="asciibar-output" class="demo-output" aria-live="polite">Ready when you are.</pre>
-              </article>
-              <article class="lab-card">
-                <div class="lab-card-head"><span class="lab-icon emoji-glyph">✳</span><div><h2>emojify</h2><p data-copy data-en="Shortcodes → emoji" data-de="Shortcodes → Emoji">Shortcodes → emoji</p></div><span class="lab-lang">PY</span></div>
-                <p class="lab-description" data-copy data-en="Replace familiar :shortcodes: with emoji using a tiny server-side utility." data-de="Ersetze bekannte :Shortcodes: mit Emoji über ein kleines serverseitiges Tool.">Replace familiar :shortcodes: with emoji using a tiny server-side utility.</p>
-                <form id="emojify-form" class="demo-form"><label for="emojify-input" data-copy data-en="Try some text" data-de="Text ausprobieren">Try some text</label><div class="input-row"><input id="emojify-input" type="text" value="shipped it :rocket: feeling :fire:" maxlength="500" autocomplete="off"><button class="button-primary compact-button" type="submit" data-copy data-en="Run" data-de="Starten">Run</button></div></form>
-                <pre id="emojify-output" class="demo-output" aria-live="polite">Ready when you are.</pre>
-              </article>
+
+            <div class="app-browser" id="app-browser">
+              <div class="app-list-pane" role="listbox" aria-label="Available apps">
+                <div class="app-list-group" data-copy data-en="LOCAL UTILITIES" data-de="LOKALE TOOLS">LOCAL UTILITIES</div>
+                <div class="app-entry is-selected" data-app-id="asciibar" role="option" aria-selected="true">
+                  <button type="button" class="app-entry-select" data-select-app="asciibar">
+                    <span class="app-entry-icon app-icon-terminal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 7 4 5-4 5M11 17h8"/></svg></span>
+                    <span class="app-entry-copy"><strong>asciibar</strong><small data-copy data-en="Numbers to terminal bars" data-de="Zahlen als Terminal-Balken">Numbers to terminal bars</small></span>
+                  </button>
+                  <button type="button" class="app-entry-launch" data-launch-app="asciibar" aria-label="Launch asciibar" title="Launch asciibar">▶</button>
+                </div>
+                <div class="app-entry" data-app-id="emojify" role="option" aria-selected="false">
+                  <button type="button" class="app-entry-select" data-select-app="emojify">
+                    <span class="app-entry-icon app-icon-emoji">✳</span>
+                    <span class="app-entry-copy"><strong>emojify</strong><small data-copy data-en="Turn shortcodes into emoji" data-de="Shortcodes in Emoji umwandeln">Turn shortcodes into emoji</small></span>
+                  </button>
+                  <button type="button" class="app-entry-launch" data-launch-app="emojify" aria-label="Launch emojify" title="Launch emojify">▶</button>
+                </div>
+
+                <div class="app-list-divider"></div>
+                <div class="app-list-group" data-copy data-en="GITHUB PROJECTS" data-de="GITHUB-PROJEKTE">GITHUB PROJECTS</div>
+                <div class="app-entry" data-app-id="space-shooter" role="option" aria-selected="false">
+                  <button type="button" class="app-entry-select" data-select-app="space-shooter">
+                    <span class="app-entry-icon app-icon-game"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 8h9a4 4 0 0 1 3.8 2.8l1 3.8a2.4 2.4 0 0 1-3.8 2.5l-2.4-1.8H8.9l-2.4 1.8a2.4 2.4 0 0 1-3.8-2.5l1-3.8A4 4 0 0 1 7.5 8z"/><path d="M7 10.5v4M5 12.5h4M16.3 11.4h.1M18.2 13.6h.1"/></svg></span>
+                    <span class="app-entry-copy"><strong>Space Shooter</strong><small data-copy data-en="Arcade game" data-de="Arcade-Spiel">Arcade game</small></span>
+                  </button>
+                  <button type="button" class="app-entry-launch" data-launch-app="space-shooter" aria-label="Play Space Shooter" title="Play Space Shooter">▶</button>
+                </div>
+                <div class="app-entry" data-app-id="spatialmaps" role="option" aria-selected="false">
+                  <button type="button" class="app-entry-select" data-select-app="spatialmaps">
+                    <span class="app-entry-icon app-icon-maps"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg></span>
+                    <span class="app-entry-copy"><strong>SpatialMaps</strong><small data-copy data-en="Interactive map UI" data-de="Interaktive Kartenoberfläche">Interactive map UI</small></span>
+                  </button>
+                  <a class="app-entry-launch app-entry-external" href="https://github.com/sheldon5006/SpatialMaps" target="_blank" rel="noreferrer" aria-label="Open SpatialMaps on GitHub" title="Open repository">↗</a>
+                </div>
+                <div class="app-entry" data-app-id="flowdesk-ai" role="option" aria-selected="false">
+                  <button type="button" class="app-entry-select" data-select-app="flowdesk-ai">
+                    <span class="app-entry-icon app-icon-ai"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.2 2.2M16.2 16.2l2.2 2.2M18.4 5.6l-2.2 2.2M7.8 16.2l-2.2 2.2"/><circle cx="12" cy="12" r="5"/></svg></span>
+                    <span class="app-entry-copy"><strong>FlowDesk AI</strong><small data-copy data-en="RAG and knowledge APIs" data-de="RAG- und Wissens-APIs">RAG and knowledge APIs</small></span>
+                  </button>
+                  <a class="app-entry-launch app-entry-external" href="https://github.com/sheldon5006/FlowDeskAi" target="_blank" rel="noreferrer" aria-label="Open FlowDesk AI on GitHub" title="Open repository">↗</a>
+                </div>
+                <div class="app-entry" data-app-id="jobpilot" role="option" aria-selected="false">
+                  <button type="button" class="app-entry-select" data-select-app="jobpilot">
+                    <span class="app-entry-icon app-icon-jobs"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg></span>
+                    <span class="app-entry-copy"><strong>JobPilot AI</strong><small data-copy data-en="AI-assisted job search" data-de="KI-gestützte Jobsuche">AI-assisted job search</small></span>
+                  </button>
+                  <a class="app-entry-launch app-entry-external" href="https://github.com/sheldon5006/jobpilot-ai" target="_blank" rel="noreferrer" aria-label="Open JobPilot AI on GitHub" title="Open repository">↗</a>
+                </div>
+                <div class="app-entry" data-app-id="flowdesk" role="option" aria-selected="false">
+                  <button type="button" class="app-entry-select" data-select-app="flowdesk">
+                    <span class="app-entry-icon app-icon-flow"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="7" height="6" rx="1.5"/><rect x="14" y="14" width="7" height="6" rx="1.5"/><path d="M10 7h4v10M14 17h-4"/></svg></span>
+                    <span class="app-entry-copy"><strong>FlowDesk</strong><small data-copy data-en="Modular workforce operations" data-de="Modulare Personalabläufe">Modular workforce operations</small></span>
+                  </button>
+                  <a class="app-entry-launch app-entry-external" href="https://github.com/sheldon5006/FlowDesk" target="_blank" rel="noreferrer" aria-label="Open FlowDesk on GitHub" title="Open repository">↗</a>
+                </div>
+                <div class="app-entry" data-app-id="nifty50" role="option" aria-selected="false">
+                  <button type="button" class="app-entry-select" data-select-app="nifty50">
+                    <span class="app-entry-icon app-icon-market"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19V5M3 19h18"/><path d="m6 15 4-5 3 2 5-7 2 2"/></svg></span>
+                    <span class="app-entry-copy"><strong>NIFTY50 Sentinel</strong><small data-copy data-en="Market data & forecast research" data-de="Marktdaten und Prognoseforschung">Market data & forecast research</small></span>
+                  </button>
+                  <a class="app-entry-launch app-entry-external" href="https://github.com/sheldon5006/nifty50-sentinel" target="_blank" rel="noreferrer" aria-label="Open NIFTY50 Sentinel on GitHub" title="Open repository">↗</a>
+                </div>
+                <div class="app-entry" data-app-id="credit-prediction" role="option" aria-selected="false">
+                  <button type="button" class="app-entry-select" data-select-app="credit-prediction">
+                    <span class="app-entry-icon app-icon-data"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span>
+                    <span class="app-entry-copy"><strong>Credit Default Prediction</strong><small data-copy data-en="Machine learning project" data-de="Machine-Learning-Projekt">Machine learning project</small></span>
+                  </button>
+                  <a class="app-entry-launch app-entry-external" href="https://github.com/sheldon5006/Credit_Card_Default_Prediction" target="_blank" rel="noreferrer" aria-label="Open credit default prediction on GitHub" title="Open repository">↗</a>
+                </div>
+              </div>
+
+              <aside class="app-details-pane" id="app-details-pane" aria-live="polite">
+                <div class="app-detail-topline"><span class="app-detail-type" id="app-detail-type">LOCAL UTILITY</span><span class="app-detail-status"><i></i><span data-copy data-en="Available locally" data-de="Lokal verfügbar">Available locally</span></span></div>
+                <div class="app-detail-hero">
+                  <span class="app-detail-icon app-icon-terminal" id="app-detail-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 7 4 5-4 5M11 17h8"/></svg></span>
+                  <div><h2 id="app-detail-title">asciibar</h2><p id="app-detail-subtitle" data-copy data-en="Numbers to terminal bars" data-de="Zahlen als Terminal-Balken">Numbers to terminal bars</p></div>
+                </div>
+                <p class="app-detail-description" id="app-detail-description" data-copy data-en="Turn a short list of numbers into a readable terminal bar chart. It runs through this portfolio's Flask API and needs no plotting library." data-de="Wandle eine Zahlenliste in ein lesbares Terminal-Balkendiagramm um. Die Ausführung erfolgt über die Flask-API dieses Portfolios, ganz ohne Plot-Bibliothek.">Turn a short list of numbers into a readable terminal bar chart. It runs through this portfolio's Flask API and needs no plotting library.</p>
+                <div class="app-detail-facts" id="app-detail-facts">
+                  <div><span data-copy data-en="TYPE" data-de="TYP">TYPE</span><strong>Python utility</strong></div>
+                  <div><span data-copy data-en="RUNS IN" data-de="LÄUFT IN">RUNS IN</span><strong>This portfolio</strong></div>
+                  <div><span data-copy data-en="DEPENDENCIES" data-de="ABHÄNGIGKEITEN">DEPENDENCIES</span><strong>None for chart rendering</strong></div>
+                </div>
+                <div class="app-detail-tags" id="app-detail-tags"><span>Python</span><span>CLI</span><span>Flask API</span></div>
+                <div class="app-detail-actions">
+                  <button type="button" class="button-primary" id="app-detail-launch" data-launch-app="asciibar"><span data-copy data-en="Launch utility" data-de="Tool starten">Launch utility</span><span aria-hidden="true">▶</span></button>
+                  <a class="button-secondary" id="app-detail-repo" href="https://github.com/sheldon5006/asciibar" target="_blank" rel="noreferrer"><span data-copy data-en="View repository" data-de="Repository ansehen">View repository</span><span aria-hidden="true">↗</span></a>
+                </div>
+              </aside>
+
+              <section class="lab-child-window" id="lab-child-window" aria-label="Selected application" hidden>
+                <div class="lab-child-titlebar">
+                  <div class="lab-child-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+                  <div class="lab-child-title"><span id="lab-child-icon">▥</span><strong id="lab-child-title">asciibar</strong></div>
+                  <button class="lab-child-close" id="lab-child-close" type="button" aria-label="Close app and return to utilities list" title="Close and return to list">×</button>
+                </div>
+                <div class="lab-child-body" id="lab-child-body">
+                  <section class="lab-child-content" id="lab-child-asciibar" data-child-app="asciibar">
+                    <div class="lab-child-intro"><span class="app-detail-type">PYTHON UTILITY</span><h2>asciibar</h2><p data-copy data-en="Enter numbers and launch the renderer. Output appears below, just like a small terminal application." data-de="Gib Zahlen ein und starte die Darstellung. Die Ausgabe erscheint darunter wie in einer kleinen Terminal-Anwendung.">Enter numbers and launch the renderer. Output appears below, just like a small terminal application.</p></div>
+                    <form id="asciibar-form" class="demo-form"><label for="asciibar-input" data-copy data-en="Comma-separated numbers" data-de="Zahlen, durch Kommas getrennt">Comma-separated numbers</label><div class="input-row"><input id="asciibar-input" type="text" value="4, 9, 6, 12" maxlength="100" autocomplete="off"><button class="button-primary compact-button" type="submit" data-copy data-en="Run" data-de="Starten">Run</button></div></form>
+                    <div class="child-terminal"><div class="child-terminal-bar"><i></i><i></i><i></i><span>stdout</span></div><pre id="asciibar-output" class="demo-output" aria-live="polite">Ready when you are.</pre></div>
+                  </section>
+                  <section class="lab-child-content" id="lab-child-emojify" data-child-app="emojify" hidden>
+                    <div class="lab-child-intro"><span class="app-detail-type">PYTHON UTILITY</span><h2>emojify</h2><p data-copy data-en="Type a message with familiar :shortcodes: and run it through the offline emoji converter." data-de="Gib eine Nachricht mit bekannten :Shortcodes: ein und wandle diese mit dem Offline-Emoji-Konverter um.">Type a message with familiar :shortcodes: and run it through the offline emoji converter.</p></div>
+                    <form id="emojify-form" class="demo-form"><label for="emojify-input" data-copy data-en="Text to convert" data-de="Zu konvertierender Text">Text to convert</label><div class="input-row"><input id="emojify-input" type="text" value="shipped it :rocket: feeling :fire:" maxlength="500" autocomplete="off"><button class="button-primary compact-button" type="submit" data-copy data-en="Run" data-de="Starten">Run</button></div></form>
+                    <div class="child-terminal"><div class="child-terminal-bar"><i></i><i></i><i></i><span>stdout</span></div><pre id="emojify-output" class="demo-output" aria-live="polite">Ready when you are.</pre></div>
+                  </section>
+                  <section class="lab-child-content lab-child-game" id="lab-child-space-shooter" data-child-app="space-shooter" hidden>
+                    <div class="lab-game-intro"><div><span class="app-detail-type">ARCADE / WEB APP</span><h2>Space Shooter</h2><p data-copy data-en="Launching the hosted game in this child window. If embedding is blocked by the game host, use the open-game link." data-de="Das gehostete Spiel wird in diesem Fenster geöffnet. Falls das Einbetten vom Host blockiert wird, nutze den Link zum externen Öffnen.">Launching the hosted game in this child window. If embedding is blocked by the game host, use the open-game link.</p></div><a href="https://space-shooter-ng.onrender.com/" target="_blank" rel="noreferrer" class="button-secondary"><span data-copy data-en="Open game externally" data-de="Spiel extern öffnen">Open game externally</span><span>↗</span></a></div>
+                    <iframe id="space-shooter-frame" title="Space Shooter game" data-src="https://space-shooter-ng.onrender.com/" loading="lazy" allow="fullscreen; gamepad" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                  </section>
+                </div>
+              </section>
             </div>
-            <div class="lab-note"><span>✦</span><p data-copy data-en="More experiments will appear here as they become useful, stable, and worth sharing." data-de="Weitere Experimente erscheinen hier, sobald sie nützlich, stabil und teilenswert sind.">More experiments will appear here as they become useful, stable, and worth sharing.</p></div>
           </section>
 
           <section class="view" id="view-resume" data-view="resume" role="tabpanel" aria-label="Curriculum vitae" hidden>
