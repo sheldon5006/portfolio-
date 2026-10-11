@@ -1441,3 +1441,222 @@ body.child-app-maximized .desktop-shell{
     height:100%;
   }
 }
+
+
+/* ---------------------------------------------------------
+   Games Explorer: familiar selectable game icons on the left,
+   live hover preview on the right, click to launch.
+--------------------------------------------------------- */
+.app-window.is-games-view .window-body{
+  overflow:hidden;
+  scrollbar-width:none;
+}
+.app-window.is-games-view .window-body::-webkit-scrollbar{display:none}
+#view-games:not([hidden]){
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  min-height:0;
+  padding:12px 16px 15px;
+  overflow:hidden;
+}
+#view-games .game-explorer{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  flex:1 1 auto;
+  width:100%;
+  height:100%;
+  min-height:0;
+  overflow:hidden;
+  border:1px solid rgba(198,215,255,.14);
+  border-radius:16px;
+  background:rgba(8,13,23,.29);
+}
+#view-games .game-list-pane{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  min-height:0;
+  overflow-x:hidden;
+  overflow-y:auto;
+  padding:10px;
+  border-right:1px solid rgba(198,215,255,.11);
+  scrollbar-width:thin;
+  scrollbar-color:rgba(160,184,235,.28) transparent;
+}
+.game-pane-caption{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:7px 10px 11px;
+  color:#8291ad;
+  font:8px "DM Mono",monospace;
+  letter-spacing:1.2px;
+}
+.game-library-count{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 7px;
+  border:1px solid rgba(198,215,255,.10);
+  border-radius:6px;
+  color:#93a3bd;
+  letter-spacing:0;
+}
+.game-library-count i{
+  width:5px;height:5px;border-radius:50%;
+  background:#83dbb1;box-shadow:0 0 6px rgba(131,219,177,.35)
+}
+.game-library-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  min-height:76px;
+  padding:9px 10px;
+  border:1px solid transparent;
+  border-radius:10px;
+  background:transparent;
+  color:#dfe8f8;
+  text-align:left;
+  cursor:pointer;
+  transition:background .14s ease,border-color .14s ease;
+}
+.game-library-item:hover{
+  background:rgba(133,158,203,.08);
+  border-color:rgba(153,182,232,.10);
+}
+.game-library-item.is-selected{
+  background:rgba(100,132,184,.16);
+  border-color:rgba(153,182,232,.20);
+}
+.game-library-item:focus-visible{
+  outline:2px solid #95baff;
+  outline-offset:-2px;
+}
+.game-library-icon{
+  display:grid;
+  place-items:center;
+  flex:0 0 54px;
+  width:54px;height:54px;
+  border:1px solid rgba(178,204,255,.21);
+  border-radius:12px;
+  background:linear-gradient(145deg,#283e63,#121d33 78%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+}
+.game-library-icon svg{width:42px;height:42px;overflow:visible}
+.game-icon-stars{fill:none;stroke:#9cc3ff;stroke-width:1.5;stroke-linecap:round}
+.game-icon-ship{fill:#c4d9ff;stroke:#eef5ff;stroke-width:1.15;stroke-linejoin:round}
+.game-icon-thruster{fill:#779ff2;stroke:#a7c5ff;stroke-width:1.05;stroke-linejoin:round}
+.game-icon-orb{fill:#dbb8ff;stroke:#e8dbff;stroke-width:1}
+.game-library-copy{display:flex;flex-direction:column;gap:5px;flex:1;min-width:0}
+.game-library-copy strong{font-size:12px;line-height:1.3;font-weight:650;color:#e7eefc}
+.game-library-copy small{font-size:10px;line-height:1.4;color:#8f9fbb}
+.game-library-play{
+  display:grid;place-items:center;
+  flex:0 0 28px;width:28px;height:28px;
+  border:1px solid rgba(182,205,250,.15);
+  border-radius:7px;
+  background:rgba(132,162,218,.08);
+  color:#c5d9ff;font-size:10px;
+  transition:background .14s ease,color .14s ease;
+}
+.game-library-item:hover .game-library-play,
+.game-library-item.is-selected .game-library-play{
+  background:rgba(139,174,239,.16);
+  color:#fff;
+}
+.game-list-note{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-top:auto;
+  padding:14px 8px 5px;
+  color:#7f8eaa;
+  font:9px/1.6 "DM Mono",monospace;
+}
+.game-list-note .mini-status-dot{flex-shrink:0}
+#view-games .game-detail-pane{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  min-height:0;
+  padding:clamp(20px,2.5vw,32px);
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(160,184,235,.28) transparent;
+  background:linear-gradient(145deg,rgba(23,32,51,.42),rgba(11,17,29,.28));
+}
+.game-detail-topline{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.game-detail-type{color:#8fa4c9;font:8px "DM Mono",monospace;letter-spacing:1.15px}
+.game-detail-status{display:inline-flex;align-items:center;gap:6px;color:#9aaac3;font-size:9px;white-space:nowrap}
+.game-detail-status i{width:5px;height:5px;border-radius:50%;background:#86dcb4;box-shadow:0 0 7px rgba(134,220,180,.35)}
+.game-detail-hero{display:flex;align-items:center;gap:18px;margin:28px 0 21px}
+.game-detail-art{
+  display:grid;place-items:center;
+  flex:0 0 clamp(84px,10vw,126px);
+  width:clamp(84px,10vw,126px);
+  height:clamp(84px,10vw,126px);
+  overflow:hidden;border:1px solid rgba(183,204,245,.16);
+  border-radius:18px;background:#0a1120;
+}
+.game-detail-art svg{width:100%;height:100%}
+.game-art-stars{fill:none;stroke:#98b8f2;stroke-width:1.3;stroke-linecap:round;opacity:.82}
+.game-art-ship{fill:#d0e1ff;stroke:#fff;stroke-width:1.5;stroke-linejoin:round}
+.game-art-flame{fill:#719af1;stroke:#b7d1ff;stroke-width:1.2;stroke-linejoin:round}
+.game-art-planet{fill:#d7b7ff;stroke:#e9ddff;stroke-width:1}
+.game-art-orbit{fill:none;stroke:rgba(148,178,237,.44);stroke-width:1;stroke-dasharray:3 4}
+.game-detail-title-group{min-width:0}
+.game-detail-title-group h1{margin:0;color:#edf3ff;font-size:clamp(21px,2.4vw,30px);font-weight:650;letter-spacing:-.9px;line-height:1.2}
+.game-detail-title-group p{margin:7px 0 0;color:#8f9fbc;font-size:10px;line-height:1.6}
+.game-detail-description{margin:0;color:#b0bdd3;font-size:11px;line-height:1.9;max-width:580px}
+.game-detail-facts{display:flex;flex-direction:column;gap:0;margin-top:25px;border-top:1px solid rgba(196,213,255,.09)}
+.game-detail-facts>div{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid rgba(196,213,255,.07)}
+.game-detail-facts>div span{color:#7f90ad;font:8px "DM Mono",monospace;letter-spacing:.75px;white-space:nowrap}
+.game-detail-facts>div strong{color:#cbd7eb;text-align:right;font-size:10px;line-height:1.5;font-weight:500}
+.game-detail-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:15px}
+.game-detail-tags span{padding:5px 7px;border:1px solid rgba(190,210,255,.12);border-radius:6px;background:rgba(255,255,255,.025);color:#9fafd0;font:8px "DM Mono",monospace}
+.game-detail-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:22px}
+.game-detail-actions .button-primary,.game-detail-actions .button-secondary{min-height:36px;padding:0 12px;font-size:10px;border-radius:9px;gap:10px}
+@media(max-width:900px){
+  #view-games .game-detail-pane{padding:19px}
+  .game-detail-hero{gap:13px;margin-top:22px}
+  .game-library-icon{flex-basis:46px;width:46px;height:46px}
+  .game-library-icon svg{width:36px;height:36px}
+}
+@media(max-width:760px){
+  .app-window.is-games-view .window-body{overflow:hidden}
+  #view-games:not([hidden]){padding:8px}
+  #view-games .game-explorer{
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:minmax(150px,.7fr) minmax(200px,1.3fr);
+    min-height:0;
+  }
+  #view-games .game-list-pane{
+    min-height:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    border-right:0;
+    border-bottom:1px solid rgba(198,215,255,.11);
+    padding:7px;
+  }
+  .game-library-item{min-height:61px;padding:6px 8px;gap:9px}
+  .game-library-icon{flex-basis:40px;width:40px;height:40px;border-radius:9px}
+  .game-library-icon svg{width:32px;height:32px}
+  .game-library-copy strong{font-size:11px}
+  .game-library-copy small{font-size:9px}
+  .game-list-note{padding:7px 7px 3px;margin-top:2px;font-size:8px}
+  #view-games .game-detail-pane{padding:15px 13px}
+  .game-detail-hero{margin:14px 0;gap:12px}
+  .game-detail-art{flex-basis:70px;width:70px;height:70px;border-radius:12px}
+  .game-detail-title-group h1{font-size:22px}
+  .game-detail-facts{margin-top:14px}
+  .game-detail-facts>div{padding:8px 0}
+  .game-detail-actions{padding-top:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  .game-library-item,.game-library-play{transition:none}
+}
