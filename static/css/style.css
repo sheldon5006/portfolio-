@@ -1280,3 +1280,99 @@ body{height:100vh;height:100dvh;min-height:0;overflow:hidden}
 @media(prefers-reduced-motion:reduce){
   .app-window.is-child-app-open>.lab-child-window{animation:none}
 }
+
+
+/* ---------------------------------------------------------
+   Expand/restore child apps inside the central OS workspace.
+   The system header and navigation rail remain outside bounds.
+--------------------------------------------------------- */
+.lab-child-window-actions{
+  justify-self:end;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+.lab-child-maximize{
+  display:grid;
+  place-items:center;
+  width:25px;
+  height:25px;
+  padding:0;
+  border:1px solid rgba(195,211,244,.17);
+  border-radius:7px;
+  background:rgba(255,255,255,.045);
+  color:#bccbe3;
+  cursor:pointer;
+  transition:background .16s ease,color .16s ease,border-color .16s ease;
+}
+.lab-child-maximize:hover{
+  color:#edf4ff;
+  background:rgba(145,176,238,.13);
+  border-color:rgba(178,203,250,.34);
+}
+.lab-child-maximize:focus-visible{
+  outline:2px solid #9dbfff;
+  outline-offset:2px;
+}
+.maximize-icon{display:block;width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.maximize-icon-restore{display:none}
+.lab-child-maximize[aria-pressed="true"] .maximize-icon-expand{display:none}
+.lab-child-maximize[aria-pressed="true"] .maximize-icon-restore{display:block}
+
+/* Fixed to the usable workspace, not the full browser viewport:
+   preserve the site header, left rail (or mobile dock), and footer. */
+.app-window.is-child-maximized{
+  position:fixed!important;
+  z-index:45;
+  right:auto!important;
+  bottom:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:none!important;
+  max-height:none!important;
+  flex:none!important;
+  margin:0!important;
+  overflow:hidden!important;
+  border-radius:18px;
+  transform:none!important;
+  transition:top .16s ease,left .16s ease,width .16s ease,height .16s ease;
+}
+.app-window.is-child-maximized>.lab-child-window{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  max-width:none;
+  max-height:none;
+  border-radius:inherit;
+}
+.app-window.is-child-maximized>.lab-child-window.is-game-child,
+.app-window.is-child-app-open>.lab-child-window.is-game-child{
+  overflow:hidden!important;
+}
+.app-window.is-child-maximized>.lab-child-window.is-game-child .lab-child-body,
+.app-window.is-child-app-open>.lab-child-window.is-game-child .lab-child-body{
+  min-height:0;
+  overflow:hidden!important;
+  overscroll-behavior:none;
+}
+.app-window.is-child-maximized>.lab-child-window.is-game-child #space-shooter-frame,
+.app-window.is-child-app-open>.lab-child-window.is-game-child #space-shooter-frame{
+  overflow:hidden;
+  overscroll-behavior:none;
+  -webkit-overflow-scrolling:auto;
+  flex:1 1 auto;
+  min-width:0;
+  min-height:0;
+}
+@media(max-width:760px){
+  .app-window.is-child-maximized{
+    border-radius:14px;
+  }
+  .lab-child-window-actions{gap:5px}
+  .lab-child-maximize,.lab-child-close{width:24px;height:24px}
+}
+@media(prefers-reduced-motion:reduce){
+  .app-window.is-child-maximized{transition:none}
+  .lab-child-maximize{transition:none}
+}
