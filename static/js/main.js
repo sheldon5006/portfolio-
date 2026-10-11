@@ -442,6 +442,8 @@
   const viewNumbers = { about: "01", projects: "02", social: "03", lab: "04", games: "05", resume: "CV" };
   let currentView = "about";
   let currentLanguage = "en";
+  let panelTransitionId = 0;
+  let panelAnimation = null;
 
   const viewElements = Array.from(document.querySelectorAll(".view[data-view]"));
   const windowTitle = document.getElementById("window-title");
@@ -1040,16 +1042,73 @@
     if (childIsMaximized && childWindow && !childWindow.hidden) setChildMaximized(true);
   }, { passive: true });
 
-  function showView(name, shouldFocus) {
-    if (!labels.en[name]) return;
-    if ((currentView === "lab" || currentView === "games") && name !== currentView) closeLabChild(false);
+  function railItemForView(name) {
+    return document.querySelector('.rail-item[data-open-view="' + name + '"]');
+  }
+
+  // The whole app window expands from or collapses into the selected dock icon.
+  // A circular reveal plus a fast scale gives the panel a brief "gravity well" effect.
+  async function animatePanelSuction(anchor, direction) {
+    if (!appWindow || !anchor || reducedMotionQuery.matches || typeof appWindow.animate !== "function") return;
+    if (panelAnimation) {
+      panelAnimation.cancel();
+      panelAnimation = null;
+    }
+
+    const panelRect = appWindow.getBoundingClientRect();
+    const anchorRect = anchor.getBoundingClientRect();
+    if (!panelRect.width || !panelRect.height || !anchorRect.width || !anchorRect.height) return;
+
+    const x = anchorRect.left + anchorRect.width / 2 - panelRect.left;
+    const y = anchorRect.top + anchorRect.height / 2 - panelRect.top;
+    const corners = [
+      Math.hypot(x, y),
+      Math.hypot(panelRect.width - x, y),
+      Math.hypot(x, panelRect.height - y),
+      Math.hypot(panelRect.width - x, panelRect.height - y)
+    ];
+    const radius = Math.ceil(Math.max.apply(Math, corners) + 24);
+    const origin = x + "px " + y + "px";
+    const collapsed = {
+      transformOrigin: origin,
+      transform: "scale(.035)",
+      opacity: 0.16,
+      filter: "blur(3px)"
+    };
+    const expanded = {
+      transformOrigin: origin,
+      transform: "scale(1)",
+      opacity: 1,
+      filter: "blur(0px)"
+    };
+    const supportsClip = window.CSS && window.CSS.supports &&
+      window.CSS.supports("clip-path", "circle(0px at 0px 0px)");
+    if (supportsClip) {
+      collapsed.clipPath = "circle(0px at " + x + "px " + y + "px)";
+      expanded.clipPath = "circle(" + radius + "px at " + x + "px " + y + "px)";
+    }
+
+    const keyframes = direction === "out" ? [collapsed, expanded] : [expanded, collapsed];
+    const animation = appWindow.animate(keyframes, {
+      duration: direction === "out" ? 220 : 165,
+      easing: direction === "out" ? "cubic-bezier(.16,1,.3,1)" : "cubic-bezier(.7,0,.84,0.1)",
+      fill: "both"
+    });
+    panelAnimation = animation;
+    try {
+      await animation.finished;
+    } catch (_) {
+      // A newer navigation action intentionally cancels the previous animation.
+    }
+    if (panelAnimation === animation) panelAnimation = null;
+    animation.cancel();
+  }
+
+  function applyViewState(name, shouldFocus) {
     currentView = name;
     if (appWindow) {
       appWindow.classList.toggle("is-tools-view", name === "lab");
       appWindow.classList.toggle("is-games-view", name === "games");
-    }
-    // Launching any app from the dock or a CTA restores the window.
-    if (appWindow) {
       appWindow.classList.remove("window-is-closed");
       appWindow.removeAttribute("aria-hidden");
     }
@@ -1070,17 +1129,53 @@
     if (viewStatus) viewStatus.textContent = "VIEW / " + viewNumbers[name];
     if (windowBody) windowBody.scrollTop = 0;
     if (shouldFocus && windowBody) windowBody.focus({ preventScroll: true });
+  }
+
+  function showView(name, shouldFocus) {
+    if (!labels.en[name]) return;
+    const wasClosed = Boolean(
+      (appWindow && appWindow.classList.contains("window-is-closed")) ||
+      (desktopShell && desktopShell.classList.contains("window-closed"))
+    );
+    const anchor = railItemForView(name);
+    const sameView = currentView === name;
     closePalette(false);
+
+    if (!wasClosed && sameView) {
+      if (shouldFocus && windowBody) windowBody.focus({ preventScroll: true });
+      return;
+    }
+
+    const transitionId = ++panelTransitionId;
+    if (wasClosed) {
+      if (currentView === "lab" || currentView === "games") closeLabChild(false);
+      applyViewState(name, shouldFocus);
+      animatePanelSuction(anchor, "out");
+      return;
+    }
+
+    // For a view change, pull the existing window into the destination menu
+    // icon, switch the panel contents, and expand back out of the same icon.
+    animatePanelSuction(anchor, "into").then(() => {
+      if (transitionId !== panelTransitionId) return;
+      if ((currentView === "lab" || currentView === "games") && name !== currentView) closeLabChild(false);
+      applyViewState(name, shouldFocus);
+      return animatePanelSuction(anchor, "out");
+    });
   }
 
   document.querySelectorAll("[data-open-view]").forEach((button) => {
     button.addEventListener("click", () => showView(button.dataset.openView, false));
   });
 
-  // Fully close the app window and leave only the wallpaper + OS navigation.
-  // Clicking a dock item (or using Quick Open) launches a view again.
+  // Close the panel by pulling it back into the currently selected dock icon.
+  // The wallpaper and navigation remain in place after the window disappears.
   if (windowClose && appWindow && desktopShell) {
-    windowClose.addEventListener("click", () => {
+    windowClose.addEventListener("click", async () => {
+      const transitionId = ++panelTransitionId;
+      const opener = railItemForView(currentView);
+      await animatePanelSuction(opener, "into");
+      if (transitionId !== panelTransitionId) return;
       closeLabChild(false);
       appWindow.classList.add("window-is-closed");
       appWindow.setAttribute("aria-hidden", "true");
@@ -1089,7 +1184,6 @@
         item.classList.remove("is-active");
         item.removeAttribute("aria-current");
       });
-      const opener = document.querySelector('.rail-item[data-open-view="' + currentView + '"]');
       if (opener) opener.focus({ preventScroll: true });
     });
   }
