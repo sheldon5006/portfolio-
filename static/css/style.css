@@ -666,3 +666,9 @@ body{height:100vh;height:100dvh;min-height:0;overflow:hidden}
   .desktop-home{padding:21px 12px}
   .desktop-home-footer{gap:8px}
 }
+
+
+/* A real close returns to the unobstructed wallpaper, not a launcher card. */
+.desktop-shell.window-closed .app-window{display:none!important}
+.desktop-shell.window-closed .desktop-footer{display:none!important}
+.desktop-shell.window-closed .workspace{background:transparent}
