@@ -69,11 +69,10 @@
         <span class="rail-icon tools-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path class="flask-outline" d="M9 3.2h6M10 3.2v6.1l-5.5 8.1a2.3 2.3 0 0 0 1.9 3.6h11.2a2.3 2.3 0 0 0 1.9-3.6L14 9.3V3.2"/><path class="flask-liquid" d="M7.1 15.3h9.8l2.2 3.2a1 1 0 0 1-.8 1.6H5.7a1 1 0 0 1-.8-1.6z"/><circle class="flask-bubble" cx="10" cy="17.4" r=".7"/><circle class="flask-bubble" cx="14.2" cy="18.5" r=".55"/></svg></span>
         <span class="rail-label" data-copy data-en="Tools" data-de="Werkzeuge">Tools</span>
       </button>
-      <a class="rail-item rail-link" href="https://space-shooter-ng.onrender.com/" target="_blank" rel="noreferrer">
+      <button class="rail-item" type="button" data-open-view="games">
         <span class="rail-icon game-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path class="gamepad-body" d="M7.1 8.1h9.8a4 4 0 0 1 3.8 2.8l1.1 3.8a2.4 2.4 0 0 1-3.9 2.5l-2.2-1.7H8.3l-2.2 1.7a2.4 2.4 0 0 1-3.9-2.5l1.1-3.8a4 4 0 0 1 3.8-2.8z"/><path class="gamepad-controls" d="M7.2 10.8v4M5.2 12.8h4"/><circle class="gamepad-button" cx="16.4" cy="11.7" r="1"/><circle class="gamepad-button" cx="18.4" cy="14" r=".8"/></svg></span>
         <span class="rail-label" data-copy data-en="Games" data-de="Spiele">Games</span>
-        <span class="external-mark" aria-hidden="true">↗</span>
-      </a>
+      </button>
       <div class="rail-spacer"></div>
       <div class="rail-footer">
         <span class="mini-status-dot"></span>
@@ -343,6 +342,71 @@
             </div>
           </section>
 
+          <section class="view" id="view-games" data-view="games" role="tabpanel" aria-label="Playable games" hidden>
+            <div class="game-explorer" id="game-explorer">
+              <div class="game-list-pane">
+                <div class="game-pane-caption">
+                  <span data-copy data-en="PLAYABLES" data-de="SPIELE">PLAYABLES</span>
+                  <span class="game-library-count"><i></i> 1</span>
+                </div>
+                <button type="button" class="game-library-item is-selected" data-game-play="space-shooter" aria-pressed="true">
+                  <span class="game-library-icon">
+                    <svg viewBox="0 0 48 48" aria-hidden="true">
+                      <path class="game-icon-stars" d="M9 7v5M6.5 9.5h5M37 6v4M35 8h4M8 34v4M6 36h4"/>
+                      <path class="game-icon-ship" d="M24 9 31 28 24 24 17 28z"/>
+                      <path class="game-icon-thruster" d="m20 29-3 8 7-4 7 4-3-8"/>
+                      <circle class="game-icon-orb" cx="36" cy="32" r="3"/>
+                    </svg>
+                  </span>
+                  <span class="game-library-copy">
+                    <strong>Space Shooter</strong>
+                    <small data-copy data-en="Arcade · browser game" data-de="Arcade · Browserspiel">Arcade · browser game</small>
+                  </span>
+                  <span class="game-library-play" aria-hidden="true">▶</span>
+                </button>
+                <div class="game-list-note">
+                  <span class="mini-status-dot"></span>
+                  <span data-copy data-en="Click a game to launch it in this workspace." data-de="Klicke auf ein Spiel, um es in diesem Arbeitsbereich zu starten.">Click a game to launch it in this workspace.</span>
+                </div>
+              </div>
+
+              <aside class="game-detail-pane" id="game-detail-pane" aria-live="polite">
+                <div class="game-detail-topline">
+                  <span class="game-detail-type" data-copy data-en="ARCADE / WEB APP" data-de="ARCADE / WEB-APP">ARCADE / WEB APP</span>
+                  <span class="game-detail-status"><i></i><span data-copy data-en="Ready to play" data-de="Spielbereit">Ready to play</span></span>
+                </div>
+                <div class="game-detail-hero">
+                  <div class="game-detail-art">
+                    <svg viewBox="0 0 120 120" aria-hidden="true">
+                      <defs><radialGradient id="game-art-glow"><stop offset="0" stop-color="#355b9a" stop-opacity=".64"/><stop offset="1" stop-color="#0b1222" stop-opacity="0"/></radialGradient></defs>
+                      <circle cx="60" cy="60" r="59" fill="url(#game-art-glow)"/>
+                      <g class="game-art-stars"><path d="M18 23h7M21.5 19.5v7M91 19h5M93.5 16.5v5M98 88h7M101.5 84.5v7M24 88h5"/></g>
+                      <path class="game-art-ship" d="m60 28 16 45-16-9-16 9z"/>
+                      <path class="game-art-flame" d="m51 68-5 18 14-9 14 9-5-18"/>
+                      <circle class="game-art-planet" cx="91" cy="59" r="6"/>
+                      <ellipse class="game-art-orbit" cx="60" cy="60" rx="45" ry="17" transform="rotate(-27 60 60)"/>
+                    </svg>
+                  </div>
+                  <div class="game-detail-title-group">
+                    <h1 id="game-detail-title">Space Shooter</h1>
+                    <p data-copy data-en="A small arcade game made with Angular." data-de="Ein kleines Arcade-Spiel mit Angular.">A small arcade game made with Angular.</p>
+                  </div>
+                </div>
+                <p class="game-detail-description" data-copy data-en="Pilot through waves of incoming objects, avoid collisions and try to beat your high score. Use the on-screen controls to move, so it works on both desktop and mobile." data-de="Steuere dein Schiff durch Wellen ankommender Objekte, weiche Kollisionen aus und versuche, deinen Highscore zu schlagen. Nutze die Bildschirmsteuerung – auf Desktop und Mobilgeräten.">Pilot through waves of incoming objects, avoid collisions and try to beat your high score. Use the on-screen controls to move, so it works on both desktop and mobile.</p>
+                <div class="game-detail-facts">
+                  <div><span data-copy data-en="GENRE" data-de="GENRE">GENRE</span><strong data-copy data-en="Arcade / survival" data-de="Arcade / Überleben">Arcade / survival</strong></div>
+                  <div><span data-copy data-en="BUILT WITH" data-de="TECHNOLOGIE">BUILT WITH</span><strong>Angular · TypeScript</strong></div>
+                  <div><span data-copy data-en="RUNS IN" data-de="LÄUFT IN">RUNS IN</span><strong data-copy data-en="This portfolio window" data-de="Dieses Portfolio-Fenster">This portfolio window</strong></div>
+                </div>
+                <div class="game-detail-tags"><span>Angular</span><span>TypeScript</span><span>Arcade</span></div>
+                <div class="game-detail-actions">
+                  <button type="button" class="button-primary" data-game-play="space-shooter"><span data-copy data-en="Play now" data-de="Jetzt spielen">Play now</span><span aria-hidden="true">▶</span></button>
+                  <a class="button-secondary" href="https://github.com/sheldon5006/Space_shooter_ng" target="_blank" rel="noreferrer"><span data-copy data-en="View source" data-de="Quellcode ansehen">View source</span><span aria-hidden="true">↗</span></a>
+                </div>
+              </aside>
+            </div>
+          </section>
+
           <section class="view" id="view-resume" data-view="resume" role="tabpanel" aria-label="Curriculum vitae" hidden>
             <div class="resume-layout">
               <div class="resume-copy">
@@ -369,7 +433,8 @@
         <button type="button" data-command="about" data-command-en="Who am I" data-command-de="Über mich"><span class="command-list-icon">⌘</span><span data-copy data-en="Who am I" data-de="Über mich">Who am I</span><kbd>01</kbd></button>
         <button type="button" data-command="projects" data-command-en="Projects" data-command-de="Projekte"><span class="command-list-icon">▣</span><span data-copy data-en="Projects" data-de="Projekte">Projects</span><kbd>02</kbd></button>
         <button type="button" data-command="social" data-command-en="Social & contact" data-command-de="Kontakt"><span class="command-list-icon">⌁</span><span data-copy data-en="Social & contact" data-de="Kontakt">Social & contact</span><kbd>03</kbd></button>
-        <button type="button" data-command="lab" data-command-en="Engineering lab" data-command-de="Labor"><span class="command-list-icon">⌬</span><span data-copy data-en="Engineering lab" data-de="Labor">Engineering lab</span><kbd>04</kbd></button>
+        <button type="button" data-command="lab" data-command-en="Tools" data-command-de="Werkzeuge"><span class="command-list-icon">⌬</span><span data-copy data-en="Tools" data-de="Werkzeuge">Tools</span><kbd>04</kbd></button>
+        <button type="button" data-command="games" data-command-en="Games" data-command-de="Spiele"><span class="command-list-icon">🎮</span><span data-copy data-en="Games" data-de="Spiele">Games</span><kbd>05</kbd></button>
         <a href="{{ url_for('portfolio.resume') }}" data-command-search="cv resume curriculum vitae lebenslauf"><span class="command-list-icon">↓</span><span data-copy data-en="Download CV" data-de="Lebenslauf herunterladen">Download CV</span><kbd>PDF</kbd></a>
       </div>
       <div class="command-footer"><span data-copy data-en="Navigate your portfolio" data-de="Portfolio-Navigation">Navigate your portfolio</span><span><kbd>↑</kbd><kbd>↓</kbd> <span data-copy data-en="to select" data-de="Auswahl">to select</span> · <kbd>↵</kbd> <span data-copy data-en="to open" data-de="öffnen">to open</span></span></div>
