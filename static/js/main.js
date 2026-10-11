@@ -444,6 +444,7 @@
   let currentLanguage = "en";
   let panelTransitionId = 0;
   let panelAnimation = null;
+  let transitionTargetView = null;
 
   const viewElements = Array.from(document.querySelectorAll(".view[data-view]"));
   const windowTitle = document.getElementById("window-title");
@@ -1131,6 +1132,13 @@
     if (shouldFocus && windowBody) windowBody.focus({ preventScroll: true });
   }
 
+  function cancelPanelAnimation() {
+    if (panelAnimation) {
+      panelAnimation.cancel();
+      panelAnimation = null;
+    }
+  }
+
   function showView(name, shouldFocus) {
     if (!labels.en[name]) return;
     const wasClosed = Boolean(
@@ -1138,29 +1146,54 @@
       (desktopShell && desktopShell.classList.contains("window-closed"))
     );
     const anchor = railItemForView(name);
-    const sameView = currentView === name;
     closePalette(false);
 
-    if (!wasClosed && sameView) {
+    // Repeated taps on the destination should not restart its reveal.
+    if (!wasClosed && transitionTargetView === name) {
+      if (shouldFocus && windowBody) windowBody.focus({ preventScroll: true });
+      return;
+    }
+
+    // A tap back on the currently displayed section cancels an in-flight
+    // move before it commits the next view, instead of being ignored.
+    if (!wasClosed && transitionTargetView && currentView === name) {
+      ++panelTransitionId;
+      transitionTargetView = null;
+      cancelPanelAnimation();
+      if (shouldFocus && windowBody) windowBody.focus({ preventScroll: true });
+      return;
+    }
+
+    if (!wasClosed && !transitionTargetView && currentView === name) {
       if (shouldFocus && windowBody) windowBody.focus({ preventScroll: true });
       return;
     }
 
     const transitionId = ++panelTransitionId;
+    transitionTargetView = name;
+
     if (wasClosed) {
       if (currentView === "lab" || currentView === "games") closeLabChild(false);
       applyViewState(name, shouldFocus);
-      animatePanelSuction(anchor, "out");
+      animatePanelSuction(anchor, "out").then(() => {
+        if (transitionId === panelTransitionId && transitionTargetView === name) {
+          transitionTargetView = null;
+        }
+      });
       return;
     }
 
     // For a view change, pull the existing window into the destination menu
     // icon, switch the panel contents, and expand back out of the same icon.
     animatePanelSuction(anchor, "into").then(() => {
-      if (transitionId !== panelTransitionId) return;
+      if (transitionId !== panelTransitionId || transitionTargetView !== name) return;
       if ((currentView === "lab" || currentView === "games") && name !== currentView) closeLabChild(false);
       applyViewState(name, shouldFocus);
       return animatePanelSuction(anchor, "out");
+    }).then(() => {
+      if (transitionId === panelTransitionId && transitionTargetView === name) {
+        transitionTargetView = null;
+      }
     });
   }
 
@@ -1174,8 +1207,10 @@
     windowClose.addEventListener("click", async () => {
       const transitionId = ++panelTransitionId;
       const opener = railItemForView(currentView);
+      transitionTargetView = "__closed__";
       await animatePanelSuction(opener, "into");
       if (transitionId !== panelTransitionId) return;
+      transitionTargetView = null;
       closeLabChild(false);
       appWindow.classList.add("window-is-closed");
       appWindow.setAttribute("aria-hidden", "true");
