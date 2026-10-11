@@ -82,6 +82,24 @@
     </aside>
 
     <section class="workspace" aria-label="Portfolio workspace">
+      <div class="desktop-home" id="desktop-home" hidden>
+        <div class="desktop-home-header">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-mark">SD</span><span data-copy data-en="DESKTOP / PERSONAL SPACE" data-de="DESKTOP / PERSÖNLICHER BEREICH">DESKTOP / PERSONAL SPACE</span></div>
+            <h1 data-copy data-en="Your space." data-de="Dein Bereich.">Your space.</h1>
+            <p data-copy data-en="Choose an app to pick up where you left off." data-de="Wähle eine App, um weiterzumachen.">Choose an app to pick up where you left off.</p>
+          </div>
+          <span class="desktop-home-status"><i class="availability-dot"></i><span data-copy data-en="5 apps available" data-de="5 Apps verfügbar">5 apps available</span></span>
+        </div>
+        <div class="desktop-app-grid" aria-label="Open an app">
+          <button class="desktop-app-icon" type="button" data-open-view="about"><span class="desktop-app-art app-art-terminal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 7 4 4-4 4M11 15h7"/></svg></span><span data-copy data-en="Whoami" data-de="Über mich">Whoami</span><small data-copy data-en="Profile" data-de="Profil">Profile</small></button>
+          <button class="desktop-app-icon" type="button" data-open-view="projects"><span class="desktop-app-art app-art-projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 9h18"/></svg></span><span data-copy data-en="Projects" data-de="Projekte">Projects</span><small data-copy data-en="Repositories" data-de="Repositories">Repositories</small></button>
+          <button class="desktop-app-icon" type="button" data-open-view="social"><span class="desktop-app-art app-art-social"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="12" r="3"/><circle cx="17" cy="6" r="3"/><circle cx="17" cy="18" r="3"/><path d="m9.7 10.5 4.6-3M9.7 13.5l4.6 3"/></svg></span><span data-copy data-en="Social" data-de="Kontakt">Social</span><small data-copy data-en="Find me" data-de="Kontakt">Find me</small></button>
+          <button class="desktop-app-icon" type="button" data-open-view="lab"><span class="desktop-app-art app-art-lab"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v7l-5 8a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-8V3"/><path d="M8 15h8"/></svg></span><span data-copy data-en="Lab" data-de="Labor">Lab</span><small data-copy data-en="Live tools" data-de="Live-Tools">Live tools</small></button>
+          <button class="desktop-app-icon" type="button" data-open-view="resume"><span class="desktop-app-art app-art-resume"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></span><span data-copy data-en="CV" data-de="Lebenslauf">CV</span><small data-copy data-en="PDF document" data-de="PDF-Dokument">PDF document</small></button>
+        </div>
+        <div class="desktop-home-footer"><span class="desktop-home-tip"><kbd>⌘</kbd><kbd>K</kbd><span data-copy data-en="Quick open any app" data-de="App schnell öffnen">Quick open any app</span></span><span data-copy data-en="Window closed" data-de="Fenster geschlossen">Window closed</span></div>
+      </div>
       <div class="app-window" id="app-window">
         <div class="window-titlebar">
           <div class="window-controls" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -89,7 +107,7 @@
             <span class="window-title-icon" id="window-title-icon" aria-hidden="true">⌘</span>
             <span class="window-title" id="window-title">Who am I</span>
           </div>
-          <div class="window-tools"><span class="window-live-dot"></span><span data-copy data-en="PERSONAL SPACE" data-de="PERSÖNLICHER BEREICH">PERSONAL SPACE</span></div>
+          <div class="window-tools"><span class="window-live-dot"></span><span data-copy data-en="PERSONAL SPACE" data-de="PERSÖNLICHER BEREICH">PERSONAL SPACE</span><button class="window-close" id="window-close" type="button" aria-label="Close window" title="Close window"><span aria-hidden="true">×</span></button></div>
         </div>
 
         <div class="window-body" id="window-body" tabindex="-1">
