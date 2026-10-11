@@ -467,7 +467,7 @@
   const childTitle = document.getElementById("lab-child-title");
   const childIcon = document.getElementById("lab-child-icon");
   const shooterFrame = document.getElementById("space-shooter-frame");
-  let selectedLabApp = "asciibar";
+  let selectedLabApp = "space-shooter";
 
   const appCatalog = {
     asciibar: {
@@ -652,6 +652,7 @@
     if (!labels.en[name]) return;
     if (currentView === "lab" && name !== "lab") closeLabChild(false);
     currentView = name;
+    if (appWindow) appWindow.classList.toggle("is-tools-view", name === "lab");
     // Launching any app from the dock or a CTA restores the window.
     if (appWindow) {
       appWindow.classList.remove("window-is-closed");
