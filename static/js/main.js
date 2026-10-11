@@ -435,11 +435,11 @@
   // App navigation: desktop-style app rail, real view panels.
   // ---------------------------------------------------------
   const labels = {
-    en: { about: "whoami", projects: "Projects", social: "Social & contact", lab: "Tools", resume: "Curriculum Vitae" },
-    de: { about: "Über mich", projects: "Projekte", social: "Kontakt", lab: "Werkzeuge", resume: "Lebenslauf" }
+    en: { about: "whoami", projects: "Projects", social: "Social & contact", lab: "Tools", games: "Games", resume: "Curriculum Vitae" },
+    de: { about: "Über mich", projects: "Projekte", social: "Kontakt", lab: "Werkzeuge", games: "Spiele", resume: "Lebenslauf" }
   };
-  const icons = { about: "⌘", projects: "▣", social: "⌁", lab: "⌬", resume: "↓" };
-  const viewNumbers = { about: "01", projects: "02", social: "03", lab: "04", resume: "CV" };
+  const icons = { about: "⌘", projects: "▣", social: "⌁", lab: "⌬", games: "🎮", resume: "↓" };
+  const viewNumbers = { about: "01", projects: "02", social: "03", lab: "04", games: "05", resume: "CV" };
   let currentView = "about";
   let currentLanguage = "en";
 
@@ -477,6 +477,20 @@
   const shooterFrame = document.getElementById("space-shooter-frame");
   const spatialMapsFrame = document.getElementById("spatialmaps-frame");
   let selectedLabApp = "space-shooter";
+
+  const gameCatalog = {
+    "space-shooter": {
+      title: "Space Shooter",
+      subtitle: { en: "Arcade · browser game", de: "Arcade · Browserspiel" },
+      description: {
+        en: "Pilot through waves of incoming objects, avoid collisions and try to beat your high score. Use the on-screen controls to move, so it works on desktop and mobile.",
+        de: "Steuere dein Schiff durch Wellen ankommender Objekte, weiche Kollisionen aus und versuche, deinen Highscore zu schlagen. Nutze die Bildschirmsteuerung – auf Desktop und Mobilgeräten."
+      },
+      genre: { en: "Arcade / survival", de: "Arcade / Überleben" },
+      status: { en: "Ready to play", de: "Spielbereit" },
+      action: { en: "Play now", de: "Jetzt spielen" }
+    }
+  };
 
   const appCatalog = {
     asciibar: {
@@ -556,7 +570,42 @@
     }
   };
 
-  function closeLabChild(restoreFocus = true) {
+  function renderGameDetails(gameId) {
+    const game = gameCatalog[gameId];
+    if (!game) return;
+    document.querySelectorAll("[data-game-select]").forEach((button) => {
+      const selected = button.dataset.gameSelect === gameId;
+      button.classList.toggle("is-selected", selected);
+      button.setAttribute("aria-pressed", selected ? "true" : "false");
+    });
+    const title = document.getElementById("game-detail-title");
+    const subtitle = document.getElementById("game-detail-subtitle");
+    const description = document.getElementById("game-detail-description");
+    const genre = document.getElementById("game-detail-genre");
+    const status = document.getElementById("game-detail-status");
+    const launchLabel = document.getElementById("game-detail-launch-label");
+    if (title) title.textContent = game.title;
+    if (subtitle) subtitle.textContent = game.subtitle[currentLanguage];
+    if (description) description.textContent = game.description[currentLanguage];
+    if (genre) genre.textContent = game.genre[currentLanguage];
+    if (status) status.textContent = game.status[currentLanguage];
+    if (launchLabel) launchLabel.textContent = game.action[currentLanguage];
+  }
+
+  document.querySelectorAll("[data-game-select]").forEach((button) => {
+    const previewGame = () => renderGameDetails(button.dataset.gameSelect);
+    button.addEventListener("pointerenter", previewGame);
+    button.addEventListener("focus", previewGame);
+  });
+  document.querySelectorAll("[data-game-play]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const gameId = button.dataset.gamePlay;
+      renderGameDetails(gameId);
+      launchLabApp(gameId);
+    });
+  });
+
+    function closeLabChild(restoreFocus = true) {
     if (!childWindow || childWindow.hidden) return;
     if (childIsMaximized) setChildMaximized(false);
     childWindow.hidden = true;
@@ -577,7 +626,9 @@
       spatialMapsFrame.removeAttribute("src");
     }
     if (restoreFocus) {
-      const opener = document.querySelector('[data-launch-app="' + selectedLabApp + '"]');
+      const opener = currentView === "games"
+        ? document.querySelector('[data-game-select="' + selectedLabApp + '"]')
+        : document.querySelector('[data-launch-app="' + selectedLabApp + '"]');
       if (opener && typeof opener.focus === "function") opener.focus({ preventScroll: true });
     }
   }
@@ -760,9 +811,12 @@
 
   function showView(name, shouldFocus) {
     if (!labels.en[name]) return;
-    if (currentView === "lab" && name !== "lab") closeLabChild(false);
+    if ((currentView === "lab" || currentView === "games") && name !== currentView) closeLabChild(false);
     currentView = name;
-    if (appWindow) appWindow.classList.toggle("is-tools-view", name === "lab");
+    if (appWindow) {
+      appWindow.classList.toggle("is-tools-view", name === "lab");
+      appWindow.classList.toggle("is-games-view", name === "games");
+    }
     // Launching any app from the dock or a CTA restores the window.
     if (appWindow) {
       appWindow.classList.remove("window-is-closed");
@@ -833,6 +887,8 @@
     if (windowTitleIcon) windowTitleIcon.textContent = icons[currentView];
     updateCommandFilter();
     renderLabApp(selectedLabApp);
+    const selectedGame = document.querySelector(".game-library-item.is-selected");
+    if (selectedGame) renderGameDetails(selectedGame.dataset.gameSelect);
   }
 
   document.querySelectorAll("[data-language]").forEach((button) => {
@@ -1061,5 +1117,6 @@
 
   if (currentLanguage === "de") applyLanguage("de");
   renderLabApp(selectedLabApp);
+  renderGameDetails("space-shooter");
 
 })();
