@@ -261,9 +261,10 @@
     const y = cosmos.hole.y;
     const speed = Math.min(1, Math.hypot(cosmos.hole.vx, cosmos.hole.vy) / 460);
     const horizon = horizonSize();
+    const pulse = reducedMotionQuery.matches ? 0 : (0.5 + 0.5 * Math.sin(time * 0.0011)) * 0.035;
 
-    // A wide, soft gravitational shadow. No drawn disk outlines, ellipses, or arcs:
-    // the surrounding lensed stars create the optical ring naturally.
+    // Wide, soft gravitational shadow. The warped stars build the lensing ring;
+    // the horizon itself is kept clean, dark, and almost featureless.
     const shadowRadius = lensScale() * 2.25;
     const shadow = ctx.createRadialGradient(x, y, horizon * 0.65, x, y, shadowRadius);
     shadow.addColorStop(0, "rgba(0,0,0,1)");
@@ -278,14 +279,40 @@
     ctx.arc(x, y, shadowRadius, 0, Math.PI * 2);
     ctx.fill();
 
-    // An unlit event horizon with a faint, speed-sensitive atmospheric edge.
-    const edgeRadius = horizon * (1.07 + speed * 0.06);
-    const edge = ctx.createRadialGradient(x - horizon * 0.18, y - horizon * 0.22, horizon * 0.14, x, y, edgeRadius);
+    // Very faint photon glow just outside the horizon. It uses a soft raster
+    // gradient, not a stroked circle, so it reads as light bleeding into space.
+    const glowRadius = horizon * 1.72;
+    const glow = ctx.createRadialGradient(
+      x - horizon * 0.12, y - horizon * 0.16, horizon * 0.62,
+      x, y, glowRadius
+    );
+    glow.addColorStop(0, "rgba(0,0,0,0)");
+    glow.addColorStop(0.54, "rgba(0,0,0,0)");
+    glow.addColorStop(0.70, "rgba(40,52,83,0.035)");
+    glow.addColorStop(0.82, "rgba(91,116,174," + (0.075 + pulse).toFixed(3) + ")");
+    glow.addColorStop(0.91, "rgba(151,174,225," + (0.11 + pulse).toFixed(3) + ")");
+    glow.addColorStop(0.97, "rgba(177,190,225,0.075)");
+    glow.addColorStop(1, "rgba(87,108,158,0)");
+    ctx.globalCompositeOperation = "screen";
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(x, y, glowRadius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalCompositeOperation = "source-over";
+
+    // The event horizon stays nearly pure black; only the very edge catches light.
+    const edgeRadius = horizon * (1.045 + speed * 0.025);
+    const edge = ctx.createRadialGradient(
+      x - horizon * 0.16, y - horizon * 0.19, horizon * 0.12,
+      x, y, edgeRadius
+    );
     edge.addColorStop(0, "#000");
-    edge.addColorStop(0.76, "#010104");
-    edge.addColorStop(0.88, "rgba(1,2,6,0.99)");
-    edge.addColorStop(0.96, "rgba(18,19,30,0.94)");
-    edge.addColorStop(1, "rgba(28,30,43,0.06)");
+    edge.addColorStop(0.78, "#010104");
+    edge.addColorStop(0.88, "rgba(2,3,8,0.995)");
+    edge.addColorStop(0.925, "rgba(26,30,45,0.98)");
+    edge.addColorStop(0.963, "rgba(105,125,174,0.39)");
+    edge.addColorStop(0.988, "rgba(159,176,216,0.25)");
+    edge.addColorStop(1, "rgba(28,30,43,0.025)");
     ctx.fillStyle = edge;
     ctx.beginPath();
     ctx.arc(x, y, edgeRadius, 0, Math.PI * 2);
