@@ -435,8 +435,8 @@
   // App navigation: desktop-style app rail, real view panels.
   // ---------------------------------------------------------
   const labels = {
-    en: { about: "whoami", projects: "Projects", social: "Social & contact", lab: "Engineering lab", resume: "Curriculum Vitae" },
-    de: { about: "Über mich", projects: "Projekte", social: "Kontakt", lab: "Technik-Labor", resume: "Lebenslauf" }
+    en: { about: "whoami", projects: "Projects", social: "Social & contact", lab: "Tools", resume: "Curriculum Vitae" },
+    de: { about: "Über mich", projects: "Projekte", social: "Kontakt", lab: "Werkzeuge", resume: "Lebenslauf" }
   };
   const icons = { about: "⌘", projects: "▣", social: "⌁", lab: "⌬", resume: "↓" };
   const viewNumbers = { about: "01", projects: "02", social: "03", lab: "04", resume: "CV" };
