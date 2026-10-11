@@ -347,7 +347,7 @@
               <div class="game-list-pane">
                 <div class="game-pane-caption">
                   <span data-copy data-en="PLAYABLES" data-de="SPIELE">PLAYABLES</span>
-                  <span class="game-library-count"><i></i> 1</span>
+                  <span class="game-library-count"><i></i> 4</span>
                 </div>
                 <button type="button" class="game-library-item is-selected" data-game-select="space-shooter" data-game-play="space-shooter" aria-pressed="true">
                   <span class="game-library-icon">
@@ -364,9 +364,52 @@
                   </span>
                   <span class="game-library-play" aria-hidden="true">▶</span>
                 </button>
+                <button type="button" class="game-library-item" data-game-select="spatialmaps" data-game-play="spatialmaps" aria-pressed="false">
+                  <span class="game-library-icon game-icon-maps">
+                    <svg viewBox="0 0 48 48" aria-hidden="true">
+                      <path d="m5 12 12-6 14 6 12-6v30l-12 6-14-6-12 6z"/>
+                      <path d="M17 6v30M31 12v30"/>
+                      <path d="m9 28 7-7 7 3 8-10 8 2"/>
+                      <circle cx="31" cy="14" r="3"/>
+                    </svg>
+                  </span>
+                  <span class="game-library-copy">
+                    <strong>SpatialMaps</strong>
+                    <small data-copy data-en="Interactive map workspace" data-de="Interaktive Kartenumgebung">Interactive map workspace</small>
+                  </span>
+                  <span class="game-library-play" aria-hidden="true">▶</span>
+                </button>
+                <button type="button" class="game-library-item" data-game-select="asciibar" data-game-play="asciibar" aria-pressed="false">
+                  <span class="game-library-icon game-icon-terminal">
+                    <svg viewBox="0 0 48 48" aria-hidden="true">
+                      <rect x="5" y="7" width="38" height="34" rx="5"/>
+                      <path d="m12 17 6 6-6 6M23 30h12"/>
+                      <path d="M10 12h.1M14 12h.1"/>
+                    </svg>
+                  </span>
+                  <span class="game-library-copy">
+                    <strong>asciibar</strong>
+                    <small data-copy data-en="Terminal chart utility" data-de="Terminal-Diagramm-Tool">Terminal chart utility</small>
+                  </span>
+                  <span class="game-library-play" aria-hidden="true">▶</span>
+                </button>
+                <button type="button" class="game-library-item" data-game-select="emojify" data-game-play="emojify" aria-pressed="false">
+                  <span class="game-library-icon game-icon-emoji">
+                    <svg viewBox="0 0 48 48" aria-hidden="true">
+                      <path d="M24 5 28 17 40 21 28 25 24 39 20 25 8 21 20 17z"/>
+                      <path d="m38 5 2 6 5 2-5 2-2 5-2-5-5-2 5-2z"/>
+                      <circle cx="12" cy="36" r="3"/>
+                    </svg>
+                  </span>
+                  <span class="game-library-copy">
+                    <strong>emojify</strong>
+                    <small data-copy data-en="Emoji shortcode utility" data-de="Emoji-Shortcode-Tool">Emoji shortcode utility</small>
+                  </span>
+                  <span class="game-library-play" aria-hidden="true">▶</span>
+                </button>
                 <div class="game-list-note">
                   <span class="mini-status-dot"></span>
-                  <span data-copy data-en="Click a game to launch it in this workspace." data-de="Klicke auf ein Spiel, um es in diesem Arbeitsbereich zu starten.">Click a game to launch it in this workspace.</span>
+                  <span data-copy data-en="Hover to preview. Click any app to open it here." data-de="Zum Anzeigen darüberfahren. Klicke, um die App hier zu öffnen.">Hover to preview. Click any app to open it here.</span>
                 </div>
               </div>
 
@@ -394,14 +437,14 @@
                 </div>
                 <p class="game-detail-description" id="game-detail-description" data-copy data-en="Pilot through waves of incoming objects, avoid collisions and try to beat your high score. Use the on-screen controls to move, so it works on both desktop and mobile." data-de="Steuere dein Schiff durch Wellen ankommender Objekte, weiche Kollisionen aus und versuche, deinen Highscore zu schlagen. Nutze die Bildschirmsteuerung – auf Desktop und Mobilgeräten.">Pilot through waves of incoming objects, avoid collisions and try to beat your high score. Use the on-screen controls to move, so it works on both desktop and mobile.</p>
                 <div class="game-detail-facts">
-                  <div><span data-copy data-en="GENRE" data-de="GENRE">GENRE</span><strong id="game-detail-genre" data-copy data-en="Arcade / survival" data-de="Arcade / Überleben">Arcade / survival</strong></div>
-                  <div><span data-copy data-en="BUILT WITH" data-de="TECHNOLOGIE">BUILT WITH</span><strong>Angular · TypeScript</strong></div>
-                  <div><span data-copy data-en="RUNS IN" data-de="LÄUFT IN">RUNS IN</span><strong data-copy data-en="This portfolio window" data-de="Dieses Portfolio-Fenster">This portfolio window</strong></div>
+                  <div><span id="game-detail-fact-label-1" data-copy data-en="GENRE" data-de="GENRE">GENRE</span><strong id="game-detail-genre">Arcade / survival</strong></div>
+                  <div><span id="game-detail-fact-label-2" data-copy data-en="BUILT WITH" data-de="TECHNOLOGIE">BUILT WITH</span><strong id="game-detail-stack">Angular · TypeScript</strong></div>
+                  <div><span id="game-detail-fact-label-3" data-copy data-en="RUNS IN" data-de="LÄUFT IN">RUNS IN</span><strong id="game-detail-runs-in">This portfolio window</strong></div>
                 </div>
                 <div class="game-detail-tags"><span>Angular</span><span>TypeScript</span><span>Arcade</span></div>
                 <div class="game-detail-actions">
                   <button type="button" class="button-primary" data-game-play="space-shooter"><span id="game-detail-launch-label" data-copy data-en="Play now" data-de="Jetzt spielen">Play now</span><span aria-hidden="true">▶</span></button>
-                  <a class="button-secondary" href="https://github.com/sheldon5006/Space_shooter_ng" target="_blank" rel="noreferrer"><span data-copy data-en="View source" data-de="Quellcode ansehen">View source</span><span aria-hidden="true">↗</span></a>
+                  <a class="button-secondary" id="game-detail-source" href="https://github.com/sheldon5006/Space_shooter_ng" target="_blank" rel="noreferrer"><span id="game-detail-source-label" data-copy data-en="View source" data-de="Quellcode ansehen">View source</span><span aria-hidden="true">↗</span></a>
                 </div>
               </aside>
             </div>
