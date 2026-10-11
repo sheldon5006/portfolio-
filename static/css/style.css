@@ -735,3 +735,130 @@ body{height:100vh;height:100dvh;min-height:0;overflow:hidden}
 @media(prefers-reduced-motion:reduce){
   .rail-icon{transition:none}
 }
+
+
+/* ---------------------------------------------------------
+   Clear, familiar navigation — inspired by classic desktop
+   workspaces rather than glossy mobile app tiles.
+--------------------------------------------------------- */
+.app-rail{
+  border-radius:18px;
+  background:rgba(13,19,30,.94);
+  border:1px solid rgba(188,202,228,.1);
+  box-shadow:0 8px 26px rgba(0,0,0,.16);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.rail-item{
+  min-height:78px;
+  gap:6px;
+  padding:8px 4px;
+  border-radius:14px;
+  color:#aab4c7;
+  transition:background .16s ease,color .16s ease;
+}
+.rail-item:hover{
+  background:rgba(137,159,196,.10);
+  color:#eef3fc;
+}
+.rail-item.is-active{
+  background:rgba(91,126,177,.22);
+  border-color:rgba(151,177,218,.14);
+  color:#f2f5fc;
+  box-shadow:none;
+}
+.rail-item.is-active:before{
+  left:-10px;
+  top:22px;
+  bottom:22px;
+  width:3px;
+  background:#8cbcff;
+  box-shadow:0 0 7px rgba(140,188,255,.42);
+}
+.rail-icon{
+  width:46px;
+  height:42px;
+  border:0;
+  border-radius:2px;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible;
+  filter:none!important;
+  transform:none!important;
+  transition:none;
+}
+.rail-icon:before{display:none!important}
+.rail-icon svg{width:39px;height:39px;stroke-width:1.45}
+.rail-item:hover .rail-icon,.rail-item.is-active .rail-icon{
+  box-shadow:none!important;
+}
+.rail-label{
+  color:inherit;
+  font-size:11px;
+  line-height:1.25;
+  font-weight:600;
+  letter-spacing:0;
+  text-align:center;
+}
+.rail-item.is-active .rail-label{font-size:11.5px;font-weight:700}
+.external-mark{color:#9aa8bf}
+
+/* Familiar file and terminal metaphors, without coloured tile containers. */
+.document-icon{color:#fff}
+.document-icon .paper-shape{fill:#f5f6f9;stroke:#111827;stroke-width:.6}
+.document-icon .paper-fold{fill:#d6dce7;stroke:#9ba8bd;stroke-width:.6}
+.document-icon .paper-line{fill:none;stroke:#9ba6b8;stroke-width:1}
+.document-icon .pdf-badge{fill:#e11d36;stroke:none}
+.document-icon .pdf-text{fill:#fff;stroke:none;font:700 4.1px Inter,Arial,sans-serif;letter-spacing:.2px}
+
+.terminal-icon{color:#eef3ff}
+.terminal-icon .terminal-screen{fill:#06080c;stroke:#778399;stroke-width:.75}
+.terminal-icon .terminal-prompt{fill:none;stroke:#e5ebf4;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.terminal-icon .terminal-light{fill:#a9b7cc;stroke:none}
+
+/* Folder icons use one clear, familiar yellow rather than app-specific gradients. */
+.folder-icon{color:#ffc52f}
+.folder-icon svg{width:43px;height:39px}
+.folder-icon .folder-back{fill:#f4b82a;stroke:none}
+.folder-icon .folder-front{fill:#ffca36;stroke:rgba(255,221,111,.55);stroke-width:.45}
+
+.social-icon{color:#b7d1ff}
+.social-icon svg{width:36px;height:36px}
+.social-icon svg path{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.tools-icon{color:#8ddcc5}
+.tools-icon .flask-outline{fill:none;stroke:#91dfc7;stroke-width:1.55;stroke-linecap:round;stroke-linejoin:round}
+.tools-icon .flask-liquid{fill:rgba(102,207,177,.2);stroke:#91dfc7;stroke-width:.65}
+.tools-icon .flask-bubble{fill:#b9f4df;stroke:none}
+
+.game-icon{color:#d5c8ff}
+.game-icon .gamepad-body{fill:rgba(140,119,208,.08);stroke:#c7b8ff;stroke-width:1.5;stroke-linejoin:round}
+.game-icon .gamepad-controls{fill:none;stroke:#e5dcff;stroke-width:1.55;stroke-linecap:round}
+.game-icon .gamepad-button{fill:#f0d69e;stroke:none}
+
+.rail-footer{color:#9aa6bb;font-size:8px}
+.rail-caption{color:#8795ad}
+@media(max-width:1080px) and (min-width:761px){
+  .rail-label{font-size:10px}
+}
+@media(max-width:760px){
+  .app-rail{
+    border-radius:17px;
+    background:rgba(13,19,30,.97);
+    box-shadow:0 7px 24px rgba(0,0,0,.28);
+    backdrop-filter:blur(10px);
+  }
+  .rail-item{min-height:57px;gap:3px;padding:4px 2px;border-radius:11px}
+  .rail-icon{width:30px;height:29px}
+  .rail-icon svg{width:27px;height:27px}
+  .folder-icon svg{width:30px;height:27px}
+  .social-icon svg{width:25px;height:25px}
+  .rail-label{font-size:9px;line-height:1.1}
+  .rail-item.is-active .rail-label{font-size:9px}
+}
+@media(max-width:390px){
+  .rail-label{font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  .rail-item{transition:none}
+}
