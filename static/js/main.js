@@ -261,58 +261,78 @@
     const y = cosmos.hole.y;
     const speed = Math.min(1, Math.hypot(cosmos.hole.vx, cosmos.hole.vy) / 460);
     const horizon = horizonSize();
-    const pulse = reducedMotionQuery.matches ? 0 : (0.5 + 0.5 * Math.sin(time * 0.0011)) * 0.035;
+    const breathe = reducedMotionQuery.matches ? 0 : (0.5 + 0.5 * Math.sin(time * 0.0008)) * 0.025;
 
-    // Wide, soft gravitational shadow. The warped stars build the lensing ring;
-    // the horizon itself is kept clean, dark, and almost featureless.
+    // Soft gravitational shadow. The star field itself supplies the lensing;
+    // this layer only gives the black hole some depth.
     const shadowRadius = lensScale() * 2.25;
-    const shadow = ctx.createRadialGradient(x, y, horizon * 0.65, x, y, shadowRadius);
+    const shadow = ctx.createRadialGradient(x, y, horizon * 0.55, x, y, shadowRadius);
     shadow.addColorStop(0, "rgba(0,0,0,1)");
-    shadow.addColorStop(0.16, "rgba(0,0,0,0.98)");
-    shadow.addColorStop(0.26, "rgba(2,3,8,0.93)");
-    shadow.addColorStop(0.39, "rgba(5,7,15,0.56)");
-    shadow.addColorStop(0.58, "rgba(10,12,23,0.19)");
-    shadow.addColorStop(0.8, "rgba(10,12,23,0.055)");
+    shadow.addColorStop(0.17, "rgba(0,0,0,0.98)");
+    shadow.addColorStop(0.29, "rgba(2,3,7,0.92)");
+    shadow.addColorStop(0.43, "rgba(5,6,13,0.54)");
+    shadow.addColorStop(0.63, "rgba(10,11,20,0.16)");
+    shadow.addColorStop(0.82, "rgba(10,12,22,0.045)");
     shadow.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = shadow;
     ctx.beginPath();
     ctx.arc(x, y, shadowRadius, 0, Math.PI * 2);
     ctx.fill();
 
-    // Very faint photon glow just outside the horizon. It uses a soft raster
-    // gradient, not a stroked circle, so it reads as light bleeding into space.
-    const glowRadius = horizon * 1.72;
-    const glow = ctx.createRadialGradient(
-      x - horizon * 0.12, y - horizon * 0.16, horizon * 0.62,
-      x, y, glowRadius
+    // A dim, warm photon corona: a raster gradient rather than a stroked ring.
+    // The offset centre keeps one side cream-white and the opposite side smoky amber.
+    const coronaRadius = horizon * 2.35;
+    const corona = ctx.createRadialGradient(
+      x - horizon * 0.11, y - horizon * 0.14, horizon * 0.48,
+      x, y, coronaRadius
     );
-    glow.addColorStop(0, "rgba(0,0,0,0)");
-    glow.addColorStop(0.54, "rgba(0,0,0,0)");
-    glow.addColorStop(0.70, "rgba(40,52,83,0.035)");
-    glow.addColorStop(0.82, "rgba(91,116,174," + (0.075 + pulse).toFixed(3) + ")");
-    glow.addColorStop(0.91, "rgba(151,174,225," + (0.11 + pulse).toFixed(3) + ")");
-    glow.addColorStop(0.97, "rgba(177,190,225,0.075)");
-    glow.addColorStop(1, "rgba(87,108,158,0)");
+    corona.addColorStop(0, "rgba(0,0,0,0)");
+    corona.addColorStop(0.50, "rgba(0,0,0,0)");
+    corona.addColorStop(0.68, "rgba(51,40,34,0.025)");
+    corona.addColorStop(0.77, "rgba(139,104,78," + (0.045 + breathe).toFixed(3) + ")");
+    corona.addColorStop(0.84, "rgba(208,175,137," + (0.072 + breathe).toFixed(3) + ")");
+    corona.addColorStop(0.90, "rgba(248,227,199," + (0.105 + breathe).toFixed(3) + ")");
+    corona.addColorStop(0.945, "rgba(231,231,225,0.10)");
+    corona.addColorStop(0.98, "rgba(149,167,207,0.045)");
+    corona.addColorStop(1, "rgba(60,73,101,0)");
     ctx.globalCompositeOperation = "screen";
-    ctx.fillStyle = glow;
+    ctx.fillStyle = corona;
     ctx.beginPath();
-    ctx.arc(x, y, glowRadius, 0, Math.PI * 2);
+    ctx.arc(x, y, coronaRadius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // A second, extremely soft cool bounce light keeps the edge integrated
+    // with the blue-white stars, rather than looking like a gold neon border.
+    const coolRadius = horizon * 1.72;
+    const coolGlow = ctx.createRadialGradient(
+      x + horizon * 0.18, y + horizon * 0.14, horizon * 0.72,
+      x, y, coolRadius
+    );
+    coolGlow.addColorStop(0, "rgba(0,0,0,0)");
+    coolGlow.addColorStop(0.75, "rgba(0,0,0,0)");
+    coolGlow.addColorStop(0.88, "rgba(132,155,207,0.075)");
+    coolGlow.addColorStop(0.96, "rgba(190,202,227,0.09)");
+    coolGlow.addColorStop(1, "rgba(95,116,166,0)");
+    ctx.fillStyle = coolGlow;
+    ctx.beginPath();
+    ctx.arc(x, y, coolRadius, 0, Math.PI * 2);
     ctx.fill();
     ctx.globalCompositeOperation = "source-over";
 
-    // The event horizon stays nearly pure black; only the very edge catches light.
+    // Dark event horizon with a fine edge-light, gently brighter while moving.
     const edgeRadius = horizon * (1.045 + speed * 0.025);
     const edge = ctx.createRadialGradient(
-      x - horizon * 0.16, y - horizon * 0.19, horizon * 0.12,
+      x - horizon * 0.16, y - horizon * 0.18, horizon * 0.10,
       x, y, edgeRadius
     );
     edge.addColorStop(0, "#000");
-    edge.addColorStop(0.78, "#010104");
-    edge.addColorStop(0.88, "rgba(2,3,8,0.995)");
-    edge.addColorStop(0.925, "rgba(26,30,45,0.98)");
-    edge.addColorStop(0.963, "rgba(105,125,174,0.39)");
-    edge.addColorStop(0.988, "rgba(159,176,216,0.25)");
-    edge.addColorStop(1, "rgba(28,30,43,0.025)");
+    edge.addColorStop(0.77, "#010104");
+    edge.addColorStop(0.87, "rgba(2,2,5,0.997)");
+    edge.addColorStop(0.92, "rgba(17,15,17,0.99)");
+    edge.addColorStop(0.955, "rgba(75,65,61,0.92)");
+    edge.addColorStop(0.978, "rgba(171,149,130,0.48)");
+    edge.addColorStop(0.993, "rgba(215,211,201,0.22)");
+    edge.addColorStop(1, "rgba(87,102,140,0.015)");
     ctx.fillStyle = edge;
     ctx.beginPath();
     ctx.arc(x, y, edgeRadius, 0, Math.PI * 2);
