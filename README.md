@@ -58,4 +58,3 @@ The contact route uses Resend. Configure these server-side environment variables
 - `CONTACT_RECEIVER_EMAIL`
 
 Never add API keys to frontend JavaScript or commit secrets to the repository.
-
