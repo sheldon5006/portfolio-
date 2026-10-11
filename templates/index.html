@@ -94,62 +94,36 @@
 
         <div class="window-body" id="window-body" tabindex="-1">
           <section class="view is-active" id="view-about" data-view="about" role="tabpanel" aria-label="Who am I">
-            <div class="profile-hero">
-              <div class="profile-copy">
-                <div class="eyebrow"><span class="eyebrow-mark">01</span><span data-copy data-en="PROFILE / WHO AM I" data-de="PROFIL / ÜBER MICH">PROFILE / WHO AM I</span></div>
-                <h1><span data-copy data-en="Software engineer." data-de="Software Engineer.">Software engineer.</span><br><span class="headline-gradient" data-copy data-en="AI in progress." data-de="KI im Aufbau.">AI in progress.</span></h1>
-                <p class="hero-description" data-copy data-en="I build dependable web applications, design clean systems, and explore how AI can solve practical problems. From business software to retrieval-augmented generation, I like turning complex ideas into useful products." data-de="Ich entwickle zuverlässige Webanwendungen, entwerfe klare Architekturen und erforsche, wie KI praktische Probleme lösen kann. Von Business-Software bis Retrieval-Augmented Generation verwandle ich komplexe Ideen gern in nützliche Produkte.">I build dependable web applications, design clean systems, and explore how AI can solve practical problems. From business software to retrieval-augmented generation, I like turning complex ideas into useful products.</p>
-                <div class="hero-tags">
-                  <span class="glass-tag"><i class="tag-dot blue"></i>.NET & Angular</span>
-                  <span class="glass-tag"><i class="tag-dot violet"></i>Applied AI</span>
-                  <span class="glass-tag"><i class="tag-dot mint"></i>System design</span>
+            <div class="whoami-screen">
+              <div class="whoami-prompt"><span aria-hidden="true">&gt;&gt;</span><span>whoami</span><span class="prompt-cursor" aria-hidden="true"></span></div>
+              <header class="identity-header">
+                <div class="identity-monogram" aria-hidden="true">SD</div>
+                <div>
+                  <h1>Sheldon Dsouza</h1>
+                  <p class="identity-role" data-copy data-en="Software Engineer · Applied AI" data-de="Software Engineer · Angewandte KI">Software Engineer · Applied AI</p>
                 </div>
-                <div class="hero-actions">
-                  <button type="button" class="button-primary" data-open-view="projects"><span data-copy data-en="Explore my projects" data-de="Projekte ansehen">Explore my projects</span><span aria-hidden="true">↗</span></button>
-                  <a class="button-secondary" href="{{ url_for('portfolio.resume') }}"><span data-copy data-en="Download CV" data-de="Lebenslauf laden">Download CV</span><span aria-hidden="true">↓</span></a>
-                </div>
-                <div class="profile-meta">
-                  <span class="meta-pin" aria-hidden="true">⌖</span>
-                  <span data-copy data-en="Based in Berlin, Germany" data-de="Standort: Berlin, Deutschland">Based in Berlin, Germany</span>
-                  <span class="meta-divider"></span>
-                  <span data-copy data-en="M.Sc. Artificial Intelligence" data-de="M.Sc. Künstliche Intelligenz">M.Sc. Artificial Intelligence</span>
-                </div>
+              </header>
+
+              <div class="identity-table" aria-label="Profile summary">
+                <div class="identity-row"><span class="identity-key" data-copy data-en="location ::" data-de="standort ::">location ::</span><span class="identity-value"><span data-copy data-en="Berlin, Germany" data-de="Berlin, Deutschland">Berlin, Germany</span><span class="identity-note" data-copy data-en="· originally from Mangalore, India" data-de="· ursprünglich aus Mangalore, Indien">· originally from Mangalore, India</span></span></div>
+                <div class="identity-row"><span class="identity-key" data-copy data-en="education ::" data-de="studium ::">education ::</span><span class="identity-value">M.Sc. <span data-copy data-en="Artificial Intelligence" data-de="Künstliche Intelligenz">Artificial Intelligence</span><span class="identity-note"> · BSBI, Berlin</span></span></div>
+                <div class="identity-row"><span class="identity-key" data-copy data-en="background ::" data-de="beruf ::">background ::</span><span class="identity-value" data-copy data-en="Full-stack engineering · enterprise web applications" data-de="Full-Stack-Engineering · Enterprise-Webanwendungen">Full-stack engineering · enterprise web applications</span></div>
+                <div class="identity-row"><span class="identity-key" data-copy data-en="focus ::" data-de="fokus ::">focus ::</span><span class="identity-value" data-copy data-en="Applied AI · RAG · machine learning · system design" data-de="Angewandte KI · RAG · Machine Learning · Systemdesign">Applied AI · RAG · machine learning · system design</span></div>
+                <div class="identity-row"><span class="identity-key" data-copy data-en="skills ::" data-de="kenntnisse ::">skills ::</span><span class="identity-value">C# · ASP.NET Core · Angular · TypeScript · SQL Server · Python · PostgreSQL · Git</span></div>
+                <div class="identity-row"><span class="identity-key" data-copy data-en="building ::" data-de="projekte ::">building ::</span><span class="identity-value"><a href="https://github.com/sheldon5006/FlowDeskAi" target="_blank" rel="noreferrer">FlowDesk AI</a><span class="identity-note"> · </span><a href="https://github.com/sheldon5006/SpatialMaps" target="_blank" rel="noreferrer">SpatialMaps</a><span class="identity-note"> · </span><a href="https://github.com/sheldon5006/jobpilot-ai" target="_blank" rel="noreferrer">JobPilot AI</a></span></div>
               </div>
-              <div class="portrait-area">
-                <div class="portrait-orbit orbit-one"></div>
-                <div class="portrait-orbit orbit-two"></div>
-                <div class="portrait-card">
-                  <img src="{{ url_for('static', filename='images/profile.png') }}" alt="Portrait of Sheldon Dsouza" fetchpriority="high">
-                  <div class="portrait-glass-caption">
-                    <div class="portrait-initials">SD</div>
-                    <div><strong>Sheldon Dsouza</strong><span data-copy data-en="Software · AI · Ideas" data-de="Software · KI · Ideen">Software · AI · Ideas</span></div>
-                    <span class="caption-spark" aria-hidden="true">✳</span>
-                  </div>
-                </div>
-                <div class="floating-chip chip-top"><span class="chip-pulse"></span><span data-copy data-en="Building in public" data-de="Öffentlich am Bauen">Building in public</span></div>
-                <div class="floating-chip chip-bottom"><span class="chip-symbol">⌘</span><span>Code <b>→</b> Create</span></div>
+
+              <div class="identity-divider"></div>
+              <div class="whoami-intro">
+                <p data-copy data-en="Hi, I'm Sheldon — a software engineer based in Berlin, currently pursuing an M.Sc. in Artificial Intelligence." data-de="Hallo, ich bin Sheldon — Software Engineer in Berlin und studiere derzeit im Master Künstliche Intelligenz.">Hi, I'm Sheldon — a software engineer based in Berlin, currently pursuing an M.Sc. in Artificial Intelligence.</p>
+                <p data-copy data-en="I've worked on enterprise web applications, legacy system modernisation, ERP workflows, and REST APIs. Now I'm applying that engineering foundation to practical AI systems." data-de="Ich habe an Enterprise-Webanwendungen, der Modernisierung von Altsystemen, ERP-Prozessen und REST-APIs gearbeitet. Jetzt nutze ich diese Grundlage für praktische KI-Systeme.">I've worked on enterprise web applications, legacy system modernisation, ERP workflows, and REST APIs. Now I'm applying that engineering foundation to practical AI systems.</p>
               </div>
             </div>
 
-            <div class="section-divider"><span></span><span class="divider-label" data-copy data-en="A LITTLE CONTEXT" data-de="KURZER ÜBERBLICK">A LITTLE CONTEXT</span><span></span></div>
-            <div class="overview-grid">
-              <article class="overview-card wide-card">
-                <div class="card-topline"><span class="card-kicker" data-copy data-en="THE THROUGH-LINE" data-de="DER ROTE FADEN">THE THROUGH-LINE</span><span class="card-index">01 / 03</span></div>
-                <h2 data-copy data-en="From legacy systems to intelligent products." data-de="Von Legacy-Systemen zu intelligenten Produkten.">From legacy systems to intelligent products.</h2>
-                <p data-copy data-en="My background is rooted in production software: modernising legacy applications, building APIs, and delivering full-stack features used in business workflows. Now I'm extending that foundation into AI and data-driven systems." data-de="Mein Hintergrund liegt in produktiver Software: Legacy-Anwendungen modernisieren, APIs entwickeln und Full-Stack-Funktionen für Geschäftsprozesse umsetzen. Darauf baue ich jetzt mit KI- und datengetriebenen Systemen auf.">My background is rooted in production software: modernising legacy applications, building APIs, and delivering full-stack features used in business workflows. Now I'm extending that foundation into AI and data-driven systems.</p>
-                <div class="mini-stack"><span>C#</span><span>ASP.NET Core</span><span>Angular</span><span>SQL</span><span>Python</span><span>RAG</span></div>
-              </article>
-              <article class="overview-card education-card">
-                <div class="card-topline"><span class="card-kicker" data-copy data-en="CURRENTLY LEARNING" data-de="AKTUELL IM STUDIUM">CURRENTLY LEARNING</span><span class="education-glyph">✳</span></div>
-                <h2>M.Sc. <span>Artificial Intelligence</span></h2>
-                <p data-copy data-en="Berlin School of Business and Innovation · Berlin, Germany" data-de="Berlin School of Business and Innovation · Berlin, Deutschland">Berlin School of Business and Innovation · Berlin, Germany</p>
-                <div class="education-foot"><span class="status-line"></span><span data-copy data-en="Machine learning · NLP · Applied AI" data-de="Maschinelles Lernen · NLP · Angewandte KI">Machine learning · NLP · Applied AI</span></div>
-              </article>
-            </div>
-
-            <div class="section-heading">
-              <div><div class="eyebrow"><span class="eyebrow-mark">02</span><span data-copy data-en="EXPERIENCE" data-de="ERFAHRUNG">EXPERIENCE</span></div><h2 data-copy data-en="Systems built. Lessons earned." data-de="Systeme gebaut. Erfahrungen gesammelt.">Systems built. Lessons earned.</h2></div>
-              <span class="heading-note" data-copy data-en="A few chapters so far" data-de="Einige Kapitel bisher">A few chapters so far</span>
+            <div class="section-divider"><span></span><span class="divider-label" data-copy data-en="MORE ABOUT ME" data-de="MEHR ÜBER MICH">MORE ABOUT ME</span><span></span></div>
+            <div class="section-heading identity-section-heading">
+              <div><div class="eyebrow"><span class="eyebrow-mark">01</span><span data-copy data-en="EXPERIENCE" data-de="ERFAHRUNG">EXPERIENCE</span></div><h2 data-copy data-en="The work behind the summary." data-de="Die Erfahrung hinter dem Profil.">The work behind the summary.</h2></div>
+              <span class="heading-note" data-copy data-en="Selected career chapters" data-de="Ausgewählte Stationen">Selected career chapters</span>
             </div>
             <div class="timeline">
               <article class="timeline-item">
@@ -157,7 +131,7 @@
                 <div class="timeline-content">
                   <div class="timeline-meta"><span>Aug 2023 — Feb 2026</span><span class="timeline-type" data-copy data-en="PROFESSIONAL" data-de="BERUFLICH">PROFESSIONAL</span></div>
                   <h3>Software Engineer <span>@ Global ESoftSys</span></h3>
-                  <p data-copy data-en="Modernised legacy VB applications into ASP.NET Core and Angular solutions, contributed to enterprise products, integrated REST APIs, and worked across delivery and database optimisation." data-de="Modernisierung älterer VB-Anwendungen mit ASP.NET Core und Angular, Mitarbeit an Enterprise-Produkten, REST-API-Integration sowie Arbeit an Auslieferung und Datenbankoptimierung.">Modernised legacy VB applications into ASP.NET Core and Angular solutions, contributed to enterprise products, integrated REST APIs, and worked across delivery and database optimisation.</p>
+                  <p data-copy data-en="Modernised legacy VB applications into ASP.NET Core and Angular solutions, contributed to enterprise products, integrated REST APIs, and worked on database-driven features and production delivery." data-de="Modernisierung älterer VB-Anwendungen mit ASP.NET Core und Angular, Mitarbeit an Enterprise-Produkten, REST-API-Integration sowie datenbankgestützten Funktionen und Releases.">Modernised legacy VB applications into ASP.NET Core and Angular solutions, contributed to enterprise products, integrated REST APIs, and worked on database-driven features and production delivery.</p>
                 </div>
               </article>
               <article class="timeline-item">
@@ -165,7 +139,7 @@
                 <div class="timeline-content">
                   <div class="timeline-meta"><span>Feb 2022 — Jul 2023</span><span class="timeline-type" data-copy data-en="PROFESSIONAL" data-de="BERUFLICH">PROFESSIONAL</span></div>
                   <h3>Software Engineer <span>@ Raasoft Infotech</span></h3>
-                  <p data-copy data-en="Built and maintained ERP capabilities using ASP.NET Core, AngularJS, SQL and LINQ, with a focus on client-specific workflows and maintainable shared functionality." data-de="Entwicklung und Wartung von ERP-Funktionen mit ASP.NET Core, AngularJS, SQL und LINQ, mit Fokus auf kundenspezifische Abläufe und wartbare gemeinsame Funktionen.">Built and maintained ERP capabilities using ASP.NET Core, AngularJS, SQL and LINQ, with a focus on client-specific workflows and maintainable shared functionality.</p>
+                  <p data-copy data-en="Built and maintained ERP capabilities using ASP.NET Core, AngularJS, SQL and LINQ, with a focus on client workflows and maintainable shared functionality." data-de="Entwicklung und Wartung von ERP-Funktionen mit ASP.NET Core, AngularJS, SQL und LINQ, mit Fokus auf Kundenabläufe und wartbare gemeinsame Funktionen.">Built and maintained ERP capabilities using ASP.NET Core, AngularJS, SQL and LINQ, with a focus on client workflows and maintainable shared functionality.</p>
                 </div>
               </article>
               <article class="timeline-item">
@@ -177,11 +151,20 @@
                 </div>
               </article>
             </div>
-            <div class="bottom-callout">
-              <div class="callout-icon">✦</div>
-              <div><strong data-copy data-en="Curiosity is part of the job." data-de="Neugier gehört zur Arbeit.">Curiosity is part of the job.</strong><p data-copy data-en="The lab is where I turn questions into small, testable products." data-de="Im Lab verwandle ich Fragen in kleine, testbare Produkte.">The lab is where I turn questions into small, testable products.</p></div>
-              <button type="button" class="text-action" data-open-view="lab"><span data-copy data-en="Visit the lab" data-de="Zum Lab">Visit the lab</span><span aria-hidden="true">↗</span></button>
+
+            <div class="overview-grid identity-bottom-grid">
+              <article class="overview-card">
+                <div class="card-topline"><span class="card-kicker" data-copy data-en="CURRENT DIRECTION" data-de="AKTUELLER FOKUS">CURRENT DIRECTION</span><span class="education-glyph">✳</span></div>
+                <h2 data-copy data-en="Applied AI, grounded in engineering." data-de="Angewandte KI mit solidem Engineering-Fundament.">Applied AI, grounded in engineering.</h2>
+                <p data-copy data-en="I'm exploring retrieval systems, language models, machine learning and useful AI workflows — with attention to architecture, evaluation and practical constraints." data-de="Ich erforsche Retrieval-Systeme, Sprachmodelle, Machine Learning und nützliche KI-Abläufe — mit Blick auf Architektur, Evaluation und praktische Rahmenbedingungen.">I'm exploring retrieval systems, language models, machine learning and useful AI workflows — with attention to architecture, evaluation and practical constraints.</p>
+              </article>
+              <article class="overview-card">
+                <div class="card-topline"><span class="card-kicker" data-copy data-en="OUTSIDE THE CODE" data-de="NEBEN DEM CODE">OUTSIDE THE CODE</span><span class="education-glyph">⌁</span></div>
+                <h2 data-copy data-en="Curious by default." data-de="Von Natur aus neugierig.">Curious by default.</h2>
+                <p data-copy data-en="I enjoy learning new tools, exploring system design, practising German, and turning small ideas into working prototypes." data-de="Ich lerne gern neue Tools, beschäftige mich mit Systemdesign, übe Deutsch und verwandle kleine Ideen in funktionierende Prototypen.">I enjoy learning new tools, exploring system design, practising German, and turning small ideas into working prototypes.</p>
+              </article>
             </div>
+            <div class="bottom-callout"><div class="callout-icon">⌘</div><div><strong data-copy data-en="Want to explore the implementation?" data-de="Möchtest du die Umsetzung sehen?">Want to explore the implementation?</strong><p data-copy data-en="The projects view links to repositories and explains what each build is about." data-de="Die Projektansicht verlinkt auf Repositories und erklärt die einzelnen Projekte.">The projects view links to repositories and explains what each build is about.</p></div><button type="button" class="text-action" data-open-view="projects"><span data-copy data-en="Open projects" data-de="Projekte öffnen">Open projects</span><span aria-hidden="true">↗</span></button></div>
           </section>
 
           <section class="view" id="view-projects" data-view="projects" role="tabpanel" aria-label="Projects" hidden>
