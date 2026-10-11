@@ -418,7 +418,7 @@
     const savedLanguage = localStorage.getItem("portfolio-language");
     if (savedLanguage === "de" || savedLanguage === "en") currentLanguage = savedLanguage;
   } catch (_) {}
-  if (currentLanguage === "de") applyLanguage("de");
+  // Apply the saved language after the command palette elements are initialized.
 
   // ---------------------------------------------------------
   // Local clock and footer year.
@@ -629,4 +629,7 @@
       }
     });
   }
+
+  if (currentLanguage === "de") applyLanguage("de");
+
 })();
