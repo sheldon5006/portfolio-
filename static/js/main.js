@@ -358,10 +358,19 @@
   const windowTitleIcon = document.getElementById("window-title-icon");
   const viewStatus = document.getElementById("view-status");
   const windowBody = document.getElementById("window-body");
+  const appWindow = document.getElementById("app-window");
+  const desktopHome = document.getElementById("desktop-home");
+  const windowClose = document.getElementById("window-close");
 
   function showView(name, shouldFocus) {
     if (!labels.en[name]) return;
     currentView = name;
+    // Launching any app from the dock, desktop, or a CTA restores the window.
+    if (appWindow) {
+      appWindow.classList.remove("window-is-closed");
+      appWindow.removeAttribute("aria-hidden");
+    }
+    if (desktopHome) desktopHome.hidden = true;
     viewElements.forEach((view) => {
       const isCurrent = view.dataset.view === name;
       view.hidden = !isCurrent;
@@ -384,6 +393,17 @@
   document.querySelectorAll("[data-open-view]").forEach((button) => {
     button.addEventListener("click", () => showView(button.dataset.openView, false));
   });
+
+  // Close the active app window into a desktop-like launcher. The left dock
+  // and desktop app icons can reopen any view at any time.
+  if (windowClose && appWindow && desktopHome) {
+    windowClose.addEventListener("click", () => {
+      appWindow.classList.add("window-is-closed");
+      appWindow.setAttribute("aria-hidden", "true");
+      desktopHome.hidden = false;
+      desktopHome.focus({ preventScroll: true });
+    });
+  }
 
   // ---------------------------------------------------------
   // English / German content switching.
