@@ -41,7 +41,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 .brand-orbit{width:23px;height:23px;border:1px solid rgba(156,195,255,.65);border-radius:50%;position:relative;display:inline-grid;place-items:center;box-shadow:0 0 20px rgba(102,145,255,.2)}
 .brand-orbit:before{content:"";position:absolute;width:27px;height:10px;border:1px solid rgba(183,165,255,.6);border-radius:50%;transform:rotate(-35deg)}
 .brand-orbit i{display:block;width:7px;height:7px;border-radius:50%;background:#dfeaff;box-shadow:0 0 11px #9cc5ff}
+.system-center{justify-self:center;display:flex;align-items:center;gap:12px;white-space:nowrap;min-width:0}
 .system-clock{font:12px "DM Mono",monospace;letter-spacing:1.7px;color:#c6cee1;font-variant-numeric:tabular-nums}
+.system-center-divider{width:1px;height:14px;flex-shrink:0;background:rgba(193,211,255,.18)}
+.system-weather{display:inline-flex;align-items:center;gap:5px;color:#c6cee1;font:11px "DM Mono",monospace;text-decoration:none;white-space:nowrap}
+.system-weather-icon{display:inline-block;width:17px;text-align:center;font:16px/1 "Segoe UI Symbol","Apple Symbols",sans-serif}
+.system-weather-icon.is-clear{color:#f2cf82}
+.system-weather-icon.is-cloudy{color:#b9c9e7}
+.system-weather-icon.is-foggy{color:#a5b4ce}
+.system-weather-icon.is-rainy{color:#8fc4ff}
+.system-weather-icon.is-snowy{color:#c3dcff}
+.system-weather-icon.is-stormy{color:#c7b2ff}
+.system-weather-temp{font-variant-numeric:tabular-nums}
+.weather-source{margin-left:3px;color:#7886a3;font:8px Inter,sans-serif;letter-spacing:0;text-decoration:none;border-bottom:1px solid rgba(160,181,222,.22);transition:color .2s,border-color .2s}
+.weather-source:hover{color:#d3e0ff;border-color:rgba(190,210,255,.62)}
 .system-actions{justify-self:end;display:flex;align-items:center;gap:14px}
 .availability{display:inline-flex;align-items:center;gap:8px;color:#aebbd1;font-size:11px;white-space:nowrap}
 .availability-dot,.mini-status-dot,.statusbar-dot{display:inline-block;width:6px;height:6px;background:#82dfb1;border-radius:50%;box-shadow:0 0 12px rgba(130,223,177,.65);flex-shrink:0}
@@ -324,7 +337,7 @@ kbd{font:10px "DM Mono",monospace;color:#aebbd4;background:rgba(2,5,12,.36);bord
 html[lang="de"] .profile-copy h1{letter-spacing:-2.6px}
 @media(min-width:1500px){.profile-hero{min-height:410px}.view{padding:48px 54px}.portrait-area{max-width:350px}}
 @media(max-width:1080px){
- .system-bar{grid-template-columns:1fr auto;gap:10px}.system-clock{display:none}
+ .system-bar{grid-template-columns:auto auto minmax(0,1fr);gap:10px}.system-center{justify-self:start;gap:9px}.system-clock{font-size:11px;letter-spacing:1px}
  .desktop-shell{grid-template-columns:84px minmax(0,1fr);gap:14px;padding-left:14px;padding-right:14px}
  .app-rail{padding:11px 6px}.rail-item{min-height:70px}.rail-footer{font-size:7px}
  .profile-hero{grid-template-columns:minmax(0,1.2fr) minmax(190px,.8fr);gap:20px}
@@ -334,6 +347,7 @@ html[lang="de"] .profile-copy h1{letter-spacing:-2.6px}
 }
 @media(max-width:760px){
  .system-bar{height:56px;padding:0 15px;grid-template-columns:1fr auto}
+ .system-center{display:none}
  .brand-mark{font-size:13px}.brand-orbit{width:20px;height:20px}
  .system-actions{gap:7px}.availability{display:none}
  .command-trigger{padding:7px 9px;gap:6px}.command-trigger>span:nth-child(2){display:none}
