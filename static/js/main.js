@@ -210,7 +210,9 @@
     const x = cosmos.hole.x;
     const y = cosmos.hole.y;
     const speed = Math.min(1, Math.hypot(cosmos.hole.vx, cosmos.hole.vy) / 460);
-    const radius = coarsePointerQuery.matches ? 23 : 29;
+    const radius = coarsePointerQuery.matches
+      ? Math.max(18, Math.min(24, cosmos.height * 0.028))
+      : Math.max(30, Math.min(48, cosmos.height * 0.047));
     const driftAngle = Math.atan2(cosmos.hole.vy, cosmos.hole.vx || 0.001);
     const rotation = time * 0.00012 + (speed > 0.05 ? driftAngle * 0.12 : 0);
 
@@ -365,11 +367,13 @@
     resizeCosmos();
     window.addEventListener("resize", resizeCosmos, { passive: true });
     window.addEventListener("pointermove", (event) => {
-      if (event.pointerType === "touch") return;
       cosmos.pointerType = event.pointerType || "mouse";
       cosmos.target.x = event.clientX;
       cosmos.target.y = event.clientY;
       cosmos.active = true;
+    }, { passive: true });
+    window.addEventListener("pointerup", (event) => {
+      if (event.pointerType === "touch") cosmos.active = false;
     }, { passive: true });
     window.addEventListener("pointerleave", () => {
       cosmos.active = false;
