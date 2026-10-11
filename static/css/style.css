@@ -1180,3 +1180,103 @@ body{height:100vh;height:100dvh;min-height:0;overflow:hidden}
   #view-lab .app-detail-hero{margin:15px 0 12px}
   #view-lab .app-detail-facts{margin-top:13px}
 }
+
+
+/* ---------------------------------------------------------
+   Child app takeover: a launched app temporarily becomes the
+   whole OS window instead of appearing inside the parent pane.
+--------------------------------------------------------- */
+.app-window.is-child-app-open{position:relative;isolation:isolate}
+.app-window.is-child-app-open>.lab-child-window{
+  position:absolute;
+  inset:0;
+  z-index:100;
+  display:flex;
+  width:100%;
+  height:100%;
+  max-height:none;
+  min-height:0;
+  margin:0;
+  border:0;
+  border-radius:inherit;
+  background:#080d17;
+  box-shadow:none;
+  animation:child-takeover .18s ease-out both;
+}
+.app-window.is-child-app-open>.lab-child-window[hidden]{display:none!important}
+@keyframes child-takeover{
+  from{opacity:.85;transform:scale(.992)}
+  to{opacity:1;transform:scale(1)}
+}
+.app-window.is-child-app-open>.lab-child-window .lab-child-titlebar{
+  flex:0 0 43px;
+}
+.app-window.is-child-app-open>.lab-child-window .lab-child-body{
+  flex:1 1 auto;
+  min-height:0;
+  overflow:auto;
+}
+
+/* A game is the app, not a web page explaining the game. */
+.app-window.is-child-app-open>.lab-child-window.is-game-child{
+  background:#030610;
+}
+.app-window.is-child-app-open>.lab-child-window.is-game-child .lab-child-body{
+  display:flex;
+  flex-direction:column;
+  padding:0;
+  overflow:hidden;
+}
+.app-window.is-child-app-open>.lab-child-window.is-game-child .lab-child-content.lab-child-game{
+  display:flex;
+  flex-direction:column;
+  flex:1 1 auto;
+  width:100%;
+  max-width:none;
+  height:100%;
+  min-height:0;
+  margin:0;
+}
+.app-window.is-child-app-open>.lab-child-window.is-game-child .lab-game-intro{
+  display:none!important;
+}
+.app-window.is-child-app-open>.lab-child-window.is-game-child #space-shooter-frame{
+  display:block;
+  flex:1 1 auto;
+  width:100%;
+  height:100%;
+  min-height:0;
+  max-height:none;
+  border:0;
+  border-radius:0;
+  background:#030610;
+}
+.app-window.is-child-app-open>.lab-child-window.is-utility-child .lab-child-body{
+  padding:clamp(18px,3vw,34px);
+}
+
+/* The takeover fills the complete parent window at phone sizes too. */
+@media(max-width:760px){
+  .app-window.is-child-app-open>.lab-child-window{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border-radius:inherit;
+  }
+  .app-window.is-child-app-open>.lab-child-window.is-game-child .lab-child-titlebar{
+    flex-basis:39px;
+    height:39px;
+    padding:0 10px;
+  }
+  .app-window.is-child-app-open>.lab-child-window.is-game-child #space-shooter-frame{
+    min-height:0;
+    height:100%;
+  }
+  .app-window.is-child-app-open>.lab-child-window.is-utility-child .lab-child-body{
+    padding:18px 14px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .app-window.is-child-app-open>.lab-child-window{animation:none}
+}
