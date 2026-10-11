@@ -349,7 +349,7 @@
                   <span data-copy data-en="PLAYABLES" data-de="SPIELE">PLAYABLES</span>
                   <span class="game-library-count"><i></i> 1</span>
                 </div>
-                <button type="button" class="game-library-item is-selected" data-game-play="space-shooter" aria-pressed="true">
+                <button type="button" class="game-library-item is-selected" data-game-select="space-shooter" data-game-play="space-shooter" aria-pressed="true">
                   <span class="game-library-icon">
                     <svg viewBox="0 0 48 48" aria-hidden="true">
                       <path class="game-icon-stars" d="M9 7v5M6.5 9.5h5M37 6v4M35 8h4M8 34v4M6 36h4"/>
@@ -373,7 +373,7 @@
               <aside class="game-detail-pane" id="game-detail-pane" aria-live="polite">
                 <div class="game-detail-topline">
                   <span class="game-detail-type" data-copy data-en="ARCADE / WEB APP" data-de="ARCADE / WEB-APP">ARCADE / WEB APP</span>
-                  <span class="game-detail-status"><i></i><span data-copy data-en="Ready to play" data-de="Spielbereit">Ready to play</span></span>
+                  <span class="game-detail-status"><i></i><span id="game-detail-status" data-copy data-en="Ready to play" data-de="Spielbereit">Ready to play</span></span>
                 </div>
                 <div class="game-detail-hero">
                   <div class="game-detail-art">
@@ -389,18 +389,18 @@
                   </div>
                   <div class="game-detail-title-group">
                     <h1 id="game-detail-title">Space Shooter</h1>
-                    <p data-copy data-en="A small arcade game made with Angular." data-de="Ein kleines Arcade-Spiel mit Angular.">A small arcade game made with Angular.</p>
+                    <p id="game-detail-subtitle" data-copy data-en="A small arcade game made with Angular." data-de="Ein kleines Arcade-Spiel mit Angular.">A small arcade game made with Angular.</p>
                   </div>
                 </div>
-                <p class="game-detail-description" data-copy data-en="Pilot through waves of incoming objects, avoid collisions and try to beat your high score. Use the on-screen controls to move, so it works on both desktop and mobile." data-de="Steuere dein Schiff durch Wellen ankommender Objekte, weiche Kollisionen aus und versuche, deinen Highscore zu schlagen. Nutze die Bildschirmsteuerung – auf Desktop und Mobilgeräten.">Pilot through waves of incoming objects, avoid collisions and try to beat your high score. Use the on-screen controls to move, so it works on both desktop and mobile.</p>
+                <p class="game-detail-description" id="game-detail-description" data-copy data-en="Pilot through waves of incoming objects, avoid collisions and try to beat your high score. Use the on-screen controls to move, so it works on both desktop and mobile." data-de="Steuere dein Schiff durch Wellen ankommender Objekte, weiche Kollisionen aus und versuche, deinen Highscore zu schlagen. Nutze die Bildschirmsteuerung – auf Desktop und Mobilgeräten.">Pilot through waves of incoming objects, avoid collisions and try to beat your high score. Use the on-screen controls to move, so it works on both desktop and mobile.</p>
                 <div class="game-detail-facts">
-                  <div><span data-copy data-en="GENRE" data-de="GENRE">GENRE</span><strong data-copy data-en="Arcade / survival" data-de="Arcade / Überleben">Arcade / survival</strong></div>
+                  <div><span data-copy data-en="GENRE" data-de="GENRE">GENRE</span><strong id="game-detail-genre" data-copy data-en="Arcade / survival" data-de="Arcade / Überleben">Arcade / survival</strong></div>
                   <div><span data-copy data-en="BUILT WITH" data-de="TECHNOLOGIE">BUILT WITH</span><strong>Angular · TypeScript</strong></div>
                   <div><span data-copy data-en="RUNS IN" data-de="LÄUFT IN">RUNS IN</span><strong data-copy data-en="This portfolio window" data-de="Dieses Portfolio-Fenster">This portfolio window</strong></div>
                 </div>
                 <div class="game-detail-tags"><span>Angular</span><span>TypeScript</span><span>Arcade</span></div>
                 <div class="game-detail-actions">
-                  <button type="button" class="button-primary" data-game-play="space-shooter"><span data-copy data-en="Play now" data-de="Jetzt spielen">Play now</span><span aria-hidden="true">▶</span></button>
+                  <button type="button" class="button-primary" data-game-play="space-shooter"><span id="game-detail-launch-label" data-copy data-en="Play now" data-de="Jetzt spielen">Play now</span><span aria-hidden="true">▶</span></button>
                   <a class="button-secondary" href="https://github.com/sheldon5006/Space_shooter_ng" target="_blank" rel="noreferrer"><span data-copy data-en="View source" data-de="Quellcode ansehen">View source</span><span aria-hidden="true">↗</span></a>
                 </div>
               </aside>
