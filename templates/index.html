@@ -1,560 +1,339 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sheldon D Souza — Software Engineer &amp; AI Engineer in training</title>
-<meta name="description" content="Sheldon D Souza — Software Engineer with 4 years building production systems in .NET and Angular, now pursuing an M.Sc. in AI in Berlin.">
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          graphite: "#0D0E10",
-          surface: "#15171A",
-          surface2: "#1B1E22",
-          slate: "#9098A8",
-          soft: "#F4F4F2",
-          accentblue: "#5B8DEF",
-          accentviolet: "#8B7CF6",
-        },
-        fontFamily: {
-          display: ["Space Grotesk", "sans-serif"],
-          body: ["Inter", "sans-serif"],
-          mono: ["JetBrains Mono", "monospace"],
-        },
-      },
-    },
-  };
-</script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b14">
+  <meta name="color-scheme" content="dark">
+  <title>Sheldon Dsouza — Software Engineer & Applied AI</title>
+  <meta name="description" content="Sheldon Dsouza is a software engineer in Berlin building full-stack products and exploring practical AI systems.">
+  <meta property="og:title" content="Sheldon Dsouza — Software Engineer & Applied AI">
+  <meta property="og:description" content="A portfolio exploring software engineering, architecture and applied AI.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("portfolio-language");
+        if (saved === "de") document.documentElement.lang = "de";
+      } catch (_) {}
+    })();
+  </script>
 </head>
+<body>
+  <canvas id="cosmos-canvas" aria-hidden="true"></canvas>
+  <div class="space-vignette" aria-hidden="true"></div>
+  <div class="space-grain" aria-hidden="true"></div>
 
-<body class="bg-graphite text-soft font-body antialiased">
-
-<div class="grain"></div>
-
-<!-- ============== NAV ============== -->
-<nav id="site-nav" class="fixed top-0 inset-x-0 z-50 border-b border-transparent transition-all duration-300">
-  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-    <a href="#top" class="font-display font-semibold text-lg tracking-tight">SD<span class="text-accentblue">.</span></a>
-
-    <div class="hidden md:flex items-center gap-8 font-mono text-sm text-slate">
-      <a href="#about" data-i18n="nav.about" class="hover:text-soft transition-colors">about</a>
-      <a href="#skills" data-i18n="nav.skills" class="hover:text-soft transition-colors">skills</a>
-      <a href="#experience" data-i18n="nav.experience" class="hover:text-soft transition-colors">experience</a>
-      <a href="#projects" data-i18n="nav.projects" class="hover:text-soft transition-colors">projects</a>
-      <a href="#education" data-i18n="nav.education" class="hover:text-soft transition-colors">education</a>
-      <a href="#contact" data-i18n="nav.contact" class="hover:text-soft transition-colors">contact</a>
-    </div>
-
-    <div class="hidden md:flex items-center gap-4">
-      <div id="lang-toggle" class="relative flex items-center bg-white/5 backdrop-blur-md border border-white/10 rounded-full p-1 font-mono text-xs cursor-pointer select-none">
-        <span id="lang-slider" class="absolute top-1 left-1 h-[calc(100%-8px)] w-[calc(50%-4px)] rounded-full transition-transform duration-300 ease-out"></span>
-        <button id="lang-en" class="relative z-10 px-3 py-1.5 w-10 text-center transition-colors active">EN</button>
-        <button id="lang-de" class="relative z-10 px-3 py-1.5 w-10 text-center transition-colors">DE</button>
+  <header class="system-bar">
+    <a class="brand-mark" href="#top" aria-label="Sheldon Dsouza home">
+      <span class="brand-orbit" aria-hidden="true"><i></i></span>
+      <span>sheldon<span class="brand-muted">.dsouza</span></span>
+    </a>
+    <div class="system-clock" id="system-clock" aria-label="Current local time">--:--:--</div>
+    <div class="system-actions">
+      <span class="availability"><span class="availability-dot"></span><span data-copy data-en="Open to opportunities" data-de="Offen für Chancen">Open to opportunities</span></span>
+      <div class="language-switch" role="group" aria-label="Language">
+        <button type="button" class="language-button is-active" data-language="en" aria-pressed="true">EN</button>
+        <button type="button" class="language-button" data-language="de" aria-pressed="false">DE</button>
       </div>
-
-      <!-- <a href="/resume" data-i18n="nav.resume" class="magnetic inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm font-medium hover:border-accentblue/50 transition-colors">
-        Résumé
-      </a> -->
+      <button class="command-trigger" id="command-trigger" type="button" aria-haspopup="dialog" aria-controls="command-palette">
+        <span class="command-icon" aria-hidden="true">⌘</span><span data-copy data-en="Quick open" data-de="Schnell öffnen">Quick open</span><kbd>K</kbd>
+      </button>
     </div>
+  </header>
 
-    <button id="nav-toggle" class="md:hidden text-soft" aria-label="Toggle menu">
-      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    </button>
-  </div>
-
-  <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-graphite px-6 py-4 flex flex-col gap-4 font-mono text-sm text-slate">
-    <a href="#about" data-i18n="nav.about">about</a>
-    <a href="#skills" data-i18n="nav.skills">skills</a>
-    <a href="#experience" data-i18n="nav.experience">experience</a>
-    <a href="#projects" data-i18n="nav.projects">projects</a>
-    <a href="#education" data-i18n="nav.education">education</a>
-    <a href="#contact" data-i18n="nav.contact">contact</a>
-    <a href="/resume" class="text-soft" data-i18n="nav.resume">Résumé</a>
-    <div class="flex items-center gap-3 pt-2">
-      <button id="lang-en-mobile" class="rounded-full border border-white/15 px-3 py-1.5">EN</button>
-      <button id="lang-de-mobile" class="rounded-full border border-white/15 px-3 py-1.5">DE</button>
-    </div>
-  </div>
-</nav>
-
-<!-- ============== HERO ============== -->
-<section id="top" class="relative min-h-screen flex items-center overflow-hidden pt-24 pb-16">
-  <canvas id="ambient-canvas" aria-hidden="true"></canvas>
-
-  <!-- floating particles -->
-  <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-    <span class="particle" style="left:8%; width:4px; height:4px; animation-duration:14s; animation-delay:0s;"></span>
-    <span class="particle" style="left:22%; width:6px; height:6px; animation-duration:18s; animation-delay:3s;"></span>
-    <span class="particle" style="left:41%; width:3px; height:3px; animation-duration:12s; animation-delay:1s;"></span>
-    <span class="particle" style="left:63%; width:5px; height:5px; animation-duration:20s; animation-delay:5s;"></span>
-    <span class="particle" style="left:78%; width:4px; height:4px; animation-duration:16s; animation-delay:2s;"></span>
-    <span class="particle" style="left:90%; width:3px; height:3px; animation-duration:13s; animation-delay:4s;"></span>
-  </div>
-
-  <div class="relative max-w-6xl mx-auto px-6 grid md:grid-cols-[1.2fr_0.8fr] gap-12 items-center">
-    <div>
-      <p class="font-mono text-sm text-accentblue mb-6 cursor-blink" data-i18n="hero.eyebrow">$ whoami — Berlin, Germany</p>
-      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.08] tracking-tight">
-        <span data-i18n="hero.title.line1">I build reliable software —</span><br>
-        <span data-i18n="hero.title.line2">now I'm teaching</span> <span class="gradient-text" data-i18n="hero.title.gradient">machines</span><br>
-        <span data-i18n="hero.title.line3">to help me build it.</span>
-      </h1>
-      <p class="mt-6 text-lg text-slate max-w-xl leading-relaxed" data-i18n="hero.subtitle">
-        Software Engineer with 4 years shipping production systems in .NET and Angular.
-        Currently pursuing an M.Sc. in Artificial Intelligence in Berlin — applying AI to real,
-        practical business problems.
-      </p>
-
-      <div class="mt-9 flex flex-wrap items-center gap-4">
-        <a href="#projects" data-i18n="hero.cta.projects" class="magnetic inline-flex items-center gap-2 rounded-full bg-soft text-graphite px-6 py-3 font-medium hover:opacity-90 transition-opacity">
-          View projects
-        </a>
-        <a href="/resume" data-i18n="hero.cta.resume" class="magnetic inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 font-medium hover:border-accentblue/50 transition-colors">
-          Download résumé
-        </a>
+  <main id="top" class="desktop-shell">
+    <aside class="app-rail" aria-label="Portfolio navigation">
+      <div class="rail-caption" data-copy data-en="WORKSPACE" data-de="ARBEITSBEREICH">WORKSPACE</div>
+      <button class="rail-item" type="button" data-open-view="resume" aria-label="Download CV">
+        <span class="rail-icon document-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 2.75h7l4 4v3.5H6.5z"/><path d="M13.5 2.75v4h4M6.5 13h11M6.5 16h11M6.5 19h7"/></svg></span>
+        <span class="rail-label" data-copy data-en="CV" data-de="Lebenslauf">CV</span>
+      </button>
+      <button class="rail-item is-active" type="button" data-open-view="about" aria-current="page">
+        <span class="rail-icon terminal-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m7 9 3 3-3 3M12.5 15h4"/></svg></span>
+        <span class="rail-label" data-copy data-en="Who am I" data-de="Über mich">Who am I</span>
+      </button>
+      <button class="rail-item" type="button" data-open-view="projects">
+        <span class="rail-icon folder-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 9h18"/></svg></span>
+        <span class="rail-label" data-copy data-en="Projects" data-de="Projekte">Projects</span>
+      </button>
+      <button class="rail-item" type="button" data-open-view="social">
+        <span class="rail-icon social-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="7" cy="12" r="3"/><circle cx="17" cy="6" r="3"/><circle cx="17" cy="18" r="3"/><path d="m9.7 10.5 4.6-3M9.7 13.5l4.6 3"/></svg></span>
+        <span class="rail-label" data-copy data-en="Social" data-de="Kontakt">Social</span>
+      </button>
+      <button class="rail-item" type="button" data-open-view="lab">
+        <span class="rail-icon tools-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 6 4 4M4 20l6.5-1.5L20 9a2.8 2.8 0 0 0-4-4l-9.5 9.5z"/><path d="m4 4 2 2M3 9l2 2"/></svg></span>
+        <span class="rail-label" data-copy data-en="Lab" data-de="Labor">Lab</span>
+      </button>
+      <a class="rail-item rail-link" href="https://space-shooter-ng.onrender.com/" target="_blank" rel="noreferrer">
+        <span class="rail-icon game-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 3.5 8-3.5-1.5L8.5 11z"/><path d="M8.5 11 6 18l6-3 6 3-2.5-7"/></svg></span>
+        <span class="rail-label" data-copy data-en="Play" data-de="Spielen">Play</span>
+        <span class="external-mark" aria-hidden="true">↗</span>
+      </a>
+      <div class="rail-spacer"></div>
+      <div class="rail-footer">
+        <span class="mini-status-dot"></span>
+        <span data-copy data-en="All systems nominal" data-de="Alles im grünen Bereich">All systems nominal</span>
       </div>
+    </aside>
 
-      <div class="mt-10 flex items-center gap-6 text-sm text-slate font-mono">
-        <a href="https://github.com/sheldon5006" target="_blank" class="hover:text-soft transition-colors">github.com/sheldon5006</a>
-        <span class="text-white/15">/</span>
-        <a href="https://www.linkedin.com/in/sheldondsouza777" target="_blank" class="hover:text-soft transition-colors">linkedin</a>
-      </div>
-    </div>
-
-    <div class="relative mx-auto md:mx-0">
-      <div class="relative w-64 sm:w-72 aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-        <img src="{{ url_for('static', filename='images/profile.png') }}" alt="Portrait of Sheldon D Souza" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-t from-graphite/40 via-transparent to-transparent"></div>
-      </div>
-      <div class="absolute -bottom-5 -left-5 bg-surface border border-white/10 rounded-2xl px-4 py-3 shadow-xl">
-        <p class="font-mono text-xs text-slate" data-i18n="hero.badge.label">currently</p>
-        <p class="text-sm font-medium mt-0.5" data-i18n="hero.badge.value">M.Sc. AI · Berlin</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-slate font-mono text-xs flex flex-col items-center gap-2 animate-bounce">
-    <span data-i18n="hero.scroll">scroll</span>
-    <span>↓</span>
-  </div>
-</section>
-
-<!-- ============== ABOUT ============== -->
-<section id="about" class="relative py-28 px-6">
-  <div class="max-w-6xl mx-auto grid md:grid-cols-[0.9fr_1.1fr] gap-14 items-start">
-    <div class="reveal">
-      <p class="font-mono text-sm text-accentblue mb-4" data-i18n="about.eyebrow">// about</p>
-      <h2 class="font-display text-3xl sm:text-4xl font-semibold leading-tight" data-i18n="about.title" style="padding-bottom: 1.2rem;">
-        From legacy code<br>to learning machines
-      </h2>
-      <div class="relative mx-auto md:mx-0">
-        <div class="relative w-80 sm:w-72 aspect-[5/5] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-          <img src="{{ url_for('static', filename='images/about.png') }}" alt="Portrait of Sheldon D Souza" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-gradient-to-t from-graphite/40 via-transparent to-transparent"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="reveal space-y-5 text-slate leading-relaxed text-[1.05rem]">
-      <p data-i18n="about.p1">
-        I started out building a student portal for my college library, in PHP and Laravel,
-        as an intern figuring out how production software actually gets made. Since then, I've
-        spent four years migrating legacy systems — VB applications that businesses depended on
-        but couldn't safely touch — into modern ASP.NET Core and Angular stacks, across three
-        enterprise projects from architecture to deployment.
-      </p>
-      <p data-i18n="about.p2">
-        Along the way I've designed RESTful APIs with Entity Framework, improved application
-        performance by roughly 25% through better architecture and database handling, and worked
-        in Agile teams that consistently hit on-time delivery.
-      </p>
-      <p data-i18n="about.p3">
-        I'm currently based in Berlin, pursuing an <span class="text-soft font-medium">M.Sc. in Artificial Intelligence</span>,
-        focused on machine learning, NLP, computer vision, and robotics. My goal isn't to leave
-        software engineering behind — it's to bring the same rigor I've applied to legacy systems
-        to building dependable, intelligent products.
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ============== SKILLS ============== -->
-<section id="skills" class="relative py-28 px-6 bg-surface/40">
-  <div class="max-w-6xl mx-auto">
-    <p class="font-mono text-sm text-accentblue mb-4 reveal" data-i18n="skills.eyebrow">// skills</p>
-    <h2 class="font-display text-3xl sm:text-4xl font-semibold mb-14 reveal" data-i18n="skills.title">What I work with</h2>
-
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-
-      {% set skill_groups = [
-        ("Programming Languages", [("C#", 90), ("JavaScript", 85), ("TypeScript", 85), ("PHP", 70), ("Python", 80)]),
-        ("Frontend Development", [("Angular", 88), ("AngularJS", 80), ("HTML / CSS", 85)]),
-        ("Backend Development", [("ASP.NET Core", 90), ("REST APIs", 88), ("Entity Framework", 85), ("Laravel", 70), ("Flask / Django", 65)]),
-        ("AI & Machine Learning (in progress)", [("Python for ML", 70), ("Computer Vision (OpenCV)", 55), ("NLP — academic focus", 45), ("Applied ML models", 50)]),
-        ("Databases", [("SQL Server", 85), ("Entity Framework / LINQ", 82)]),
-        ("Cloud & DevOps", [("Microsoft Azure", 75), ("Azure DevOps", 78), ("Git / TFS", 88)]),
-      ] %}
-
-      {% for group_name, items in skill_groups %}
-      <div class="reveal rounded-2xl border border-white/10 bg-surface p-6 lift">
-        <h3 class="font-display font-medium text-lg mb-5" data-i18n="skills.group.{{ loop.index0 }}">{{ group_name }}</h3>
-        <div class="space-y-4">
-          {% for name, level in items %}
-          <div>
-            <div class="flex justify-between text-sm mb-1.5">
-              <span class="text-soft">{{ name }}</span>
-              <span class="text-slate font-mono text-xs">{{ level }}%</span>
-            </div>
-            <div class="h-1.5 rounded-full bg-white/8 overflow-hidden">
-              <div class="skill-fill h-full rounded-full bg-gradient-to-r from-accentblue to-accentviolet" style="width: {{ level }}%;"></div>
-            </div>
+    <section class="workspace" aria-label="Portfolio workspace">
+      <div class="app-window" id="app-window">
+        <div class="window-titlebar">
+          <div class="window-controls" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="window-title-wrap">
+            <span class="window-title-icon" id="window-title-icon" aria-hidden="true">⌘</span>
+            <span class="window-title" id="window-title">Who am I</span>
           </div>
-          {% endfor %}
+          <div class="window-tools"><span class="window-live-dot"></span><span data-copy data-en="PERSONAL SPACE" data-de="PERSÖNLICHER BEREICH">PERSONAL SPACE</span></div>
         </div>
-      </div>
-      {% endfor %}
 
+        <div class="window-body" id="window-body" tabindex="-1">
+          <section class="view is-active" id="view-about" data-view="about" role="tabpanel" aria-label="Who am I">
+            <div class="profile-hero">
+              <div class="profile-copy">
+                <div class="eyebrow"><span class="eyebrow-mark">01</span><span data-copy data-en="PROFILE / WHO AM I" data-de="PROFIL / ÜBER MICH">PROFILE / WHO AM I</span></div>
+                <h1><span data-copy data-en="Software engineer." data-de="Software Engineer.">Software engineer.</span><br><span class="headline-gradient" data-copy data-en="AI in progress." data-de="KI im Aufbau.">AI in progress.</span></h1>
+                <p class="hero-description" data-copy data-en="I build dependable web applications, design clean systems, and explore how AI can solve practical problems. From business software to retrieval-augmented generation, I like turning complex ideas into useful products." data-de="Ich entwickle zuverlässige Webanwendungen, entwerfe klare Architekturen und erforsche, wie KI praktische Probleme lösen kann. Von Business-Software bis Retrieval-Augmented Generation verwandle ich komplexe Ideen gern in nützliche Produkte.">I build dependable web applications, design clean systems, and explore how AI can solve practical problems. From business software to retrieval-augmented generation, I like turning complex ideas into useful products.</p>
+                <div class="hero-tags">
+                  <span class="glass-tag"><i class="tag-dot blue"></i>.NET & Angular</span>
+                  <span class="glass-tag"><i class="tag-dot violet"></i>Applied AI</span>
+                  <span class="glass-tag"><i class="tag-dot mint"></i>System design</span>
+                </div>
+                <div class="hero-actions">
+                  <button type="button" class="button-primary" data-open-view="projects"><span data-copy data-en="Explore my projects" data-de="Projekte ansehen">Explore my projects</span><span aria-hidden="true">↗</span></button>
+                  <a class="button-secondary" href="{{ url_for('portfolio.resume') }}"><span data-copy data-en="Download CV" data-de="Lebenslauf laden">Download CV</span><span aria-hidden="true">↓</span></a>
+                </div>
+                <div class="profile-meta">
+                  <span class="meta-pin" aria-hidden="true">⌖</span>
+                  <span data-copy data-en="Based in Berlin, Germany" data-de="Standort: Berlin, Deutschland">Based in Berlin, Germany</span>
+                  <span class="meta-divider"></span>
+                  <span data-copy data-en="M.Sc. Artificial Intelligence" data-de="M.Sc. Künstliche Intelligenz">M.Sc. Artificial Intelligence</span>
+                </div>
+              </div>
+              <div class="portrait-area">
+                <div class="portrait-orbit orbit-one"></div>
+                <div class="portrait-orbit orbit-two"></div>
+                <div class="portrait-card">
+                  <img src="{{ url_for('static', filename='images/profile.png') }}" alt="Portrait of Sheldon Dsouza" fetchpriority="high">
+                  <div class="portrait-glass-caption">
+                    <div class="portrait-initials">SD</div>
+                    <div><strong>Sheldon Dsouza</strong><span data-copy data-en="Software · AI · Ideas" data-de="Software · KI · Ideen">Software · AI · Ideas</span></div>
+                    <span class="caption-spark" aria-hidden="true">✳</span>
+                  </div>
+                </div>
+                <div class="floating-chip chip-top"><span class="chip-pulse"></span><span data-copy data-en="Building in public" data-de="Öffentlich am Bauen">Building in public</span></div>
+                <div class="floating-chip chip-bottom"><span class="chip-symbol">⌘</span><span>Code <b>→</b> Create</span></div>
+              </div>
+            </div>
+
+            <div class="section-divider"><span></span><span class="divider-label" data-copy data-en="A LITTLE CONTEXT" data-de="KURZER ÜBERBLICK">A LITTLE CONTEXT</span><span></span></div>
+            <div class="overview-grid">
+              <article class="overview-card wide-card">
+                <div class="card-topline"><span class="card-kicker" data-copy data-en="THE THROUGH-LINE" data-de="DER ROTE FADEN">THE THROUGH-LINE</span><span class="card-index">01 / 03</span></div>
+                <h2 data-copy data-en="From legacy systems to intelligent products." data-de="Von Legacy-Systemen zu intelligenten Produkten.">From legacy systems to intelligent products.</h2>
+                <p data-copy data-en="My background is rooted in production software: modernising legacy applications, building APIs, and delivering full-stack features used in business workflows. Now I'm extending that foundation into AI and data-driven systems." data-de="Mein Hintergrund liegt in produktiver Software: Legacy-Anwendungen modernisieren, APIs entwickeln und Full-Stack-Funktionen für Geschäftsprozesse umsetzen. Darauf baue ich jetzt mit KI- und datengetriebenen Systemen auf.">My background is rooted in production software: modernising legacy applications, building APIs, and delivering full-stack features used in business workflows. Now I'm extending that foundation into AI and data-driven systems.</p>
+                <div class="mini-stack"><span>C#</span><span>ASP.NET Core</span><span>Angular</span><span>SQL</span><span>Python</span><span>RAG</span></div>
+              </article>
+              <article class="overview-card education-card">
+                <div class="card-topline"><span class="card-kicker" data-copy data-en="CURRENTLY LEARNING" data-de="AKTUELL IM STUDIUM">CURRENTLY LEARNING</span><span class="education-glyph">✳</span></div>
+                <h2>M.Sc. <span>Artificial Intelligence</span></h2>
+                <p data-copy data-en="Berlin School of Business and Innovation · Berlin, Germany" data-de="Berlin School of Business and Innovation · Berlin, Deutschland">Berlin School of Business and Innovation · Berlin, Germany</p>
+                <div class="education-foot"><span class="status-line"></span><span data-copy data-en="Machine learning · NLP · Applied AI" data-de="Maschinelles Lernen · NLP · Angewandte KI">Machine learning · NLP · Applied AI</span></div>
+              </article>
+            </div>
+
+            <div class="section-heading">
+              <div><div class="eyebrow"><span class="eyebrow-mark">02</span><span data-copy data-en="EXPERIENCE" data-de="ERFAHRUNG">EXPERIENCE</span></div><h2 data-copy data-en="Systems built. Lessons earned." data-de="Systeme gebaut. Erfahrungen gesammelt.">Systems built. Lessons earned.</h2></div>
+              <span class="heading-note" data-copy data-en="A few chapters so far" data-de="Einige Kapitel bisher">A few chapters so far</span>
+            </div>
+            <div class="timeline">
+              <article class="timeline-item">
+                <div class="timeline-rail"><span></span></div>
+                <div class="timeline-content">
+                  <div class="timeline-meta"><span>Aug 2023 — Feb 2026</span><span class="timeline-type" data-copy data-en="PROFESSIONAL" data-de="BERUFLICH">PROFESSIONAL</span></div>
+                  <h3>Software Engineer <span>@ Global ESoftSys</span></h3>
+                  <p data-copy data-en="Modernised legacy VB applications into ASP.NET Core and Angular solutions, contributed to enterprise products, integrated REST APIs, and worked across delivery and database optimisation." data-de="Modernisierung älterer VB-Anwendungen mit ASP.NET Core und Angular, Mitarbeit an Enterprise-Produkten, REST-API-Integration sowie Arbeit an Auslieferung und Datenbankoptimierung.">Modernised legacy VB applications into ASP.NET Core and Angular solutions, contributed to enterprise products, integrated REST APIs, and worked across delivery and database optimisation.</p>
+                </div>
+              </article>
+              <article class="timeline-item">
+                <div class="timeline-rail"><span></span></div>
+                <div class="timeline-content">
+                  <div class="timeline-meta"><span>Feb 2022 — Jul 2023</span><span class="timeline-type" data-copy data-en="PROFESSIONAL" data-de="BERUFLICH">PROFESSIONAL</span></div>
+                  <h3>Software Engineer <span>@ Raasoft Infotech</span></h3>
+                  <p data-copy data-en="Built and maintained ERP capabilities using ASP.NET Core, AngularJS, SQL and LINQ, with a focus on client-specific workflows and maintainable shared functionality." data-de="Entwicklung und Wartung von ERP-Funktionen mit ASP.NET Core, AngularJS, SQL und LINQ, mit Fokus auf kundenspezifische Abläufe und wartbare gemeinsame Funktionen.">Built and maintained ERP capabilities using ASP.NET Core, AngularJS, SQL and LINQ, with a focus on client-specific workflows and maintainable shared functionality.</p>
+                </div>
+              </article>
+              <article class="timeline-item">
+                <div class="timeline-rail"><span></span></div>
+                <div class="timeline-content">
+                  <div class="timeline-meta"><span>Oct 2021 — Feb 2022</span><span class="timeline-type" data-copy data-en="INTERNSHIP" data-de="PRAKTIKUM">INTERNSHIP</span></div>
+                  <h3>Software Developer Intern <span>@ Siona Solutions</span></h3>
+                  <p data-copy data-en="Started with PHP and Laravel, contributing to student portal and library workflows and learning the fundamentals of shipping and maintaining web applications." data-de="Einstieg mit PHP und Laravel: Mitarbeit an Studentenportal- und Bibliotheksabläufen sowie Grundlagen für Entwicklung und Wartung von Webanwendungen.">Started with PHP and Laravel, contributing to student portal and library workflows and learning the fundamentals of shipping and maintaining web applications.</p>
+                </div>
+              </article>
+            </div>
+            <div class="bottom-callout">
+              <div class="callout-icon">✦</div>
+              <div><strong data-copy data-en="Curiosity is part of the job." data-de="Neugier gehört zur Arbeit.">Curiosity is part of the job.</strong><p data-copy data-en="The lab is where I turn questions into small, testable products." data-de="Im Lab verwandle ich Fragen in kleine, testbare Produkte.">The lab is where I turn questions into small, testable products.</p></div>
+              <button type="button" class="text-action" data-open-view="lab"><span data-copy data-en="Visit the lab" data-de="Zum Lab">Visit the lab</span><span aria-hidden="true">↗</span></button>
+            </div>
+          </section>
+
+          <section class="view" id="view-projects" data-view="projects" role="tabpanel" aria-label="Projects" hidden>
+            <div class="view-intro">
+              <div class="eyebrow"><span class="eyebrow-mark">02</span><span data-copy data-en="PROJECT DIRECTORY" data-de="PROJEKTVERZEICHNIS">PROJECT DIRECTORY</span></div>
+              <h1 data-copy data-en="Things I'm building." data-de="Dinge, die ich entwickle.">Things I'm building.</h1>
+              <p data-copy data-en="Personal experiments and engineering work, organised by the problems they explore. Project status is labelled honestly; some are active prototypes, others are professional case studies." data-de="Persönliche Experimente und technische Arbeit, geordnet nach den Problemen, die sie erforschen. Der Projektstatus ist transparent gekennzeichnet.">Personal experiments and engineering work, organised by the problems they explore. Project status is labelled honestly; some are active prototypes, others are professional case studies.</p>
+            </div>
+            <div class="project-grid">
+              <article class="project-card project-featured">
+                <div class="project-art art-flowdesk">
+                  <div class="art-window"><div class="art-window-bar"><i></i><i></i><i></i><span>retrieval pipeline</span></div><div class="flow-nodes"><span>Docs</span><b>→</b><span>Chunks</span><b>→</b><span>Vectors</span><b>→</b><span class="node-highlight">LLM</span></div><div class="art-wave"></div></div>
+                  <span class="art-stamp">AI / 01</span>
+                </div>
+                <div class="project-body">
+                  <div class="project-status"><span class="status-pill status-progress"></span><span data-copy data-en="ACTIVE BUILD" data-de="IN ENTWICKLUNG">ACTIVE BUILD</span><span class="project-separator"></span><span>PERSONAL</span></div>
+                  <h2>FlowDesk AI</h2>
+                  <p data-copy data-en="A retrieval-augmented generation layer for business knowledge. Documents move through chunking, embeddings, pgvector search, relevance filtering and LLM response generation." data-de="Eine RAG-Schicht für Geschäftswissen. Dokumente durchlaufen Chunking, Embeddings, pgvector-Suche, Relevanzfilterung und Antwortgenerierung durch ein LLM.">A retrieval-augmented generation layer for business knowledge. Documents move through chunking, embeddings, pgvector search, relevance filtering and LLM response generation.</p>
+                  <div class="project-tags"><span>.NET</span><span>RAG</span><span>pgvector</span><span>LLMs</span></div>
+                  <a class="project-link" href="https://github.com/sheldon5006/FlowDeskAi" target="_blank" rel="noreferrer"><span data-copy data-en="Explore repository" data-de="Repository ansehen">Explore repository</span><span aria-hidden="true">↗</span></a>
+                </div>
+              </article>
+              <article class="project-card">
+                <div class="project-art art-maps">
+                  <div class="map-surface"><div class="map-grid"></div><svg viewBox="0 0 420 170" role="img" aria-label="Abstract map routes"><path d="M20 130 C88 108 58 54 140 66 S217 142 267 85 327 33 399 47" class="map-route route-blue"/><path d="M32 32 C89 39 102 91 170 98 S257 32 303 68 367 116 401 125" class="map-route route-violet"/><circle cx="140" cy="66" r="5"/><circle cx="267" cy="85" r="5"/><circle cx="303" cy="68" r="5"/></svg><span class="map-pin pin-one"></span><span class="map-pin pin-two"></span><span class="map-coord">52.5200° N / 13.4050° E</span></div><span class="art-stamp">SPATIAL / 02</span></div>
+                <div class="project-body">
+                  <div class="project-status"><span class="status-pill status-progress"></span><span data-copy data-en="PROTOTYPE" data-de="PROTOTYP">PROTOTYPE</span><span class="project-separator"></span><span>PERSONAL</span></div>
+                  <h2>SpatialMaps</h2>
+                  <p data-copy data-en="An exploration of a developer-friendly mapping UI: dynamic map data, location editing, smooth camera movement, and API-oriented workflows." data-de="Erkundung einer entwicklerfreundlichen Kartenoberfläche: dynamische Kartendaten, Standortbearbeitung, flüssige Kamerabewegungen und API-orientierte Abläufe.">An exploration of a developer-friendly mapping UI: dynamic map data, location editing, smooth camera movement, and API-oriented workflows.</p>
+                  <div class="project-tags"><span>Angular</span><span>TypeScript</span><span>Maps UI</span></div>
+                  <a class="project-link" href="https://github.com/sheldon5006/SpatialMaps" target="_blank" rel="noreferrer"><span data-copy data-en="Explore repository" data-de="Repository ansehen">Explore repository</span><span aria-hidden="true">↗</span></a>
+                </div>
+              </article>
+              <article class="project-card">
+                <div class="project-art art-jobpilot">
+                  <div class="job-canvas"><div class="job-card-mini"><span class="job-pill">JOB MATCH</span><strong>Full-stack Developer</strong><div class="fake-lines"><i></i><i></i><i></i></div><div class="match-line"><span></span><b>Fit analysis</b><strong>AI</strong></div></div><div class="orbit-label orbit-a">CV</div><div class="orbit-label orbit-b">JD</div><div class="orbit-label orbit-c">AI</div></div><span class="art-stamp">AUTOMATION / 03</span></div>
+                <div class="project-body">
+                  <div class="project-status"><span class="status-pill status-progress"></span><span data-copy data-en="PROTOTYPE" data-de="PROTOTYP">PROTOTYPE</span><span class="project-separator"></span><span>PERSONAL</span></div>
+                  <h2>JobPilot AI</h2>
+                  <p data-copy data-en="An AI-assisted job workflow prototype exploring job-description extraction, profile fit analysis, tailored CV generation, and application tracking." data-de="Ein KI-gestützter Bewerbungsprototyp mit Stellenanzeigen-Extraktion, Profilabgleich, angepasster Lebenslaufgenerierung und Bewerbungsnachverfolgung.">An AI-assisted job workflow prototype exploring job-description extraction, profile fit analysis, tailored CV generation, and application tracking.</p>
+                  <div class="project-tags"><span>Angular</span><span>ASP.NET Core</span><span>Gemini</span><span>PostgreSQL</span></div>
+                  <a class="project-link" href="https://github.com/sheldon5006/jobpilot-ai" target="_blank" rel="noreferrer"><span data-copy data-en="Explore repository" data-de="Repository ansehen">Explore repository</span><span aria-hidden="true">↗</span></a>
+                </div>
+              </article>
+              <article class="project-card">
+                <div class="project-art art-flow">
+                  <div class="flow-illustration"><div class="flow-node node-one"><span>Workforce</span></div><div class="flow-connector"></div><div class="flow-node node-two"><span>Schedule</span></div><div class="flow-connector"></div><div class="flow-node node-three"><span>Operations</span></div></div><span class="art-stamp">SYSTEMS / 04</span></div>
+                <div class="project-body">
+                  <div class="project-status"><span class="status-pill status-progress"></span><span data-copy data-en="IN DEVELOPMENT" data-de="IN ENTWICKLUNG">IN DEVELOPMENT</span><span class="project-separator"></span><span>PERSONAL</span></div>
+                  <h2>FlowDesk</h2>
+                  <p data-copy data-en="A modular workforce operations and smart scheduling platform used as a practical laboratory for clean architecture, modular boundaries and future warehouse workflows." data-de="Eine modulare Plattform für Personalabläufe und intelligente Planung, die als Labor für Clean Architecture, Modulgrenzen und künftige Lagerabläufe dient.">A modular workforce operations and smart scheduling platform used as a practical laboratory for clean architecture, modular boundaries and future warehouse workflows.</p>
+                  <div class="project-tags"><span>C#</span><span>Angular</span><span>PostgreSQL</span><span>Clean Architecture</span></div>
+                  <a class="project-link" href="https://github.com/sheldon5006/FlowDesk" target="_blank" rel="noreferrer"><span data-copy data-en="Explore repository" data-de="Repository ansehen">Explore repository</span><span aria-hidden="true">↗</span></a>
+                </div>
+              </article>
+            </div>
+
+            <div class="section-heading case-heading"><div><div class="eyebrow"><span class="eyebrow-mark">03</span><span data-copy data-en="SELECTED EXPERIENCE" data-de="AUSGEWÄHLTE ERFAHRUNG">SELECTED EXPERIENCE</span></div><h2 data-copy data-en="Production systems, real constraints." data-de="Produktivsysteme und echte Anforderungen.">Production systems, real constraints.</h2></div></div>
+            <div class="case-list">
+              <article class="case-row"><div class="case-number">01</div><div class="case-main"><h3>Booth Tracker Cloud</h3><p data-copy data-en="Market booth rental and vendor management · legacy VB migration, ASP.NET Core, Angular, SQL Server, dynamic booth layouts." data-de="Vermietung von Marktständen und Händlerverwaltung · Migration von VB-Legacy-Systemen, ASP.NET Core, Angular, SQL Server und dynamische Standpläne.">Market booth rental and vendor management · legacy VB migration, ASP.NET Core, Angular, SQL Server, dynamic booth layouts.</p></div><span class="case-kind" data-copy data-en="PROFESSIONAL" data-de="BERUFLICH">PROFESSIONAL</span></article>
+              <article class="case-row"><div class="case-number">02</div><div class="case-main"><h3>RaasERP</h3><p data-copy data-en="Enterprise workflows for production, attendance, payroll and reporting, built with ASP.NET Core and AngularJS." data-de="Enterprise-Abläufe für Produktion, Zeiterfassung, Gehaltsabrechnung und Berichte mit ASP.NET Core und AngularJS.">Enterprise workflows for production, attendance, payroll and reporting, built with ASP.NET Core and AngularJS.</p></div><span class="case-kind" data-copy data-en="PROFESSIONAL" data-de="BERUFLICH">PROFESSIONAL</span></article>
+              <article class="case-row"><div class="case-number">03</div><div class="case-main"><h3>StudentConnect</h3><p data-copy data-en="Student and digital library portal features built with PHP, Laravel and MySQL." data-de="Studenten- und digitale Bibliotheksportal-Funktionen mit PHP, Laravel und MySQL.">Student and digital library portal features built with PHP, Laravel and MySQL.</p></div><span class="case-kind" data-copy data-en="EARLY CAREER" data-de="BERUFSSTART">EARLY CAREER</span></article>
+            </div>
+            <div class="bottom-callout"><div class="callout-icon">⌘</div><div><strong data-copy data-en="Want the technical details?" data-de="Du möchtest die technischen Details?">Want the technical details?</strong><p data-copy data-en="The repositories are the best place to explore implementation and progress." data-de="Die Repositories zeigen Implementierung und Fortschritt am besten.">The repositories are the best place to explore implementation and progress.</p></div><a class="text-action" href="https://github.com/sheldon5006" target="_blank" rel="noreferrer"><span data-copy data-en="Open GitHub" data-de="GitHub öffnen">Open GitHub</span><span aria-hidden="true">↗</span></a></div>
+          </section>
+
+          <section class="view" id="view-social" data-view="social" role="tabpanel" aria-label="Social and contact" hidden>
+            <div class="view-intro">
+              <div class="eyebrow"><span class="eyebrow-mark">03</span><span data-copy data-en="SIGNALS / CONTACT" data-de="KONTAKT / PROFILE">SIGNALS / CONTACT</span></div>
+              <h1 data-copy data-en="Good work starts with a conversation." data-de="Gute Arbeit beginnt mit einem Gespräch.">Good work starts with a conversation.</h1>
+              <p data-copy data-en="Recruiting, engineering discussions, collaboration, or an interesting idea — feel free to reach out." data-de="Recruiting, technische Gespräche, Zusammenarbeit oder eine interessante Idee — melde dich gern.">Recruiting, engineering discussions, collaboration, or an interesting idea — feel free to reach out.</p>
+            </div>
+            <div class="social-grid">
+              <a class="social-card" href="https://github.com/sheldon5006" target="_blank" rel="noreferrer"><span class="social-card-icon github-mark">GH</span><span class="social-card-copy"><strong>GitHub</strong><small data-copy data-en="Code, experiments & repositories" data-de="Code, Experimente und Repositories">Code, experiments & repositories</small></span><span class="social-arrow">↗</span></a>
+              <a class="social-card" href="https://www.linkedin.com/in/sheldondsouza777" target="_blank" rel="noreferrer"><span class="social-card-icon linkedin-mark">in</span><span class="social-card-copy"><strong>LinkedIn</strong><small data-copy data-en="Professional background & network" data-de="Beruflicher Hintergrund und Netzwerk">Professional background & network</small></span><span class="social-arrow">↗</span></a>
+              <a class="social-card" href="{{ url_for('portfolio.resume') }}"><span class="social-card-icon resume-mark">PDF</span><span class="social-card-copy"><strong data-copy data-en="Curriculum Vitae" data-de="Lebenslauf">Curriculum Vitae</strong><small data-copy data-en="Download the current PDF" data-de="Aktuellen Lebenslauf als PDF laden">Download the current PDF</small></span><span class="social-arrow">↓</span></a>
+            </div>
+            <div class="contact-layout">
+              <div class="contact-copy">
+                <div class="eyebrow"><span class="eyebrow-mark">04</span><span data-copy data-en="SEND A MESSAGE" data-de="NACHRICHT SENDEN">SEND A MESSAGE</span></div>
+                <h2 data-copy data-en="Let's build something useful." data-de="Lass uns etwas Nützliches bauen.">Let's build something useful.</h2>
+                <p data-copy data-en="Leave a note with a little context and I'll get back to you." data-de="Hinterlasse eine kurze Nachricht mit Kontext, und ich melde mich.">Leave a note with a little context and I'll get back to you.</p>
+                <div class="contact-footnote"><span class="availability-dot"></span><span data-copy data-en="Replies may take a little time." data-de="Antworten können etwas dauern.">Replies may take a little time.</span></div>
+              </div>
+              <form id="contact-form" class="contact-form">
+                <label for="contact-name" data-copy data-en="Your name" data-de="Dein Name">Your name</label>
+                <input id="contact-name" name="name" type="text" autocomplete="name" maxlength="120" required placeholder="Jane Doe">
+                <label for="contact-email" data-copy data-en="Email address" data-de="E-Mail-Adresse">Email address</label>
+                <input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" required placeholder="jane@example.com">
+                <label for="contact-message" data-copy data-en="Message" data-de="Nachricht">Message</label>
+                <textarea id="contact-message" name="message" rows="4" maxlength="5000" required placeholder="What would you like to discuss?"></textarea>
+                <div class="form-bottom"><p id="contact-status" role="status" aria-live="polite"></p><button class="button-primary" type="submit"><span data-copy data-en="Send message" data-de="Nachricht senden">Send message</span><span aria-hidden="true">↗</span></button></div>
+              </form>
+            </div>
+          </section>
+
+          <section class="view" id="view-lab" data-view="lab" role="tabpanel" aria-label="Engineering lab" hidden>
+            <div class="view-intro">
+              <div class="eyebrow"><span class="eyebrow-mark">04</span><span data-copy data-en="SMALL TOOLS / LIVE DEMOS" data-de="KLEINE TOOLS / LIVE-DEMOS">SMALL TOOLS / LIVE DEMOS</span></div>
+              <h1 data-copy data-en="A little lab time." data-de="Ein bisschen Laborzeit.">A little lab time.</h1>
+              <p data-copy data-en="Small working utilities from the portfolio. Enter something, run it, and inspect the output. These demos call the existing Flask endpoints." data-de="Kleine funktionierende Tools aus dem Portfolio. Gib etwas ein, starte es und prüfe die Ausgabe. Die Demos verwenden die vorhandenen Flask-Endpunkte.">Small working utilities from the portfolio. Enter something, run it, and inspect the output. These demos call the existing Flask endpoints.</p>
+            </div>
+            <div class="lab-grid">
+              <article class="lab-card">
+                <div class="lab-card-head"><span class="lab-icon ascii-glyph">▥</span><div><h2>asciibar</h2><p data-copy data-en="Numbers → terminal bars" data-de="Zahlen → Terminal-Balken">Numbers → terminal bars</p></div><span class="lab-lang">PY</span></div>
+                <p class="lab-description" data-copy data-en="Render a compact terminal bar chart without a plotting library." data-de="Erzeuge ein kompaktes Terminal-Balkendiagramm ohne Plot-Bibliothek.">Render a compact terminal bar chart without a plotting library.</p>
+                <form id="asciibar-form" class="demo-form"><label for="asciibar-input" data-copy data-en="Comma-separated numbers" data-de="Zahlen, durch Kommas getrennt">Comma-separated numbers</label><div class="input-row"><input id="asciibar-input" type="text" value="4, 9, 6, 12" maxlength="100" autocomplete="off"><button class="button-primary compact-button" type="submit" data-copy data-en="Run" data-de="Starten">Run</button></div></form>
+                <pre id="asciibar-output" class="demo-output" aria-live="polite">Ready when you are.</pre>
+              </article>
+              <article class="lab-card">
+                <div class="lab-card-head"><span class="lab-icon emoji-glyph">✳</span><div><h2>emojify</h2><p data-copy data-en="Shortcodes → emoji" data-de="Shortcodes → Emoji">Shortcodes → emoji</p></div><span class="lab-lang">PY</span></div>
+                <p class="lab-description" data-copy data-en="Replace familiar :shortcodes: with emoji using a tiny server-side utility." data-de="Ersetze bekannte :Shortcodes: mit Emoji über ein kleines serverseitiges Tool.">Replace familiar :shortcodes: with emoji using a tiny server-side utility.</p>
+                <form id="emojify-form" class="demo-form"><label for="emojify-input" data-copy data-en="Try some text" data-de="Text ausprobieren">Try some text</label><div class="input-row"><input id="emojify-input" type="text" value="shipped it :rocket: feeling :fire:" maxlength="500" autocomplete="off"><button class="button-primary compact-button" type="submit" data-copy data-en="Run" data-de="Starten">Run</button></div></form>
+                <pre id="emojify-output" class="demo-output" aria-live="polite">Ready when you are.</pre>
+              </article>
+            </div>
+            <div class="lab-note"><span>✦</span><p data-copy data-en="More experiments will appear here as they become useful, stable, and worth sharing." data-de="Weitere Experimente erscheinen hier, sobald sie nützlich, stabil und teilenswert sind.">More experiments will appear here as they become useful, stable, and worth sharing.</p></div>
+          </section>
+
+          <section class="view" id="view-resume" data-view="resume" role="tabpanel" aria-label="Curriculum vitae" hidden>
+            <div class="resume-layout">
+              <div class="resume-copy">
+                <div class="eyebrow"><span class="eyebrow-mark">CV</span><span data-copy data-en="CURRICULUM VITAE" data-de="LEBENSLAUF">CURRICULUM VITAE</span></div>
+                <h1 data-copy data-en="The professional summary." data-de="Der berufliche Überblick.">The professional summary.</h1>
+                <p data-copy data-en="Software engineer with experience in full-stack application development, legacy modernisation, API design and database-driven systems. Currently expanding into applied AI while pursuing an M.Sc. in Berlin." data-de="Software Engineer mit Erfahrung in Full-Stack-Entwicklung, Legacy-Modernisierung, API-Design und datenbankgestützten Systemen. Derzeit Vertiefung in angewandter KI während des Masterstudiums in Berlin.">Software engineer with experience in full-stack application development, legacy modernisation, API design and database-driven systems. Currently expanding into applied AI while pursuing an M.Sc. in Berlin.</p>
+                <div class="resume-details"><div><span data-copy data-en="CORE STACK" data-de="TECHNOLOGIEN">CORE STACK</span><strong>.NET · Angular · SQL · Python</strong></div><div><span data-copy data-en="LOCATION" data-de="STANDORT">LOCATION</span><strong>Berlin, Germany</strong></div><div><span data-copy data-en="STUDY" data-de="STUDIUM">STUDY</span><strong>M.Sc. Artificial Intelligence</strong></div></div>
+                <a class="button-primary resume-download" href="{{ url_for('portfolio.resume') }}"><span data-copy data-en="Download CV (PDF)" data-de="Lebenslauf herunterladen (PDF)">Download CV (PDF)</span><span aria-hidden="true">↓</span></a>
+              </div>
+              <div class="resume-preview" aria-hidden="true"><div class="paper-sheet"><div class="paper-monogram">SD.</div><div class="paper-name">Sheldon<br>Dsouza</div><div class="paper-line paper-line-long"></div><div class="paper-line"></div><div class="paper-section">PROFILE</div><div class="paper-line paper-line-long"></div><div class="paper-line"></div><div class="paper-line paper-line-mid"></div><div class="paper-section">EXPERIENCE</div><div class="paper-block"></div><div class="paper-block"></div><div class="paper-section">TECHNICAL SKILLS</div><div class="paper-tags"><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="paper-shadow"></div></div>
+            </div>
+          </section>
+        </div>
+        <div class="window-statusbar"><span><i class="statusbar-dot"></i><span data-copy data-en="Ready to explore" data-de="Bereit zum Erkunden">Ready to explore</span></span><span id="view-status">VIEW / 01</span><span class="statusbar-right"><span data-copy data-en="DESIGNED IN SPACE" data-de="IM WELTRAUM ENTWORFEN">DESIGNED IN SPACE</span><span class="statusbar-star">✳</span></span></div>
+      </div>
+      <footer class="desktop-footer"><span>© <span id="year-now">2026</span> Sheldon Dsouza</span><span data-copy data-en="Built with intention · Powered by curiosity" data-de="Mit Bedacht gebaut · Von Neugier angetrieben">Built with intention · Powered by curiosity</span><a href="https://github.com/sheldon5006" target="_blank" rel="noreferrer">SOURCE <span aria-hidden="true">↗</span></a></footer>
+    </section>
+  </main>
+
+  <div class="command-backdrop" id="command-palette" role="dialog" aria-modal="true" aria-labelledby="command-title" hidden>
+    <div class="command-dialog">
+      <div class="command-search-row"><span class="search-lens" aria-hidden="true">⌕</span><label class="visually-hidden" id="command-title" for="command-search">Quick open portfolio sections</label><input id="command-search" type="search" autocomplete="off" placeholder="Jump to a section or action…"><kbd>ESC</kbd></div>
+      <div class="command-list" id="command-list">
+        <button type="button" data-command="about" data-command-en="Who am I" data-command-de="Über mich"><span class="command-list-icon">⌘</span><span data-copy data-en="Who am I" data-de="Über mich">Who am I</span><kbd>01</kbd></button>
+        <button type="button" data-command="projects" data-command-en="Projects" data-command-de="Projekte"><span class="command-list-icon">▣</span><span data-copy data-en="Projects" data-de="Projekte">Projects</span><kbd>02</kbd></button>
+        <button type="button" data-command="social" data-command-en="Social & contact" data-command-de="Kontakt"><span class="command-list-icon">⌁</span><span data-copy data-en="Social & contact" data-de="Kontakt">Social & contact</span><kbd>03</kbd></button>
+        <button type="button" data-command="lab" data-command-en="Engineering lab" data-command-de="Labor"><span class="command-list-icon">⌬</span><span data-copy data-en="Engineering lab" data-de="Labor">Engineering lab</span><kbd>04</kbd></button>
+        <a href="{{ url_for('portfolio.resume') }}" data-command-search="cv resume curriculum vitae lebenslauf"><span class="command-list-icon">↓</span><span data-copy data-en="Download CV" data-de="Lebenslauf herunterladen">Download CV</span><kbd>PDF</kbd></a>
+      </div>
+      <div class="command-footer"><span data-copy data-en="Navigate your portfolio" data-de="Portfolio-Navigation">Navigate your portfolio</span><span><kbd>↑</kbd><kbd>↓</kbd> <span data-copy data-en="to select" data-de="Auswahl">to select</span> · <kbd>↵</kbd> <span data-copy data-en="to open" data-de="öffnen">to open</span></span></div>
     </div>
   </div>
-</section>
 
-<!-- ============== EXPERIENCE ============== -->
-<section id="experience" class="relative py-28 px-6">
-  <div class="max-w-4xl mx-auto">
-    <p class="font-mono text-sm text-accentblue mb-4 reveal" data-i18n="experience.eyebrow">// experience</p>
-    <h2 class="font-display text-3xl sm:text-4xl font-semibold mb-14 reveal" data-i18n="experience.title">Where I've worked</h2>
-
-    <div class="relative pl-8">
-      <div class="absolute left-0 top-2 bottom-2 w-px timeline-rail"></div>
-
-      {% set jobs = [
-        {
-          "role": "Software Engineer",
-          "company": "Global ESoftSys, Mangaluru, India",
-          "date": "Aug 2023 — Feb 2026",
-          "points": [
-            "Migrated legacy VB applications to ASP.NET Core and Angular across Booth Tracker Cloud, Mobil Rentals, and Antiquesoft",
-            "Contributed to 3 major enterprise projects, from initial development through production deployment",
-            "Improved application performance by ~25% through optimized architecture and database handling",
-            "Designed and integrated RESTful APIs using Entity Framework",
-            "Delivered consistently in Agile/Scrum teams with high on-time delivery"
-          ]
-        },
-        {
-          "role": "Software Engineer",
-          "company": "Raasoft Infotech, Mangaluru, India",
-          "date": "Feb 2022 — Jul 2023",
-          "points": [
-            "Maintained and enhanced ERP functionality for multiple clients",
-            "Built new client-specific applications on a shared architecture for consistency and faster delivery",
-            "Implemented scalable features using ASP.NET Core, AngularJS, and LINQ",
-            "Conducted code reviews and applied best practices to improve maintainability"
-          ]
-        },
-        {
-          "role": "Software Developer Intern",
-          "company": "Siona Solutions, Mangaluru, India",
-          "date": "Oct 2021 — Feb 2022",
-          "points": [
-            "Built StudentConnect, a student portal for St. Aloysius College, in PHP and Laravel",
-            "Implemented backend functionality and database integration for core features",
-            "Identified and resolved bugs, improving system stability",
-            "Hardened application security by addressing vulnerabilities"
-          ]
-        },
-      ] %}
-
-      {% for job in jobs %}
-      {% set job_idx = loop.index0 %}
-      <div class="reveal relative mb-14 last:mb-0">
-        <div class="absolute -left-[2.05rem] top-1.5 w-3 h-3 rounded-full bg-graphite border-2 border-accentblue"></div>
-        <p class="font-mono text-xs text-slate mb-1">{{ job.date }}</p>
-        <h3 class="font-display text-xl font-medium" data-i18n="exp.{{ job_idx }}.role">{{ job.role }}</h3>
-        <p class="text-accentblue text-sm mb-4">{{ job.company }}</p>
-        <ul class="space-y-2 text-slate text-[0.95rem] leading-relaxed">
-          {% for point in job.points %}
-          <li class="flex gap-2"><span class="text-accentviolet mt-1">·</span><span data-i18n="exp.{{ job_idx }}.points.{{ loop.index0 }}">{{ point }}</span></li>
-          {% endfor %}
-        </ul>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<!-- ============== PROJECTS ============== -->
-<section id="projects" class="relative py-28 px-6 bg-surface/40">
-  <div class="max-w-6xl mx-auto">
-    <p class="font-mono text-sm text-accentblue mb-4 reveal" data-i18n="projects.eyebrow">// projects</p>
-    <h2 class="font-display text-3xl sm:text-4xl font-semibold mb-3 reveal" data-i18n="projects.tools.title">Open-source projects</h2>
-   
-    <div class="grid md:grid-cols-2 gap-6 mb-24">
-
-
-        <!-- space shooter demo -->
-      <div class="reveal rounded-2xl border border-white/10 bg-surface p-7 lift">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="font-display text-xl font-medium">Space Shooter</h3>
-          <span class="font-mono text-xs text-slate px-2.5 py-1 rounded-full border border-white/10">Angular</span>
-        </div>
-        <p class="text-slate text-sm mb-5 leading-relaxed">
-          A simple space shooter game built with Angular. Destroy enemy ships and avoid their attacks.
-        </p>
-        <div id="space-shooter-form" class="flex gap-2 mb-3">
-          <a id="space-shooter-input" href="https://space-shooter-ng.onrender.com/" target="_blank"
-            class="magnetic rounded-lg bg-accentblue px-4 py-2 text-sm font-medium text-graphite hover:opacity-90">
-          Play</a>
-        </div>
-        
-        <div class="mt-5 flex gap-4 text-sm font-mono text-slate">
-          <a href="https://github.com/sheldon5006" target="_blank" class="hover:text-soft transition-colors" data-i18n="projects.source">source →</a>
-        </div>
-      </div>
-
-       <!-- Flow Desk -->
-      <div class="reveal rounded-2xl border border-white/10 bg-surface p-7 lift">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="font-display text-xl font-medium">FlowDesk</h3>
-          <span class="font-mono text-xs text-slate px-2.5 py-1 rounded-full border border-white/10">C# + Angular + PostgreSQL</span>
-        </div>
-        <p class="text-slate text-sm mb-5 leading-relaxed">
-          FlowDesk is a Workforce Operations & Smart Scheduling Platform built as a practical software architecture laboratory.
-        </p>
-        
-        
-        <div class="mt-5 flex gap-4 text-sm font-mono text-slate">
-          <a href="https://github.com/sheldon5006/FlowDesk" target="_blank" class="hover:text-soft transition-colors" data-i18n="projects.source">source →</a>
-        </div>
-      </div>
-
-    
-    </div>
-    
-    <div class="grid md:grid-cols-2 gap-6 mb-24">
-
-      
-      <!-- asciibar demo -->
-      <div class="reveal rounded-2xl border border-white/10 bg-surface p-7 lift">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="font-display text-xl font-medium">asciibar</h3>
-          <span class="font-mono text-xs text-slate px-2.5 py-1 rounded-full border border-white/10">python</span>
-        </div>
-        <p class="text-slate text-sm mb-5 leading-relaxed">
-          Turns a list of numbers into terminal bar charts — no matplotlib, no GUI. Type some numbers and see it render instantly.
-        </p>
-
-        <form id="asciibar-form" class="flex gap-2 mb-3">
-          <input id="asciibar-input" type="text" placeholder="e.g. 3, 7, 10, 5" value="4, 9, 6, 12"
-            class="flex-1 bg-graphite border border-white/10 rounded-lg px-3 py-2 text-sm font-mono focus:border-accentblue/50 outline-none">
-          <button type="submit" class="magnetic rounded-lg bg-accentblue px-4 py-2 text-sm font-medium text-graphite hover:opacity-90" data-i18n="projects.run">Run</button>
-        </form>
-        <pre id="asciibar-output" class="font-mono text-xs bg-graphite border border-white/10 rounded-lg p-4 min-h-[88px] text-accentviolet overflow-x-auto whitespace-pre">// output will render here</pre>
-
-        <div class="mt-5 flex gap-4 text-sm font-mono text-slate">
-          <a href="https://github.com/sheldon5006" target="_blank" class="hover:text-soft transition-colors" data-i18n="projects.source">source →</a>
-        </div>
-      </div>
-
-      <!-- emojify demo -->
-      <div class="reveal rounded-2xl border border-white/10 bg-surface p-7 lift">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="font-display text-xl font-medium">emojify</h3>
-          <span class="font-mono text-xs text-slate px-2.5 py-1 rounded-full border border-white/10">python</span>
-        </div>
-        <p class="text-slate text-sm mb-5 leading-relaxed">
-          Replaces <code class="text-accentviolet">:word:</code> shortcodes with emoji, fully offline — like Slack/GitHub's parser, no API calls.
-        </p>
-
-        <form id="emojify-form" class="flex gap-2 mb-3">
-          <input id="emojify-input" type="text" placeholder="e.g. shipped it :rocket:" value="shipped it :rocket: feeling :fire:"
-            class="flex-1 bg-graphite border border-white/10 rounded-lg px-3 py-2 text-sm font-mono focus:border-accentblue/50 outline-none">
-          <button type="submit" class="magnetic rounded-lg bg-accentblue px-4 py-2 text-sm font-medium text-graphite hover:opacity-90">Run</button>
-        </form>
-        <pre id="emojify-output" class="font-mono text-xs bg-graphite border border-white/10 rounded-lg p-4 min-h-[88px] text-soft overflow-x-auto whitespace-pre-wrap">// output will render here</pre>
-
-        <div class="mt-5 flex gap-4 text-sm font-mono text-slate">
-          <a href="https://github.com/sheldon5006" target="_blank" class="hover:text-soft transition-colors">source →</a>
-        </div>
-      </div>
-
-
-
-    </div>
-
-    <h2 class="font-display text-3xl sm:text-4xl font-semibold mb-3 reveal" data-i18n="projects.case.title">Professional case studies</h2>
-    <p class="text-slate mb-14 reveal max-w-2xl" data-i18n="projects.case.subtitle">Production systems I've built and maintained for enterprise clients.</p>
-
-    <div class="space-y-6">
-
-      {% set case_studies = [
-        {
-          "name": "Booth Tracker Cloud",
-          "tagline": "Space rental and vendor management platform for flea markets, indoor markets, and swap meets.",
-          "points": [
-            "Migrated multiple legacy VB applications to ASP.NET Core and Angular",
-            "Built a proof-of-concept to validate system architecture with system architects",
-            "Implemented dynamic graphical layouts for real-time booth allocation and occupancy",
-            "Built RESTful APIs integrated with SQL Server via Entity Framework"
-          ],
-          "tags": ["ASP.NET Core", "Angular", "TypeScript", "SQL Server", "Entity Framework", "Azure DevOps", "Syncfusion"]
-        },
-        {
-          "name": "RaasERP",
-          "tagline": "Enterprise Resource Planning system for production operations, attendance, payroll, and reporting.",
-          "points": [
-            "Developed and enhanced ERP modules for production, workforce tracking, and payroll",
-            "Implemented client-specific enhancements using ASP.NET Core and AngularJS",
-            "Delivered bug fixes and production releases across multiple client deployments"
-          ],
-          "tags": ["ASP.NET Core", "AngularJS", "SQL Server", "LINQ"]
-        },
-        {
-          "name": "StudentConnect",
-          "tagline": "Student portal for St. Aloysius College — academic info and digital library operations.",
-          "points": [
-            "Built the Library Module for browsing an interactive catalog of digital resources",
-            "Implemented annotation features for more engaging student interaction",
-            "Developed import/export functionality for managing student data"
-          ],
-          "tags": ["PHP", "Laravel", "MySQL"]
-        },
-      ] %}
-
-      {% for cs in case_studies %}
-      {% set cs_idx = loop.index0 %}
-      <div class="reveal rounded-2xl border border-white/10 bg-surface p-7 lift grid md:grid-cols-[1fr_auto] gap-6 items-start">
-        <div>
-          <h3 class="font-display text-xl font-medium mb-1">{{ cs.name }}</h3>
-          <p class="text-slate text-sm mb-4" data-i18n="cs.{{ cs_idx }}.tagline">{{ cs.tagline }}</p>
-          <ul class="space-y-1.5 text-sm text-slate leading-relaxed mb-4">
-            {% for p in cs.points %}
-            <li class="flex gap-2"><span class="text-accentblue mt-0.5">·</span><span data-i18n="cs.{{ cs_idx }}.points.{{ loop.index0 }}">{{ p }}</span></li>
-            {% endfor %}
-          </ul>
-          <div class="flex flex-wrap gap-2">
-            {% for tag in cs.tags %}
-            <span class="font-mono text-xs text-slate px-2.5 py-1 rounded-full border border-white/10">{{ tag }}</span>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-
-    </div>
-  </div>
-</section>
-
-<!-- ============== EDUCATION ============== -->
-<section id="education" class="relative py-28 px-6">
-  <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
-
-    <div>
-      <p class="font-mono text-sm text-accentblue mb-4 reveal" data-i18n="education.eyebrow">// education</p>
-      <h2 class="font-display text-3xl font-semibold mb-10 reveal" data-i18n="education.title">Education</h2>
-
-      <div class="space-y-8">
-        <div class="reveal rounded-2xl border border-white/10 bg-surface p-6 lift">
-          <p class="font-mono text-xs text-slate mb-1">May 2026 — Present</p>
-          <h3 class="font-display text-lg font-medium">M.Sc. Artificial Intelligence</h3>
-          <p class="text-accentblue text-sm mb-2">Berlin School of Business and Innovation</p>
-          <p class="text-slate text-sm">Focus: Machine Learning, NLP, Robotics, Automation, Computer Vision</p>
-        </div>
-        <div class="reveal rounded-2xl border border-white/10 bg-surface p-6 lift">
-          <p class="font-mono text-xs text-slate mb-1">2017 — 2020</p>
-          <h3 class="font-display text-lg font-medium">Bachelor of Computer Applications</h3>
-          <p class="text-accentblue text-sm mb-2">St. Raymond's Degree College</p>
-          <p class="text-slate text-sm">Focus: Software Development, Web Technologies, Database Systems</p>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <p class="font-mono text-sm text-accentblue mb-4 reveal" data-i18n="certs.eyebrow">// certifications</p>
-      <h2 class="font-display text-3xl font-semibold mb-10 reveal" data-i18n="certs.title">Certifications</h2>
-
-      <div class="reveal rounded-2xl border border-white/10 bg-surface p-6 lift">
-        <p class="font-mono text-xs text-slate mb-1">Oct 2020 — Mar 2021</p>
-        <h3 class="font-display text-lg font-medium">Python Development Workshop</h3>
-        <p class="text-accentblue text-sm mb-4">Codelab Systems / Cognitive Solutions</p>
-        <p class="text-slate text-sm mb-3" data-i18n="certs.projects">Key learning projects:</p>
-        <div class="flex flex-wrap gap-2">
-          <span class="font-mono text-xs text-slate px-2.5 py-1 rounded-full border border-white/10">Healthcare Appointment System</span>
-          <span class="font-mono text-xs text-slate px-2.5 py-1 rounded-full border border-white/10">Cancer Prediction App</span>
-          <span class="font-mono text-xs text-slate px-2.5 py-1 rounded-full border border-white/10">Face Detection (OpenCV)</span>
-          <span class="font-mono text-xs text-slate px-2.5 py-1 rounded-full border border-white/10">Instagram Clone</span>
-        </div>
-      </div>
-
-      <div class="reveal mt-8 rounded-2xl border border-white/10 bg-surface p-6">
-        <p class="text-sm text-slate mb-2 font-mono" data-i18n="languages.label">languages</p>
-        <p class="text-sm" data-i18n="languages.value">English · Deutsch (learning) · Kannada (native) · Hindi (proficient)</p>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ============== CONTACT ============== -->
-<section id="contact" class="relative py-28 px-6 bg-surface/40">
-  <div class="max-w-4xl mx-auto">
-    <p class="font-mono text-sm text-accentblue mb-4 reveal text-center" data-i18n="contact.eyebrow">// contact</p>
-    <h2 class="font-display text-3xl sm:text-4xl font-semibold mb-4 reveal text-center" data-i18n="contact.title">Let's build something</h2>
-    <p class="text-slate mb-14 reveal text-center max-w-xl mx-auto">
-      <span data-i18n="contact.subtitle">Open to Software Engineering, AI Engineering, and Full Stack roles. Reach out — I reply fast.</span>
-    </p>
-
-    <div class="grid md:grid-cols-[0.8fr_1.2fr] gap-10">
-      <div class="reveal space-y-4">
-        <a href="mailto:sheldon07work@gmail.com" class="flex items-center gap-3 text-sm hover:text-accentblue transition-colors">
-          <span class="font-mono text-slate">email</span> sheldon07work@gmail.com
-        </a>
-        <a href="https://www.linkedin.com/in/sheldondsouza777" target="_blank" class="flex items-center gap-3 text-sm hover:text-accentblue transition-colors">
-          <span class="font-mono text-slate">linkedin</span> sheldondsouza777
-        </a>
-        <a href="https://github.com/sheldon5006" target="_blank" class="flex items-center gap-3 text-sm hover:text-accentblue transition-colors">
-          <span class="font-mono text-slate">github</span> sheldon5006
-        </a>
-        <a href="/resume" class="magnetic inline-flex mt-4 items-center gap-2 rounded-full bg-soft text-graphite px-6 py-3 font-medium hover:opacity-90 transition-opacity">
-          Download résumé
-        </a>
-      </div>
-
-      <form id="contact-form" class="reveal space-y-4">
-        <div class="grid sm:grid-cols-2 gap-4">
-          <input id="contact-name" required type="text" data-i18n-placeholder="contact.form.name" placeholder="Your name"
-            class="bg-graphite border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-accentblue/50 outline-none">
-          <input id="contact-email" required type="email" data-i18n-placeholder="contact.form.email" placeholder="Your email"
-            class="bg-graphite border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-accentblue/50 outline-none">
-        </div>
-        <textarea id="contact-message" required rows="4" data-i18n-placeholder="contact.form.message" placeholder="What are you building?"
-          class="w-full bg-graphite border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-accentblue/50 outline-none resize-none"></textarea>
-        <button type="submit" data-i18n="contact.form.send" class="magnetic rounded-full bg-accentblue text-graphite px-6 py-3 font-medium hover:opacity-90 transition-opacity">
-          Send message
-        </button>
-        <p id="contact-status" class="text-sm text-slate"></p>
-      </form>
-    </div>
-  </div>
-</section>
-
-<footer class="py-10 px-6 border-t border-white/10">
-  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate font-mono">
-    <p>© 2026 Sheldon D Souza</p>
-    <p data-i18n="footer.built">built with Flask + Tailwind</p>
-  </div>
-</footer>
-
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
-
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 </body>
 </html>
