@@ -312,7 +312,13 @@
                 <div class="lab-child-titlebar">
                   <div class="lab-child-dots" aria-hidden="true"><i></i><i></i><i></i></div>
                   <div class="lab-child-title"><span id="lab-child-icon">▥</span><strong id="lab-child-title">asciibar</strong></div>
-                  <button class="lab-child-close" id="lab-child-close" type="button" aria-label="Close app and return to utilities list" title="Close and return to list">×</button>
+                  <div class="lab-child-window-actions">
+                    <button class="lab-child-maximize" id="lab-child-maximize" type="button" aria-label="Expand app window" aria-pressed="false" title="Expand to workspace">
+                      <svg class="maximize-icon maximize-icon-expand" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M4 15v5h5"/></svg>
+                      <svg class="maximize-icon maximize-icon-restore" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M20 15h-5v5M4 15h5v5"/></svg>
+                    </button>
+                    <button class="lab-child-close" id="lab-child-close" type="button" aria-label="Close app and return to utilities list" title="Close and return to list">×</button>
+                  </div>
                 </div>
                 <div class="lab-child-body" id="lab-child-body">
                   <section class="lab-child-content" id="lab-child-asciibar" data-child-app="asciibar">
@@ -327,7 +333,7 @@
                   </section>
                   <section class="lab-child-content lab-child-game" id="lab-child-space-shooter" data-child-app="space-shooter" hidden>
                     <div class="lab-game-intro"><div><span class="app-detail-type">ARCADE / WEB APP</span><h2>Space Shooter</h2><p data-copy data-en="Launching the hosted game in this child window. If embedding is blocked by the game host, use the open-game link." data-de="Das gehostete Spiel wird in diesem Fenster geöffnet. Falls das Einbetten vom Host blockiert wird, nutze den Link zum externen Öffnen.">Launching the hosted game in this child window. If embedding is blocked by the game host, use the open-game link.</p></div><a href="https://space-shooter-ng.onrender.com/" target="_blank" rel="noreferrer" class="button-secondary"><span data-copy data-en="Open game externally" data-de="Spiel extern öffnen">Open game externally</span><span>↗</span></a></div>
-                    <iframe id="space-shooter-frame" title="Space Shooter game" data-src="https://space-shooter-ng.onrender.com/" loading="lazy" allow="fullscreen; gamepad" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                    <iframe id="space-shooter-frame" title="Space Shooter game" data-src="https://space-shooter-ng.onrender.com/" loading="lazy" scrolling="no" allow="fullscreen; gamepad" referrerpolicy="strict-origin-when-cross-origin"></iframe>
                   </section>
                 </div>
               </section>
