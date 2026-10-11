@@ -25,14 +25,14 @@
 
   function lensScale() {
     return coarsePointerQuery.matches
-      ? Math.max(23, Math.min(38, cosmos.height * 0.06))
-      : Math.max(38, Math.min(62, cosmos.height * 0.07));
+      ? Math.max(20, Math.min(33, cosmos.height * 0.054))
+      : Math.max(30, Math.min(54, cosmos.height * 0.062));
   }
 
   function horizonSize() {
     return coarsePointerQuery.matches
-      ? Math.max(12, Math.min(17, cosmos.height * 0.024))
-      : Math.max(18, Math.min(25, cosmos.height * 0.028));
+      ? Math.max(10, Math.min(15, cosmos.height * 0.021))
+      : Math.max(15, Math.min(22, cosmos.height * 0.025));
   }
 
   function seedStars() {
@@ -254,6 +254,95 @@
     }
   }
 
+  let blackHoleTexture = null;
+
+  function createBlackHoleTexture() {
+    const size = 320;
+    const canvasTexture = document.createElement("canvas");
+    canvasTexture.width = size;
+    canvasTexture.height = size;
+    const textureContext = canvasTexture.getContext("2d", { alpha: true });
+    if (!textureContext) return null;
+
+    const image = textureContext.createImageData(size, size);
+    const pixels = image.data;
+    const centre = (size - 1) / 2;
+    const scale = centre;
+
+    // Build a photographic-looking, irregular ring as a raster texture.
+    // Its edge is turbulent and uneven, with muted amber, ivory and cool starlight.
+    for (let py = 0; py < size; py++) {
+      for (let px = 0; px < size; px++) {
+        const dx = (px - centre) / scale;
+        const dy = (py - centre) / scale;
+        const radius = Math.sqrt(dx * dx + dy * dy);
+        if (radius > 1.02) continue;
+
+        const angle = Math.atan2(dy, dx);
+        const edgeNoise =
+          0.008 * Math.sin(angle * 4.0 + 0.6) +
+          0.005 * Math.sin(angle * 9.0 - 1.1) +
+          0.003 * Math.sin(angle * 17.0 + radius * 22.0);
+        const horizonEdge = 0.478 + edgeNoise * 0.55;
+
+        const index = (py * size + px) * 4;
+
+        // The event horizon is opaque, deep black; no inner highlight ring.
+        if (radius <= horizonEdge) {
+          pixels[index] = 0;
+          pixels[index + 1] = 0;
+          pixels[index + 2] = 1;
+          pixels[index + 3] = 255;
+          continue;
+        }
+
+        const ringCentre =
+          0.615 +
+          0.022 * Math.sin(angle * 2.0 + 0.7) +
+          0.015 * Math.sin(angle * 5.0 - 1.6) +
+          0.007 * Math.sin(angle * 11.0 + radius * 20.0);
+        const ringWidth = 0.043 + 0.012 * (0.5 + 0.5 * Math.sin(angle * 4.0 + 0.9));
+        const distanceFromRing = (radius - ringCentre) / ringWidth;
+        const ringProfile = Math.exp(-0.5 * distanceFromRing * distanceFromRing);
+
+        // Fine turbulence breaks up the ring so it does not look mechanically circular.
+        const turbulence =
+          0.84 +
+          0.09 * Math.sin(angle * 23.0 + radius * 97.0) +
+          0.06 * Math.sin(angle * 37.0 - radius * 61.0) +
+          0.035 * Math.sin(angle * 71.0 + radius * 131.0);
+        const angularBrightness = Math.max(
+          0.08,
+          Math.min(0.95, 0.42 + 0.22 * Math.sin(angle * 1.7 - 0.8) + 0.19 * Math.cos(angle * 3.0 + 0.5))
+        );
+        const outerHaze = Math.exp(-Math.pow((radius - (ringCentre + 0.055)) / 0.16, 2));
+        const alpha = Math.max(
+          0,
+          Math.min(0.72, ringProfile * (0.25 + angularBrightness * 0.46) * turbulence + outerHaze * 0.055)
+        );
+
+        // The light is mostly warm ivory with a little amber on one side
+        // and cool blue-grey on the far side, never a neon white outline.
+        const warmMix = Math.max(0, Math.min(1, 0.58 + 0.32 * Math.sin(angle * 1.45 + 0.45)));
+        const highlight = Math.min(0.56, Math.pow(angularBrightness, 2.0) * ringProfile * 0.56);
+        const warm = [192, 143, 105];
+        const cool = [132, 151, 190];
+        const baseR = cool[0] * (1 - warmMix) + warm[0] * warmMix;
+        const baseG = cool[1] * (1 - warmMix) + warm[1] * warmMix;
+        const baseB = cool[2] * (1 - warmMix) + warm[2] * warmMix;
+        const outAlpha = Math.round(alpha * 255);
+
+        pixels[index] = Math.round(baseR + (245 - baseR) * highlight);
+        pixels[index + 1] = Math.round(baseG + (235 - baseG) * highlight);
+        pixels[index + 2] = Math.round(baseB + (221 - baseB) * highlight);
+        pixels[index + 3] = outAlpha;
+      }
+    }
+
+    textureContext.putImageData(image, 0, 0);
+    return canvasTexture;
+  }
+
   function drawBlackHole(time) {
     if (!context || !cosmos.active) return;
     const ctx = context;
@@ -261,81 +350,42 @@
     const y = cosmos.hole.y;
     const speed = Math.min(1, Math.hypot(cosmos.hole.vx, cosmos.hole.vy) / 460);
     const horizon = horizonSize();
-    const breathe = reducedMotionQuery.matches ? 0 : (0.5 + 0.5 * Math.sin(time * 0.0008)) * 0.025;
 
-    // Soft gravitational shadow. The star field itself supplies the lensing;
-    // this layer only gives the black hole some depth.
-    const shadowRadius = lensScale() * 2.25;
-    const shadow = ctx.createRadialGradient(x, y, horizon * 0.55, x, y, shadowRadius);
-    shadow.addColorStop(0, "rgba(0,0,0,1)");
-    shadow.addColorStop(0.17, "rgba(0,0,0,0.98)");
-    shadow.addColorStop(0.29, "rgba(2,3,7,0.92)");
-    shadow.addColorStop(0.43, "rgba(5,6,13,0.54)");
-    shadow.addColorStop(0.63, "rgba(10,11,20,0.16)");
-    shadow.addColorStop(0.82, "rgba(10,12,22,0.045)");
+    if (!blackHoleTexture) blackHoleTexture = createBlackHoleTexture();
+    if (!blackHoleTexture) return;
+
+    // Keep the event horizon slightly smaller. Slow texture rotation and a tiny
+    // scale/luminance drift animate the turbulent rim without a pulsing vector ring.
+    const textureRadius = horizon * 2.03;
+    const motion = reducedMotionQuery.matches ? 0 : time * 0.000018;
+    const breathing = reducedMotionQuery.matches ? 1 : 1 + Math.sin(time * 0.00075) * 0.006;
+    const opacity = 0.97 + speed * 0.025;
+
+    // Gently darken the immediate space around the horizon, with no concentric bands.
+    const shadowRadius = lensScale() * 1.85;
+    const shadow = ctx.createRadialGradient(x, y, horizon * 0.68, x, y, shadowRadius);
+    shadow.addColorStop(0, "rgba(0,0,0,0.98)");
+    shadow.addColorStop(0.32, "rgba(1,2,5,0.72)");
+    shadow.addColorStop(0.66, "rgba(3,4,10,0.18)");
     shadow.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = shadow;
     ctx.beginPath();
     ctx.arc(x, y, shadowRadius, 0, Math.PI * 2);
     ctx.fill();
 
-    // A dim, warm photon corona: a raster gradient rather than a stroked ring.
-    // The offset centre keeps one side cream-white and the opposite side smoky amber.
-    const coronaRadius = horizon * 2.35;
-    const corona = ctx.createRadialGradient(
-      x - horizon * 0.11, y - horizon * 0.14, horizon * 0.48,
-      x, y, coronaRadius
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(motion);
+    ctx.scale(breathing, breathing);
+    ctx.globalAlpha = opacity;
+    ctx.drawImage(
+      blackHoleTexture,
+      -textureRadius,
+      -textureRadius,
+      textureRadius * 2,
+      textureRadius * 2
     );
-    corona.addColorStop(0, "rgba(0,0,0,0)");
-    corona.addColorStop(0.50, "rgba(0,0,0,0)");
-    corona.addColorStop(0.64, "rgba(51,40,34,0.025)");
-    corona.addColorStop(0.75, "rgba(139,104,78," + (0.065 + breathe).toFixed(3) + ")");
-    corona.addColorStop(0.83, "rgba(208,175,137," + (0.09 + breathe).toFixed(3) + ")");
-    corona.addColorStop(0.90, "rgba(248,227,199," + (0.13 + breathe).toFixed(3) + ")");
-    corona.addColorStop(0.95, "rgba(231,231,225,0.12)");
-    corona.addColorStop(0.985, "rgba(149,167,207,0.055)");
-    corona.addColorStop(1, "rgba(60,73,101,0)");
-    ctx.globalCompositeOperation = "screen";
-    ctx.fillStyle = corona;
-    ctx.beginPath();
-    ctx.arc(x, y, coronaRadius, 0, Math.PI * 2);
-    ctx.fill();
-
-    // A second, extremely soft cool bounce light keeps the edge integrated
-    // with the blue-white stars, rather than looking like a gold neon border.
-    const coolRadius = horizon * 1.72;
-    const coolGlow = ctx.createRadialGradient(
-      x + horizon * 0.18, y + horizon * 0.14, horizon * 0.72,
-      x, y, coolRadius
-    );
-    coolGlow.addColorStop(0, "rgba(0,0,0,0)");
-    coolGlow.addColorStop(0.75, "rgba(0,0,0,0)");
-    coolGlow.addColorStop(0.88, "rgba(132,155,207,0.075)");
-    coolGlow.addColorStop(0.96, "rgba(190,202,227,0.09)");
-    coolGlow.addColorStop(1, "rgba(95,116,166,0)");
-    ctx.fillStyle = coolGlow;
-    ctx.beginPath();
-    ctx.arc(x, y, coolRadius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.globalCompositeOperation = "source-over";
-
-    // Dark event horizon with a fine edge-light, gently brighter while moving.
-    const edgeRadius = horizon * (1.045 + speed * 0.025);
-    const edge = ctx.createRadialGradient(
-      x - horizon * 0.16, y - horizon * 0.18, horizon * 0.10,
-      x, y, edgeRadius
-    );
-    edge.addColorStop(0, "#000");
-    edge.addColorStop(0.80, "#010104");
-    edge.addColorStop(0.90, "rgba(2,2,5,0.998)");
-    edge.addColorStop(0.95, "rgba(7,7,11,0.99)");
-    edge.addColorStop(0.978, "rgba(13,14,20,0.96)");
-    edge.addColorStop(0.993, "rgba(22,25,35,0.78)");
-    edge.addColorStop(1, "rgba(48,56,77,0.015)");
-    ctx.fillStyle = edge;
-    ctx.beginPath();
-    ctx.arc(x, y, edgeRadius, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.restore();
   }
 
   function renderCosmos(timestamp) {
