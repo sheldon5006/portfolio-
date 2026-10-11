@@ -583,6 +583,7 @@
 
     if (!childIsMaximized) {
       appWindow.classList.remove("is-child-maximized");
+      document.body.classList.remove("child-app-maximized");
       appWindow.style.removeProperty("top");
       appWindow.style.removeProperty("left");
       appWindow.style.removeProperty("width");
@@ -638,6 +639,7 @@
     appWindow.style.width = width + "px";
     appWindow.style.height = height + "px";
     appWindow.classList.add("is-child-maximized");
+    document.body.classList.add("child-app-maximized");
 
     if (childMaximize) {
       childMaximize.setAttribute("aria-pressed", "true");
