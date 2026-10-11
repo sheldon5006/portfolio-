@@ -10,6 +10,7 @@ The site uses the existing Flask app and endpoints, with a space-inspired deskto
 - **Glass app workspace:** a responsive navigation rail and app-style content window for the profile, projects, social links, CV and lab demos.
 - **English / German:** switch between English and German content from the system bar.
 - **Quick open:** press `Ctrl+K` or `Cmd+K` to jump to portfolio sections.
+- **Suction transitions:** app windows collapse into the selected navigation icon when closing or switching views, then expand back out when opened. Reduced-motion preferences are respected.
 - **OS-style close:** close the active window to reveal the unobstructed starfield wallpaper; use the left dock or Quick Open to launch another view.
 - **Application browser:** Tools and Games use fixed Explorer-style split panes with independently scrollable lists and details. Tools launches local utilities and hosted apps; Games Explorer includes Space Shooter, SpatialMaps, asciibar, and emojify, with previews and click-to-launch child windows.
 - **Berlin weather:** current conditions and temperature appear beside the system clock, refreshed every 15 minutes using Open-Meteo. The small attribution link keeps the provider credit available without a text label.
