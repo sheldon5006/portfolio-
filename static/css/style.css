@@ -672,3 +672,8 @@ body{height:100vh;height:100dvh;min-height:0;overflow:hidden}
 .desktop-shell.window-closed .app-window{display:none!important}
 .desktop-shell.window-closed .desktop-footer{display:none!important}
 .desktop-shell.window-closed .workspace{background:transparent}
+
+
+/* Let fine stellar highlights read clearly against the deep-space backdrop. */
+.space-vignette{opacity:.52}
+#cosmos-canvas{opacity:1}
