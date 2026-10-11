@@ -817,6 +817,8 @@
         tags.appendChild(chip);
       });
     }
+    const launchButton = document.querySelector(".game-detail-actions [data-game-play]");
+    if (launchButton) launchButton.dataset.gamePlay = gameId;
     const source = document.getElementById("game-detail-source");
     if (source) source.href = game.source;
   }
