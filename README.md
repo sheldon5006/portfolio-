@@ -10,6 +10,7 @@ The redesign lives on the `redesign/stellar-ios-portfolio` branch. It keeps the 
 - **Glass app workspace:** a responsive navigation rail and app-style content window for the profile, projects, social links, CV and lab demos.
 - **English / German:** switch between English and German content from the system bar.
 - **Quick open:** press `Ctrl+K` or `Cmd+K` to jump to portfolio sections.
+- **OS-style close:** close the active window to reveal the unobstructed starfield wallpaper; use the left dock or Quick Open to launch another view.
 - **Live utilities:** the `asciibar` and `emojify` demos use the existing Flask API routes.
 - **Reduced motion:** background movement and UI transitions respect `prefers-reduced-motion`.
 - **Responsive layout:** desktop workspace becomes a compact navigation dock on smaller screens.
