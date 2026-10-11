@@ -57,3 +57,5 @@ The contact route uses Resend. Configure these server-side environment variables
 - \`CONTACT_RECEIVER_EMAIL\`
 
 Never add API keys to frontend JavaScript or commit secrets to the repository.
+
+- **Games Explorer playables:** Space Shooter, SpatialMaps, asciibar and emojify appear together in a Windows Explorer-style list with hover previews and click-to-launch child windows.
