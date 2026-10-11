@@ -359,18 +359,18 @@
   const viewStatus = document.getElementById("view-status");
   const windowBody = document.getElementById("window-body");
   const appWindow = document.getElementById("app-window");
-  const desktopHome = document.getElementById("desktop-home");
+  const desktopShell = document.querySelector(".desktop-shell");
   const windowClose = document.getElementById("window-close");
 
   function showView(name, shouldFocus) {
     if (!labels.en[name]) return;
     currentView = name;
-    // Launching any app from the dock, desktop, or a CTA restores the window.
+    // Launching any app from the dock or a CTA restores the window.
     if (appWindow) {
       appWindow.classList.remove("window-is-closed");
       appWindow.removeAttribute("aria-hidden");
     }
-    if (desktopHome) desktopHome.hidden = true;
+    if (desktopShell) desktopShell.classList.remove("window-closed");
     viewElements.forEach((view) => {
       const isCurrent = view.dataset.view === name;
       view.hidden = !isCurrent;
@@ -394,14 +394,19 @@
     button.addEventListener("click", () => showView(button.dataset.openView, false));
   });
 
-  // Close the active app window into a desktop-like launcher. The left dock
-  // and desktop app icons can reopen any view at any time.
-  if (windowClose && appWindow && desktopHome) {
+  // Fully close the app window and leave only the wallpaper + OS navigation.
+  // Clicking a dock item (or using Quick Open) launches a view again.
+  if (windowClose && appWindow && desktopShell) {
     windowClose.addEventListener("click", () => {
       appWindow.classList.add("window-is-closed");
       appWindow.setAttribute("aria-hidden", "true");
-      desktopHome.hidden = false;
-      desktopHome.focus({ preventScroll: true });
+      desktopShell.classList.add("window-closed");
+      document.querySelectorAll(".rail-item[data-open-view]").forEach((item) => {
+        item.classList.remove("is-active");
+        item.removeAttribute("aria-current");
+      });
+      const opener = document.querySelector('.rail-item[data-open-view="' + currentView + '"]');
+      if (opener) opener.focus({ preventScroll: true });
     });
   }
 
